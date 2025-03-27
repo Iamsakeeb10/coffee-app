@@ -1,17 +1,26 @@
-import React, {useRef, useState} from 'react';
-import {Animated, Dimensions, FlatList, StatusBar, View} from 'react-native';
-import IntroControls from '../components/IntroControls';
-import IntroIndicator from '../components/IntroIndicator';
-import IntroItem from '../components/IntroItem';
-import IntroSkipButton from '../components/IntroSkipButton';
-import {pages} from '../constants/onboardingData';
-import {styles} from '../styles/introScreenStyles';
-import {alertHandler} from '../utils/alertHandler';
+import React, {useCallback, useRef, useState} from 'react';
+import {
+  Animated,
+  Dimensions,
+  FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  StatusBar,
+  View,
+} from 'react-native';
+import IntroControls from '../../components/Intro/IntroControls';
+import IntroIndicator from '../../components/Intro/IntroIndicator';
+import IntroItem from '../../components/Intro/IntroItem';
+import IntroSkipButton from '../../components/Intro/IntroSkipButton';
+import {pages} from '../../constants/onboardingData';
+import {styles} from '../../styles/introScreenStyles';
+import {IntroSkipButtonProps, PageItem} from '../../types/types';
 
 const {width} = Dimensions.get('screen');
 
-const IntroScreen = ({navigation}: any) => {
+const IntroScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   const [currentPage, setCurrentPage] = useState<number>(0);
+
   const scrollX = useRef(new Animated.Value(0)).current;
   const flatListRef = useRef<FlatList>(null);
   const animatedCurrent = useRef<Animated.AnimatedDivision<number>>(
@@ -34,6 +43,26 @@ const IntroScreen = ({navigation}: any) => {
     }
   };
 
+  const renderItem = useCallback(
+    ({item}: {item: PageItem}) => <IntroItem item={item} />,
+    [],
+  );
+
+  const handleScroll = useCallback(
+    Animated.event([{nativeEvent: {contentOffset: {x: scrollX}}}], {
+      useNativeDriver: false,
+    }),
+    [scrollX],
+  );
+
+  const handleMomentumScrollEnd = useCallback(
+    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const newPage = Math.floor(e.nativeEvent.contentOffset.x / width);
+      setCurrentPage(newPage);
+    },
+    [setCurrentPage],
+  );
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -47,28 +76,22 @@ const IntroScreen = ({navigation}: any) => {
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         data={pages}
-        renderItem={({item}) => <IntroItem item={item} />}
+        renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {x: scrollX}}}],
-          {useNativeDriver: false},
-        )}
-        onMomentumScrollEnd={e =>
-          setCurrentPage(Math.floor(e.nativeEvent.contentOffset.x / width))
-        }
+        onScroll={handleScroll}
+        onMomentumScrollEnd={handleMomentumScrollEnd}
       />
       <IntroIndicator
         animatedCurrent={animatedCurrent}
         pagesLength={pages.length}
       />
-      <IntroSkipButton alertHandler={alertHandler} />
+      <IntroSkipButton navigation={navigation} />
       <IntroControls
         currentPage={currentPage}
         scrollX={scrollX}
         width={width}
         goToPreviousPage={goToPreviousPage}
         goToNextPage={goToNextPage}
-        alertHandler={alertHandler}
         pagesLength={pages.length}
       />
     </View>

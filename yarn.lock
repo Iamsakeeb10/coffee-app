@@ -5726,6 +5726,11 @@ react-is@^19.0.0:
   resolved "https://registry.npmjs.org/react-is/-/react-is-19.0.0.tgz"
   integrity sha512-H91OHcwjZsbq3ClIDHMzBShc1rotbfACdWENsmEf0IFvZ3FgGPtdHMcsv45bQ1hAbgdfiA8SnxTKfDS+x/8m2g==
 
+react-native-floating-label-input@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.npmjs.org/react-native-floating-label-input/-/react-native-floating-label-input-1.4.3.tgz"
+  integrity sha512-+M4jxs5KiqzXGiFeUi+G69tpgQFDUknGpWbiRtiQVREvwFA5rkZW3HiETzx0zxYhhr7Jgb47thh+DOzkwwcQnA==
+
 react-native-gesture-handler@^2.24.0:
   version "2.24.0"
   resolved "https://registry.npmjs.org/react-native-gesture-handler/-/react-native-gesture-handler-2.24.0.tgz"
@@ -5740,6 +5745,11 @@ react-native-is-edge-to-edge@1.1.6:
   resolved "https://registry.npmjs.org/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.1.6.tgz"
   integrity sha512-1pHnFTlBahins6UAajXUqeCOHew9l9C2C8tErnpGC3IyLJzvxD+TpYAixnCbrVS52f7+NvMttbiSI290XfwN0w==
 
+react-native-linear-gradient@^2.8.3:
+  version "2.8.3"
+  resolved "https://registry.npmjs.org/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz"
+  integrity sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA==
+
 react-native-page-indicator@^2.4.1:
   version "2.4.1"
   resolved "https://registry.npmjs.org/react-native-page-indicator/-/react-native-page-indicator-2.4.1.tgz"
@@ -5750,7 +5760,7 @@ react-native-pager-view@^6.7.0:
   resolved "https://registry.npmjs.org/react-native-pager-view/-/react-native-pager-view-6.7.0.tgz"
   integrity sha512-sutxKiMqBuQrEyt4mLaLNzy8taIC7IuYpxfcwQBXfSYBSSpAa0qE9G1FXlP/iXqTSlFgBXyK7BESsl9umOjECQ==
 
-react-native-reanimated@^3.17.1:
+react-native-reanimated@*, react-native-reanimated@^3.17.1:
   version "3.17.1"
   resolved "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-3.17.1.tgz"
   integrity sha512-ECzLhLxMKLifv34a8799/MHqIazQZV9fLMNSMdixXQlzX71RyL3/ah3cz/h3ERoyhJAYRC2ySLLZho6pXSqMFQ==

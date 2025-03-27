@@ -1,8 +1,8 @@
 import React from 'react';
 import {View} from 'react-native';
 import {PageIndicator} from 'react-native-page-indicator';
-import {colors} from '../constants/colors';
-import {styles} from '../styles/introScreenStyles';
+import {colors} from '../../constants/colors';
+import {styles} from '../../styles/introScreenStyles';
 
 interface IntroIndicatorProps {
   animatedCurrent: any;

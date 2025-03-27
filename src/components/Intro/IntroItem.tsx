@@ -1,6 +1,6 @@
 import React from 'react';
 import {Dimensions, ImageBackground, Text, View} from 'react-native';
-import {styles} from '../styles/introScreenStyles';
+import {styles} from '../../styles/introScreenStyles';
 
 const {width, height} = Dimensions.get('screen');
 

@@ -1,4 +1,6 @@
-export const pages = [
+import {PageItem} from '../types/types';
+
+export const pages: PageItem[] = [
   {
     id: 1,
     image: require('../assets/images/coffee-intro-1.jpg'),

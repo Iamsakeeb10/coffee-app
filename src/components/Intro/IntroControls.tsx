@@ -1,8 +1,9 @@
 import React from 'react';
 import {Pressable, Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {colors} from '../constants/colors';
-import {styles} from '../styles/introScreenStyles';
+import {colors} from '../../constants/colors';
+import {styles} from '../../styles/introScreenStyles';
+import {alertHandler} from '../../utils/alertHandler';
 
 interface IntroControlsProps {
   currentPage: number;
@@ -10,7 +11,6 @@ interface IntroControlsProps {
   width: number;
   goToPreviousPage: (page: number) => void;
   goToNextPage: (page: number) => void;
-  alertHandler: () => void;
   pagesLength: number;
 }
 
@@ -20,7 +20,6 @@ const IntroControls: React.FC<IntroControlsProps> = ({
   width,
   goToPreviousPage,
   goToNextPage,
-  alertHandler,
   pagesLength,
 }) => {
   return (
