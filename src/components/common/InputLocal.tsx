@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: width / 1.2,
     borderRadius: 3,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: 'rgba(211,211,211,0.2)',
     color: '#fff',
     paddingHorizontal: 10,
     fontFamily: fontFamily.regular,

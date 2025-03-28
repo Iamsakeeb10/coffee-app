@@ -11,14 +11,18 @@ const styles = StyleSheet.create({
 
   headerTextContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     marginTop: height * 0.03,
-    marginBottom: height * 0.04,
+    marginBottom: height * 0.045,
   },
   formContainer: {
     alignItems: 'center',
   },
+
+  safeAreaContainer: {
+    width: width / 1.2,
+    alignSelf: 'center',
+  },
+
   bottomContainer: {
     marginTop: 20,
     justifyContent: 'flex-end',

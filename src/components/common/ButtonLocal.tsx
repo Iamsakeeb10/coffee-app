@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 15,
     fontFamily: 'Ubuntu-Medium',
-    textTransform: 'uppercase',
+    // textTransform: 'uppercase',
   },
   disabled: {
     // backgroundColor: "rgba(87, 184, 102, .7)",
