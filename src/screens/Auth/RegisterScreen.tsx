@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StatusBar,
   Text,
   TouchableOpacity,
   View,
@@ -13,10 +14,11 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import LinearGradient from 'react-native-linear-gradient';
-import ButtonLocal from '../../components/common/ButtonLocal';
-import HeaderBack from '../../components/common/HeaderBack';
-import IconButton from '../../components/common/IconButton';
-import InputLocal from '../../components/common/InputLocal';
+import ButtonLocal from '../../components/Common/ButtonLocal';
+import HeaderBack from '../../components/Common/HeaderBack';
+import IconButton from '../../components/Common/IconButton';
+import InputLocal from '../../components/Common/InputLocal';
+import {colors} from '../../constants/colors';
 import styles from '../../styles/authStyles';
 import {IntroSkipButtonProps} from '../../types/types';
 
@@ -49,8 +51,14 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
       resizeMode="cover"
       blurRadius={10}>
       <LinearGradient
-        colors={['rgba(0, 0, 0, 0.2)', 'rgba(0, 0, 0, 0.4)']}
+        colors={[colors.linearGradientStart, colors.linearGradientEnd]}
         style={{flex: 1}}>
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="light-content"
+        />
+
         <SafeAreaView style={styles.safeAreaContainer}>
           <HeaderBack />
           <ScrollView
@@ -69,12 +77,12 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
               <View>
                 <InputLocal
                   placeholder="Enter your name"
-                  textColor="rgba(255, 255, 255, 0.5)"
+                  textColor={colors.inputTextColor}
                 />
                 <IconButton
                   iconName="person-outline"
                   iconSize={18}
-                  iconColor="rgba(255, 255, 255, 0.8)"
+                  iconColor={colors.iconColor}
                   activeOpacity={1}
                 />
               </View>
@@ -82,19 +90,19 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                 <InputLocal
                   placeholder="Enter your email"
                   keyboardType="email-address"
-                  textColor="rgba(255, 255, 255, 0.5)"
+                  textColor={colors.inputTextColor}
                 />
                 <IconButton
                   iconName="mail-outline"
                   iconSize={18}
-                  iconColor="rgba(255, 255, 255, 0.8)"
+                  iconColor={colors.iconColor}
                   activeOpacity={1}
                 />
               </View>
               <View>
                 <InputLocal
                   placeholder="Enter your password"
-                  textColor="rgba(255, 255, 255, 0.5)"
+                  textColor={colors.inputTextColor}
                   secureTextEntry={!showPass.password}
                 />
                 <IconButton
@@ -102,7 +110,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                     !showPass.password ? 'eye-off-outline' : 'eye-outline'
                   }
                   iconSize={18}
-                  iconColor="rgba(255, 255, 255, 0.8)"
+                  iconColor={colors.iconColor}
                   onPress={() => {
                     eyeToggleHandler('password');
                   }}
@@ -111,7 +119,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
               <View>
                 <InputLocal
                   placeholder="Enter your confirm password"
-                  textColor="rgba(255, 255, 255, 0.5)"
+                  textColor={colors.inputTextColor}
                   secureTextEntry={!showPass.confirmPassword}
                 />
                 <IconButton
@@ -121,7 +129,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                       : 'eye-outline'
                   }
                   iconSize={18}
-                  iconColor="rgba(255, 255, 255, 0.8)"
+                  iconColor={colors.iconColor}
                   onPress={() => {
                     eyeToggleHandler('confirmPassword');
                   }}
@@ -130,7 +138,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
 
               <ButtonLocal
                 title="Sign up"
-                buttonStyle={{backgroundColor: 'rgba(0, 121, 107, 1.0)'}}
+                buttonStyle={{backgroundColor: colors.primaryGreen}}
               />
               <View style={styles.bottomContainer}>
                 <Text style={styles.alreadySigninText}>

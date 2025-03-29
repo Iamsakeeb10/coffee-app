@@ -93,6 +93,7 @@ const IntroScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
         goToPreviousPage={goToPreviousPage}
         goToNextPage={goToNextPage}
         pagesLength={pages.length}
+        navigation={navigation}
       />
     </View>
   );

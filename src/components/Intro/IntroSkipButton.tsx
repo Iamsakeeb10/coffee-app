@@ -6,7 +6,7 @@ import {IntroSkipButtonProps} from '../../types/types';
 
 const IntroSkipButton: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   const navigationHandler = () => {
-    navigation.navigate('RegisterScreen');
+    navigation.replace('LoginScreen');
   };
 
   return (

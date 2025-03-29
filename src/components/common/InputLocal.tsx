@@ -9,7 +9,7 @@ interface InputLocalProps {
   placeholder?: string;
   secureTextEntry?: boolean;
   keyboardType?: TextInputProps['keyboardType'];
-  onChange?: (text: string) => void;
+  onChange: (text: string) => void;
   value?: string;
   editable?: boolean;
   selectTextOnFocus?: boolean;
@@ -44,7 +44,7 @@ const InputLocal: FC<InputLocalProps> = ({
       secureTextEntry={secureTextEntry}
       autoCapitalize={'none'}
       underlineColorAndroid="rgba(0,0,0,0)"
-      //   onChangeText={text => onChange(text)}
+      onChangeText={text => onChange(text)}
       value={value}
       editable={editable}
       selectTextOnFocus={selectTextOnFocus}

@@ -18,6 +18,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  logoContainer: {
+    marginBottom: -15,
+    alignItems: 'center',
+  },
+
+  logo: {
+    width: width * 0.5,
+    height: undefined,
+    aspectRatio: 1,
+  },
+
   safeAreaContainer: {
     width: width / 1.2,
     alignSelf: 'center',
