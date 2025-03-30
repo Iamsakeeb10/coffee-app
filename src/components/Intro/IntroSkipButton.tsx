@@ -1,11 +1,16 @@
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
+import {useDispatch} from 'react-redux';
 import {colors} from '../../constants/colors';
+import {completeOnboarding} from '../../redux/slices/onboardingSlice';
 import {styles} from '../../styles/introScreenStyles';
 import {IntroSkipButtonProps} from '../../types/types';
 
 const IntroSkipButton: React.FC<IntroSkipButtonProps> = ({navigation}) => {
+  const dispatch = useDispatch();
+
   const navigationHandler = () => {
+    dispatch(completeOnboarding());
     navigation.replace('LoginScreen');
   };
 

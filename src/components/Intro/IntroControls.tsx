@@ -1,7 +1,9 @@
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useDispatch} from 'react-redux';
 import {colors} from '../../constants/colors';
+import {completeOnboarding} from '../../redux/slices/onboardingSlice';
 import {styles} from '../../styles/introScreenStyles';
 import {IntroControlsProps} from '../../types/types';
 
@@ -14,7 +16,10 @@ const IntroControls: React.FC<IntroControlsProps> = ({
   pagesLength,
   navigation,
 }) => {
+  const dispatch = useDispatch();
+
   const navigationHandler = () => {
+    dispatch(completeOnboarding());
     navigation.replace('LoginScreen');
   };
 

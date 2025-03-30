@@ -15,6 +15,7 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import LinearGradient from 'react-native-linear-gradient';
+import {useDispatch} from 'react-redux';
 import AnimatedErrorText from '../../components/Auth/AnimatedErrorText';
 import ButtonLocal from '../../components/Common/ButtonLocal';
 import IconButton from '../../components/Common/IconButton';
@@ -38,6 +39,8 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   const [showPass, setShowPass] = useState<boolean>(false);
   const [userInput, setUserInput] = useState<LoginUserInput>(initialUserInput);
   const [userInputErrors, setUserInputErrors] = useState<UserInputErrors>({});
+
+  const dispatch = useDispatch();
 
   const handleUserInputChange = (
     field: keyof LoginUserInput,
