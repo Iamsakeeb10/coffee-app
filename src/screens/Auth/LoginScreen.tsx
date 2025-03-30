@@ -23,23 +23,26 @@ import {colors} from '../../constants/colors';
 import styles from '../../styles/authStyles';
 import {
   IntroSkipButtonProps,
-  UserInput,
+  LoginUserInput,
+  LoginValidationResult,
   UserInputErrors,
-  ValidationResult,
 } from '../../types/types';
 import {loginValidation} from '../../utils/validator';
 
-const initialUserInput: UserInput = {
+const initialUserInput: LoginUserInput = {
   enteredEmail: '',
   enteredPassword: '',
 };
 
 const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   const [showPass, setShowPass] = useState<boolean>(false);
-  const [userInput, setUserInput] = useState<UserInput>(initialUserInput);
+  const [userInput, setUserInput] = useState<LoginUserInput>(initialUserInput);
   const [userInputErrors, setUserInputErrors] = useState<UserInputErrors>({});
 
-  const handleUserInputChange = (field: keyof UserInput, value: string) => {
+  const handleUserInputChange = (
+    field: keyof LoginUserInput,
+    value: string,
+  ) => {
     const updatedInput = {...userInput, [field]: value};
     setUserInput(updatedInput);
     if (userInputErrors[`${field}Error`]) {
@@ -50,11 +53,11 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
     }
   };
 
-  const hasValidationError = (validationResult: ValidationResult) => {
+  const hasValidationError = (validationResult: LoginValidationResult) => {
     return validationResult.emailError || validationResult.passwordError;
   };
 
-  const setValidationErrors = (validationResult: ValidationResult) => {
+  const setValidationErrors = (validationResult: LoginValidationResult) => {
     setUserInputErrors({
       enteredEmailError: validationResult.emailError,
       enteredPasswordError: validationResult.passwordError,

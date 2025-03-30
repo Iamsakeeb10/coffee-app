@@ -19,16 +19,28 @@ export interface IntroControlsProps {
   navigation: any;
 }
 
-export interface UserInput {
+export interface LoginUserInput {
   enteredEmail: string;
   enteredPassword: string;
+}
+export interface RegUserInput {
+  enteredName: string;
+  enteredEmail: string;
+  enteredPassword: string;
+  enteredConfirmPassword: string;
 }
 
 export interface UserInputErrors {
   [key: string]: string;
 }
 
-export interface ValidationResult {
+export interface LoginValidationResult {
   emailError: string;
   passwordError: string;
+}
+export interface RegValidationResult {
+  nameError: string;
+  emailError: string;
+  passwordError: string;
+  confirmPasswordError: string;
 }

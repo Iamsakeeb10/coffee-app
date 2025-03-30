@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {
-  Dimensions,
   ImageBackground,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -14,15 +14,27 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import LinearGradient from 'react-native-linear-gradient';
+import AnimatedErrorText from '../../components/Auth/AnimatedErrorText';
 import ButtonLocal from '../../components/Common/ButtonLocal';
 import HeaderBack from '../../components/Common/HeaderBack';
 import IconButton from '../../components/Common/IconButton';
 import InputLocal from '../../components/Common/InputLocal';
 import {colors} from '../../constants/colors';
 import styles from '../../styles/authStyles';
-import {IntroSkipButtonProps} from '../../types/types';
+import {
+  IntroSkipButtonProps,
+  RegUserInput,
+  RegValidationResult,
+  UserInputErrors,
+} from '../../types/types';
+import {createAccountValidation} from '../../utils/validator';
 
-const {width, height} = Dimensions.get('window');
+const initialUserInput: RegUserInput = {
+  enteredName: '',
+  enteredEmail: '',
+  enteredPassword: '',
+  enteredConfirmPassword: '',
+};
 
 const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   const [showPass, setShowPass] = useState<{
@@ -32,6 +44,93 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
     password: false,
     confirmPassword: false,
   });
+  const [userInput, setUserInput] = useState<RegUserInput>(initialUserInput);
+  const [userInputErrors, setUserInputErrors] = useState<UserInputErrors>({});
+
+  console.log(userInputErrors);
+
+  const handleUserInputChange = (field: keyof RegUserInput, value: string) => {
+    const updatedInput = {...userInput, [field]: value};
+    setUserInput(updatedInput);
+    if (userInputErrors[`${field}Error`]) {
+      setUserInputErrors((prevInputError: UserInputErrors) => ({
+        ...prevInputError,
+        [`${field}Error`]: '',
+      }));
+    }
+  };
+
+  const hasValidationError = (validationResult: RegValidationResult) => {
+    return (
+      validationResult.nameError ||
+      validationResult.emailError ||
+      validationResult.passwordError ||
+      validationResult.confirmPasswordError
+    );
+  };
+
+  const setValidationErrors = (validationResult: RegValidationResult) => {
+    setUserInputErrors({
+      enteredNameError: validationResult.nameError,
+      enteredEmailError: validationResult.emailError,
+      enteredPasswordError: validationResult.passwordError,
+      enteredConfirmPasswordError: validationResult.confirmPasswordError,
+    });
+  };
+
+  const resetValidationErrors = () => {
+    setUserInputErrors({
+      enteredNameError: '',
+      enteredEmailError: '',
+      enteredPasswordError: '',
+      enteredConfirmPasswordError: '',
+    });
+  };
+
+  const handleSubmit = () => {
+    // if (loading) return;
+
+    Keyboard.dismiss();
+
+    const {enteredName, enteredEmail, enteredPassword, enteredConfirmPassword} =
+      userInput;
+
+    const validationResult = createAccountValidation(
+      enteredName,
+      enteredEmail,
+      enteredPassword,
+      enteredConfirmPassword,
+    );
+    console.log(validationResult);
+
+    const validationError = hasValidationError(validationResult);
+
+    if (validationError) {
+      setValidationErrors(validationResult);
+      return;
+    } else {
+      resetValidationErrors();
+    }
+
+    // setLoading(true);
+
+    // try {
+    //   const trimmedIMEI = enteredIMEI.trim();
+
+    //   const data = await checkDevice(trimmedIMEI, userInfo);
+    //   console.log('IMEI API Data:', data);
+
+    //   if (data.status === 'Device not found') {
+    //     onNext();
+    //   } else {
+    //     deviceAddedAlert();
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // } finally {
+    //   setLoading(false);
+    // }
+  };
 
   const navigateToLogin = () => {
     navigation.navigate('LoginScreen');
@@ -78,6 +177,9 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                 <InputLocal
                   placeholder="Enter your name"
                   textColor={colors.inputTextColor}
+                  value={userInput.enteredName}
+                  onChange={val => handleUserInputChange('enteredName', val)}
+                  error={userInputErrors.enteredNameError}
                 />
                 <IconButton
                   iconName="person-outline"
@@ -87,10 +189,22 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                 />
               </View>
               <View>
+                {userInputErrors.enteredNameError && (
+                  <AnimatedErrorText
+                    errorText={userInputErrors.enteredNameError}
+                    color={colors.deepRed}
+                  />
+                )}
+              </View>
+
+              <View>
                 <InputLocal
                   placeholder="Enter your email"
                   keyboardType="email-address"
                   textColor={colors.inputTextColor}
+                  value={userInput.enteredEmail}
+                  onChange={val => handleUserInputChange('enteredEmail', val)}
+                  error={userInputErrors.enteredEmailError}
                 />
                 <IconButton
                   iconName="mail-outline"
@@ -100,10 +214,24 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                 />
               </View>
               <View>
+                {userInputErrors.enteredEmailError && (
+                  <AnimatedErrorText
+                    errorText={userInputErrors.enteredEmailError}
+                    color={colors.deepRed}
+                  />
+                )}
+              </View>
+
+              <View>
                 <InputLocal
                   placeholder="Enter your password"
                   textColor={colors.inputTextColor}
                   secureTextEntry={!showPass.password}
+                  value={userInput.enteredPassword}
+                  onChange={val =>
+                    handleUserInputChange('enteredPassword', val)
+                  }
+                  error={userInputErrors.enteredPasswordError}
                 />
                 <IconButton
                   iconName={
@@ -117,10 +245,24 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                 />
               </View>
               <View>
+                {userInputErrors.enteredPasswordError && (
+                  <AnimatedErrorText
+                    errorText={userInputErrors.enteredPasswordError}
+                    color={colors.deepRed}
+                  />
+                )}
+              </View>
+
+              <View>
                 <InputLocal
                   placeholder="Enter your confirm password"
                   textColor={colors.inputTextColor}
                   secureTextEntry={!showPass.confirmPassword}
+                  value={userInput.enteredConfirmPassword}
+                  onChange={val =>
+                    handleUserInputChange('enteredConfirmPassword', val)
+                  }
+                  error={userInputErrors.enteredConfirmPasswordError}
                 />
                 <IconButton
                   iconName={
@@ -135,10 +277,19 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                   }}
                 />
               </View>
+              <View>
+                {userInputErrors.enteredConfirmPasswordError && (
+                  <AnimatedErrorText
+                    errorText={userInputErrors.enteredConfirmPasswordError}
+                    color={colors.deepRed}
+                  />
+                )}
+              </View>
 
               <ButtonLocal
                 title="Sign up"
                 buttonStyle={{backgroundColor: colors.primaryGreen}}
+                onPressHandler={handleSubmit}
               />
               <View style={styles.bottomContainer}>
                 <Text style={styles.alreadySigninText}>
