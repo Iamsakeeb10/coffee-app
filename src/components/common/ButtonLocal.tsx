@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -6,28 +7,18 @@ import {
   View,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {fontFamily} from '../../utils/typography';
 
 const {width, height} = Dimensions.get('window');
 
-const ButtonLocal = (props: {
-  buttonStyle?: any;
-  disabled?: any;
-  textStyle?: any;
-  title?: any;
-  onPressHandler?: any;
-  iconName?: any;
-  testId?: any;
-}) => {
-  const {
-    buttonStyle,
-    disabled,
-    textStyle,
-    title,
-    onPressHandler,
-    iconName,
-    testId,
-  } = props;
-
+const ButtonLocal = ({
+  buttonStyle,
+  disabled,
+  textStyle,
+  title,
+  onPressHandler,
+  iconName,
+}: any) => {
   const content = (
     <View
       style={[
@@ -37,10 +28,10 @@ const ButtonLocal = (props: {
       ]}>
       {iconName && (
         <Ionicons
+          style={{paddingTop: 5}}
           name={iconName}
           size={18}
-          color="white"
-          style={{paddingTop: 5}}
+          color="#fff"
         />
       )}
       <Text style={[styles.buttonText, textStyle]}>{title}</Text>
@@ -52,14 +43,13 @@ const ButtonLocal = (props: {
   }
 
   return (
-    <TouchableOpacity
-      testID={testId}
-      onPress={onPressHandler}
-      activeOpacity={0.7}>
+    <TouchableOpacity activeOpacity={0.7} onPress={onPressHandler}>
       {content}
     </TouchableOpacity>
   );
 };
+
+export default ButtonLocal;
 
 const styles = StyleSheet.create({
   container: {
@@ -72,16 +62,12 @@ const styles = StyleSheet.create({
     width: width / 1.2,
   },
   buttonText: {
-    padding: 10,
-    color: 'white',
+    color: '#fff',
+    fontFamily: fontFamily.medium,
     fontSize: 15,
-    fontFamily: 'Ubuntu-Medium',
-    // textTransform: 'uppercase',
+    padding: 10,
   },
   disabled: {
-    // backgroundColor: "rgba(87, 184, 102, .7)",
     opacity: 0.5,
   },
 });
-
-export default ButtonLocal;

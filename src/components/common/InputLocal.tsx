@@ -1,11 +1,10 @@
-import {FC} from 'react';
+import React from 'react';
 import {Dimensions, StyleSheet, TextInput, TextInputProps} from 'react-native';
+import {colors} from '../../constants/colors';
 import {fontFamily} from '../../utils/typography';
 
-const {width, height} = Dimensions.get('window');
-
-interface InputLocalProps {
-  customStyle?: any;
+type InputLocalProps = {
+  customStyle?: object;
   placeholder?: string;
   secureTextEntry?: boolean;
   keyboardType?: TextInputProps['keyboardType'];
@@ -16,16 +15,18 @@ interface InputLocalProps {
   returnKeyType?: TextInputProps['returnKeyType'];
   textColor?: string;
   error?: string;
-}
+};
 
-const InputLocal: FC<InputLocalProps> = ({
+const {width, height} = Dimensions.get('window');
+
+const InputLocal: React.FC<InputLocalProps> = ({
   customStyle,
   placeholder,
   secureTextEntry = false,
   keyboardType,
   onChange,
   value,
-  editable,
+  editable = true,
   selectTextOnFocus,
   returnKeyType,
   textColor = 'rgba(255,255,255,0.2)',
@@ -35,22 +36,28 @@ const InputLocal: FC<InputLocalProps> = ({
 
   return (
     <TextInput
-      style={[styles.input, customStyle, {marginBottom: errorSpace}]}
-      placeholderTextColor={textColor}
+      style={[
+        styles.input,
+        customStyle,
+        {marginBottom: errorSpace, color: textColor},
+      ]}
       placeholder={placeholder}
-      returnKeyType={returnKeyType || 'next'}
+      secureTextEntry={secureTextEntry}
+      placeholderTextColor={textColor}
       keyboardType={keyboardType}
       autoCorrect={false}
-      secureTextEntry={secureTextEntry}
-      autoCapitalize={'none'}
-      underlineColorAndroid="rgba(0,0,0,0)"
       onChangeText={text => onChange(text)}
+      autoCapitalize="none"
+      underlineColorAndroid="rgba(0, 0, 0,0)"
       value={value}
       editable={editable}
       selectTextOnFocus={selectTextOnFocus}
+      returnKeyType={returnKeyType}
     />
   );
 };
+
+export default InputLocal;
 
 const styles = StyleSheet.create({
   input: {
@@ -58,14 +65,9 @@ const styles = StyleSheet.create({
     width: width / 1.2,
     borderRadius: 3,
     backgroundColor: 'rgba(211,211,211,0.2)',
-    color: '#fff',
+    color: colors.white,
     paddingHorizontal: 10,
-    fontFamily: fontFamily.regular,
     fontSize: 16,
-  },
-  invalid: {
-    backgroundColor: 'fc6063',
+    fontFamily: fontFamily.regular,
   },
 });
-
-export default InputLocal;
