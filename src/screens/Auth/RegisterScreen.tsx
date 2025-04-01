@@ -47,8 +47,6 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   const [userInput, setUserInput] = useState<RegUserInput>(initialUserInput);
   const [userInputErrors, setUserInputErrors] = useState<UserInputErrors>({});
 
-  console.log(userInputErrors);
-
   const handleUserInputChange = (field: keyof RegUserInput, value: string) => {
     const updatedInput = {...userInput, [field]: value};
     setUserInput(updatedInput);
