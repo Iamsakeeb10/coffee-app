@@ -7,3 +7,22 @@ export const alertHandler = () => {
     [{text: 'Alright'}],
   );
 };
+
+export const accountCreatedAlert = (navigation: any) => {
+  Alert.alert(
+    'Account Created',
+    'Your account has been successfully created.',
+    [
+      {
+        text: 'Go to Login',
+        onPress: () => {
+          navigation.navigate('LoginScreen');
+        },
+      },
+      {
+        text: 'Later',
+      },
+    ],
+    {cancelable: false},
+  );
+};

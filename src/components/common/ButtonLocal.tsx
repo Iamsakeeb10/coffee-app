@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  ActivityIndicator,
   Dimensions,
   StyleSheet,
   Text,
@@ -18,6 +19,7 @@ const ButtonLocal = ({
   title,
   onPressHandler,
   iconName,
+  loading,
 }: any) => {
   const content = (
     <View
@@ -26,15 +28,21 @@ const ButtonLocal = ({
         buttonStyle,
         disabled ? styles.disabled : null,
       ]}>
-      {iconName && (
-        <Ionicons
-          style={{paddingTop: 5}}
-          name={iconName}
-          size={18}
-          color="#fff"
-        />
+      {loading ? (
+        <ActivityIndicator size="small" color="#fff" />
+      ) : (
+        <>
+          {iconName && (
+            <Ionicons
+              style={{paddingTop: 5}}
+              name={iconName}
+              size={18}
+              color="#fff"
+            />
+          )}
+          <Text style={[styles.buttonText, textStyle]}>{title}</Text>
+        </>
       )}
-      <Text style={[styles.buttonText, textStyle]}>{title}</Text>
     </View>
   );
 

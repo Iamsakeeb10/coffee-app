@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  Alert,
   ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
@@ -14,12 +15,15 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import LinearGradient from 'react-native-linear-gradient';
+import {useDispatch, useSelector} from 'react-redux';
 import AnimatedErrorText from '../../components/Auth/AnimatedErrorText';
 import ButtonLocal from '../../components/Common/ButtonLocal';
 import HeaderBack from '../../components/Common/HeaderBack';
 import IconButton from '../../components/Common/IconButton';
 import InputLocal from '../../components/Common/InputLocal';
 import {colors} from '../../constants/colors';
+import {AppDispatch, RootState} from '../../redux/store/store';
+import {registerUser} from '../../redux/thunks/authThunks';
 import styles from '../../styles/authStyles';
 import {
   IntroSkipButtonProps,
@@ -27,13 +31,14 @@ import {
   RegValidationResult,
   UserInputErrors,
 } from '../../types/types';
+import {accountCreatedAlert} from '../../utils/alertHandler';
 import {createAccountValidation} from '../../utils/validator';
 
 const initialUserInput: RegUserInput = {
-  enteredName: '',
-  enteredEmail: '',
-  enteredPassword: '',
-  enteredConfirmPassword: '',
+  enteredName: 'Shakib',
+  enteredEmail: 'shak@example.com',
+  enteredPassword: '12345678',
+  enteredConfirmPassword: '12345678',
 };
 
 const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
@@ -46,6 +51,15 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   });
   const [userInput, setUserInput] = useState<RegUserInput>(initialUserInput);
   const [userInputErrors, setUserInputErrors] = useState<UserInputErrors>({});
+
+  const {loading, error, user} = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert('Registration Failed', error);
+    }
+  }, [error]);
 
   const handleUserInputChange = (field: keyof RegUserInput, value: string) => {
     const updatedInput = {...userInput, [field]: value};
@@ -85,9 +99,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
     });
   };
 
-  const handleSubmit = () => {
-    // if (loading) return;
-
+  const handleSubmit = async () => {
     Keyboard.dismiss();
 
     const {enteredName, enteredEmail, enteredPassword, enteredConfirmPassword} =
@@ -99,7 +111,6 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
       enteredPassword,
       enteredConfirmPassword,
     );
-    console.log(validationResult);
 
     const validationError = hasValidationError(validationResult);
 
@@ -110,24 +121,15 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
       resetValidationErrors();
     }
 
-    // setLoading(true);
+    await dispatch(
+      registerUser({
+        email: enteredEmail,
+        password: enteredPassword,
+        displayName: enteredName,
+      }),
+    ).unwrap();
 
-    // try {
-    //   const trimmedIMEI = enteredIMEI.trim();
-
-    //   const data = await checkDevice(trimmedIMEI, userInfo);
-    //   console.log('IMEI API Data:', data);
-
-    //   if (data.status === 'Device not found') {
-    //     onNext();
-    //   } else {
-    //     deviceAddedAlert();
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // } finally {
-    //   setLoading(false);
-    // }
+    accountCreatedAlert(navigation);
   };
 
   const navigateToLogin = () => {
@@ -286,6 +288,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
 
               <ButtonLocal
                 title="Sign up"
+                loading={loading}
                 buttonStyle={{backgroundColor: colors.primaryGreen}}
                 onPressHandler={handleSubmit}
               />

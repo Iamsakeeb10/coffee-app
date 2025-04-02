@@ -36,11 +36,7 @@ const InputLocal: React.FC<InputLocalProps> = ({
 
   return (
     <TextInput
-      style={[
-        styles.input,
-        customStyle,
-        {marginBottom: errorSpace, color: textColor},
-      ]}
+      style={[styles.input, customStyle, {marginBottom: errorSpace}]}
       placeholder={placeholder}
       secureTextEntry={secureTextEntry}
       placeholderTextColor={textColor}
