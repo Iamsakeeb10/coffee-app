@@ -35,10 +35,10 @@ import {accountCreatedAlert} from '../../utils/alertHandler';
 import {createAccountValidation} from '../../utils/validator';
 
 const initialUserInput: RegUserInput = {
-  enteredName: 'Shakib',
-  enteredEmail: 'shak@example.com',
-  enteredPassword: '12345678',
-  enteredConfirmPassword: '12345678',
+  enteredName: '',
+  enteredEmail: '',
+  enteredPassword: '',
+  enteredConfirmPassword: '',
 };
 
 const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
@@ -52,7 +52,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   const [userInput, setUserInput] = useState<RegUserInput>(initialUserInput);
   const [userInputErrors, setUserInputErrors] = useState<UserInputErrors>({});
 
-  const {loading, error, user} = useSelector((state: RootState) => state.auth);
+  const {loading, error} = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {

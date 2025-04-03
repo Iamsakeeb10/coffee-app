@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  Alert,
   Image,
   ImageBackground,
   Keyboard,
@@ -15,12 +16,14 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 import LinearGradient from 'react-native-linear-gradient';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AnimatedErrorText from '../../components/Auth/AnimatedErrorText';
 import ButtonLocal from '../../components/Common/ButtonLocal';
 import IconButton from '../../components/Common/IconButton';
 import InputLocal from '../../components/Common/InputLocal';
 import {colors} from '../../constants/colors';
+import {AppDispatch, RootState} from '../../redux/store/store';
+import {loginUser} from '../../redux/thunks/authThunks';
 import styles from '../../styles/authStyles';
 import {
   IntroSkipButtonProps,
@@ -40,7 +43,8 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   const [userInput, setUserInput] = useState<LoginUserInput>(initialUserInput);
   const [userInputErrors, setUserInputErrors] = useState<UserInputErrors>({});
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const {loading} = useSelector((state: RootState) => state.auth);
 
   const handleUserInputChange = (
     field: keyof LoginUserInput,
@@ -74,11 +78,7 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
     });
   };
 
-  const handleSubmit = () => {
-    // if (loading) return;
-
-    console.log(userInputErrors);
-
+  const handleSubmit = async () => {
     Keyboard.dismiss();
 
     const {enteredEmail, enteredPassword} = userInput;
@@ -93,24 +93,13 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
       resetValidationErrors();
     }
 
-    // setLoading(true);
-
-    // try {
-    //   const trimmedIMEI = enteredIMEI.trim();
-
-    //   const data = await checkDevice(trimmedIMEI, userInfo);
-    //   console.log('IMEI API Data:', data);
-
-    //   if (data.status === 'Device not found') {
-    //     onNext();
-    //   } else {
-    //     deviceAddedAlert();
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      await dispatch(
+        loginUser({email: enteredEmail, password: enteredPassword}),
+      ).unwrap();
+    } catch (error: any) {
+      Alert.alert('Login Failed', error);
+    }
   };
 
   const navigateToRegister = () => {
@@ -211,6 +200,7 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
 
               <ButtonLocal
                 title="Log in"
+                loading={loading}
                 buttonStyle={{backgroundColor: colors.btnRed}}
                 onPressHandler={handleSubmit}
               />

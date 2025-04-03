@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  signInWithEmailAndPassword,
   signOut,
   updateProfile,
 } from '@react-native-firebase/auth';
@@ -30,6 +31,34 @@ export const registerUser = createAsyncThunk(
         uid: userCredential.user.uid,
         email: userCredential.user.email,
         displayName: userCredential?.user.displayName,
+        emailVerified: userCredential.user.emailVerified,
+      };
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const loginUser = createAsyncThunk(
+  'auth/loginUser',
+  async (
+    {email, password}: {email: string; password: string},
+    {rejectWithValue},
+  ) => {
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+
+      console.log('Login Credentail =>>', userCredential);
+
+      return {
+        uid: userCredential.user.uid,
+        email: userCredential.user.email,
+        displayName: userCredential.user.displayName,
         emailVerified: userCredential.user.emailVerified,
       };
     } catch (error: any) {

@@ -1,16 +1,18 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
+import {useSelector} from 'react-redux';
+import {RootState} from '../redux/store/store';
 import AppNavigator from './AppNavigator';
 import AuthNavigator from './AuthNavigator';
 
-const RootNavigator = () => {
-  const isLoggedIn = false;
+const AuthGuard = () => {
+  const {user} = useSelector((state: RootState) => state.auth);
 
   return (
     <NavigationContainer>
-      {isLoggedIn ? <AppNavigator /> : <AuthNavigator />}
+      {user ? <AppNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 };
 
-export default RootNavigator;
+export default AuthGuard;
