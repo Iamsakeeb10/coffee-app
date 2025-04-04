@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Alert,
   ImageBackground,
@@ -22,6 +22,7 @@ import HeaderBack from '../../components/Common/HeaderBack';
 import IconButton from '../../components/Common/IconButton';
 import InputLocal from '../../components/Common/InputLocal';
 import {colors} from '../../constants/colors';
+import useNetInfo from '../../hooks/useNetInfo';
 import {AppDispatch, RootState} from '../../redux/store/store';
 import {registerUser} from '../../redux/thunks/authThunks';
 import styles from '../../styles/authStyles';
@@ -55,11 +56,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   const {loading, error} = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    if (error) {
-      Alert.alert('Registration Failed', error);
-    }
-  }, [error]);
+  const {isConnected} = useNetInfo();
 
   const handleUserInputChange = (field: keyof RegUserInput, value: string) => {
     const updatedInput = {...userInput, [field]: value};
@@ -102,6 +99,14 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   const handleSubmit = async () => {
     Keyboard.dismiss();
 
+    if (!isConnected) {
+      Alert.alert(
+        'No Internet Connection',
+        'Please check your internet connection and try again.',
+      );
+      return;
+    }
+
     const {enteredName, enteredEmail, enteredPassword, enteredConfirmPassword} =
       userInput;
 
@@ -121,15 +126,19 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
       resetValidationErrors();
     }
 
-    await dispatch(
-      registerUser({
-        email: enteredEmail,
-        password: enteredPassword,
-        displayName: enteredName,
-      }),
-    ).unwrap();
+    try {
+      await dispatch(
+        registerUser({
+          email: enteredEmail,
+          password: enteredPassword,
+          displayName: enteredName,
+        }),
+      ).unwrap();
 
-    accountCreatedAlert(navigation);
+      accountCreatedAlert(navigation);
+    } catch (error: any) {
+      Alert.alert('Login Failed', error);
+    }
   };
 
   const navigateToLogin = () => {

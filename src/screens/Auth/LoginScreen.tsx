@@ -22,6 +22,7 @@ import ButtonLocal from '../../components/Common/ButtonLocal';
 import IconButton from '../../components/Common/IconButton';
 import InputLocal from '../../components/Common/InputLocal';
 import {colors} from '../../constants/colors';
+import useNetInfo from '../../hooks/useNetInfo';
 import {AppDispatch, RootState} from '../../redux/store/store';
 import {loginUser} from '../../redux/thunks/authThunks';
 import styles from '../../styles/authStyles';
@@ -45,6 +46,8 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
 
   const dispatch = useDispatch<AppDispatch>();
   const {loading} = useSelector((state: RootState) => state.auth);
+
+  const {isConnected} = useNetInfo();
 
   const handleUserInputChange = (
     field: keyof LoginUserInput,
@@ -80,6 +83,17 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
 
   const handleSubmit = async () => {
     Keyboard.dismiss();
+
+    console.log('There');
+
+    if (!isConnected) {
+      console.log('Here');
+      Alert.alert(
+        'No Internet Connection',
+        'Please check your internet connection and try again.',
+      );
+      return;
+    }
 
     const {enteredEmail, enteredPassword} = userInput;
 
