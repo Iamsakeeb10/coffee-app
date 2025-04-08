@@ -2169,6 +2169,16 @@
   dependencies:
     plist "^3.1.0"
 
+"@react-native-firebase/firestore@^21.13.0":
+  version "21.13.0"
+  resolved "https://registry.npmjs.org/@react-native-firebase/firestore/-/firestore-21.13.0.tgz"
+  integrity sha512-2fbr4VWp3x3Ej6BUUzvJ0xBLuMfT14t2QXAIIixbfvMLk3d9DkxdmgdRZaC2VKW9x47ts/iub4g0OPdoJN0Zpg==
+
+"@react-native-masked-view/masked-view@>= 0.2.0":
+  version "0.2.9"
+  resolved "https://registry.npmjs.org/@react-native-masked-view/masked-view/-/masked-view-0.2.9.tgz"
+  integrity sha512-Hs4vKBKj+15VxHZHFtMaFWSBxXoOE5Ea8saoigWhahp8Mepssm0ezU+2pTl7DK9z8Y9s5uOl/aPb4QmBZ3R3Zw==
+
 "@react-native/assets-registry@0.78.1":
   version "0.78.1"
   resolved "https://registry.npmjs.org/@react-native/assets-registry/-/assets-registry-0.78.1.tgz"
@@ -3593,6 +3603,14 @@ css-select@^5.1.0:
     domhandler "^5.0.2"
     domutils "^3.0.1"
     nth-check "^2.0.1"
+
+css-tree@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.npmjs.org/css-tree/-/css-tree-1.1.3.tgz"
+  integrity sha512-tRpdppF7TRazZrjJ6v3stzv93qxRcSsFmW6cX0Zm2NVKpxE1WV1HblnghVv9TreireHkqI/VDEsfolRF1p6y7Q==
+  dependencies:
+    mdn-data "2.0.14"
+    source-map "^0.6.1"
 
 css-what@^6.1.0:
   version "6.1.0"
@@ -5892,6 +5910,11 @@ math-intrinsics@^1.1.0:
   resolved "https://registry.npmjs.org/math-intrinsics/-/math-intrinsics-1.1.0.tgz"
   integrity sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==
 
+mdn-data@2.0.14:
+  version "2.0.14"
+  resolved "https://registry.npmjs.org/mdn-data/-/mdn-data-2.0.14.tgz"
+  integrity sha512-dn6wd0uw5GsdswPFfsgMp5NSB0/aDe6fK94YJV/AJDYXL6HVLWBsxeq7js7Ad+mU2K9LAlwpk6kN2D5mwCPVow==
+
 memoize-one@^5.0.0:
   version "5.2.1"
   resolved "https://registry.npmjs.org/memoize-one/-/memoize-one-5.2.1.tgz"
@@ -6881,7 +6904,7 @@ react-native-pager-view@^6.7.0:
   resolved "https://registry.npmjs.org/react-native-pager-view/-/react-native-pager-view-6.7.0.tgz"
   integrity sha512-sutxKiMqBuQrEyt4mLaLNzy8taIC7IuYpxfcwQBXfSYBSSpAa0qE9G1FXlP/iXqTSlFgBXyK7BESsl9umOjECQ==
 
-react-native-reanimated@*, react-native-reanimated@^3.17.1:
+react-native-reanimated@*, react-native-reanimated@^3.15.1, react-native-reanimated@^3.17.1:
   version "3.17.1"
   resolved "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-3.17.1.tgz"
   integrity sha512-ECzLhLxMKLifv34a8799/MHqIazQZV9fLMNSMdixXQlzX71RyL3/ah3cz/h3ERoyhJAYRC2ySLLZho6pXSqMFQ==
@@ -6912,6 +6935,20 @@ react-native-screens@^4.9.2, "react-native-screens@>= 4.0.0":
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-skeleton-placeholder@^6.0.0-beta.1:
+  version "6.0.0-beta.1"
+  resolved "https://registry.npmjs.org/react-native-skeleton-placeholder/-/react-native-skeleton-placeholder-6.0.0-beta.1.tgz"
+  integrity sha512-chA0BPhbi6i44IaN5fW9kw7Y70oF+9RqbZEIyMmIm3FiFRsmK+HzZBCTGW2Y9D+C0nF+pvW89kwV1m+aJBqVOg==
+
+react-native-svg@^14.1.0, react-native-svg@^15.11.2:
+  version "15.11.2"
+  resolved "https://registry.npmjs.org/react-native-svg/-/react-native-svg-15.11.2.tgz"
+  integrity sha512-+YfF72IbWQUKzCIydlijV1fLuBsQNGMT6Da2kFlo1sh+LE3BIm/2Q7AR1zAAR6L0BFLi1WaQPLfFUC9bNZpOmw==
+  dependencies:
+    css-select "^5.1.0"
+    css-tree "^1.1.3"
+    warn-once "0.1.1"
+
 react-native-vector-icons@^10.2.0:
   version "10.2.0"
   resolved "https://registry.npmjs.org/react-native-vector-icons/-/react-native-vector-icons-10.2.0.tgz"
@@ -6920,7 +6957,7 @@ react-native-vector-icons@^10.2.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native@*, "react-native@^0.0.0-0 || >=0.60 <1.0", "react-native@^0.0.0-0 || >=0.65 <1.0", react-native@>=0.59, react-native@>=0.70.0, react-native@>=0.73.0, react-native@0.78.1:
+react-native@*, "react-native@^0.0.0-0 || >=0.60 <1.0", "react-native@^0.0.0-0 || >=0.65 <1.0", react-native@>=0.57, react-native@>=0.59, react-native@>=0.70.0, react-native@>=0.72.9, react-native@>=0.73.0, react-native@0.78.1:
   version "0.78.1"
   resolved "https://registry.npmjs.org/react-native/-/react-native-0.78.1.tgz"
   integrity sha512-3CK/xxX02GeeVFyrXbsHvREZFVaXwHW43Km/EdYITn5G32cccWTGaqY9QdPddEBLw5O3BPip3LHbR1SywE0cpA==
@@ -6983,7 +7020,7 @@ react-test-renderer@19.0.0:
     react-is "^19.0.0"
     scheduler "^0.25.0"
 
-react@*, "react@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react@^16.9.0 || ^17.0.0 || ^18 || ^19", "react@^18.0 || ^19", react@^19.0.0, "react@>= 18.2.0", react@>=16.8, react@>=17.0.0, react@>=18.1.0, react@>=18.2.0, react@19.0.0:
+react@*, "react@^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "react@^16.9.0 || ^17.0.0 || ^18 || ^19", "react@^18.0 || ^19", react@^19.0.0, "react@>= 18.2.0", react@>=16, react@>=16.8, react@>=17.0.0, react@>=18.1.0, react@>=18.2.0, react@18.2.0, react@19.0.0:
   version "19.0.0"
   resolved "https://registry.npmjs.org/react/-/react-19.0.0.tgz"
   integrity sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ==
@@ -8131,7 +8168,7 @@ walker@^1.0.7, walker@^1.0.8:
   dependencies:
     makeerror "1.0.12"
 
-warn-once@^0.1.0, warn-once@^0.1.1:
+warn-once@^0.1.0, warn-once@^0.1.1, warn-once@0.1.1:
   version "0.1.1"
   resolved "https://registry.npmjs.org/warn-once/-/warn-once-0.1.1.tgz"
   integrity sha512-VkQZJbO8zVImzYFteBXvBOZEl1qL175WH8VmZcxF2fZAoudNhNDvHi+doCaAEdU2l2vtcIwa2zn0QK5+I1HQ3Q==

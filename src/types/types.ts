@@ -44,3 +44,12 @@ export interface RegValidationResult {
   passwordError: string;
   confirmPasswordError: string;
 }
+
+export interface CoffeeItem {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  description: string;
+  imageURL: string;
+}

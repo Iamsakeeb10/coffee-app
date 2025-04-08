@@ -16,7 +16,16 @@ const initialState: AuthState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload;
+      state.error = null;
+    },
+    clearUser: state => {
+      state.user = null;
+      state.error = null;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(registerUser.pending, state => {
@@ -45,9 +54,12 @@ const authSlice = createSlice({
       .addCase(logoutUser.pending, state => {
         state.loading = true;
       })
-      .addCase(logoutUser.fulfilled, state => {
+      .addCase(logoutUser.fulfilled, (state, action) => {
+        console.log('Logout fulfilled reducer running');
         state.loading = false;
         state.user = null;
+        state.error = null;
+        console.log('User set to null in reducer');
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
@@ -55,5 +67,7 @@ const authSlice = createSlice({
       });
   },
 });
+
+export const {setUser, clearUser} = authSlice.actions;
 
 export default authSlice.reducer;

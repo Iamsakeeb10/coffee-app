@@ -67,15 +67,15 @@ export const loginUser = createAsyncThunk(
   },
 );
 
-export const logoutUser = createAsyncThunk(
-  'auth/logoutUser',
-  async (_, {rejectWithValue}) => {
-    try {
-      const auth = getAuth();
+export const logoutUser = createAsyncThunk('auth/logoutUser', async _ => {
+  try {
+    const auth = getAuth();
+
+    if (auth.currentUser) {
       await signOut(auth);
-      return null;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
     }
-  },
-);
+    return null;
+  } catch (error) {
+    return null;
+  }
+});
