@@ -27,7 +27,7 @@ export const useCoffeeItems = (selectedCategory: string) => {
         setCoffeeItems(items);
         setTimeout(() => {
           setLoading(false);
-        }, 1000);
+        }, 300);
       },
       err => {
         console.error('Error fetching coffee items:', err);

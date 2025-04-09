@@ -16,7 +16,9 @@ const CoffeeList: React.FC<Props> = ({data, loading}) => {
       horizontal
       contentContainerStyle={{marginRight: -12}}
       ItemSeparatorComponent={() => <View style={{width: 12}} />}
-      renderItem={({item}) => <CoffeeCard item={item} loading={loading} />}
+      renderItem={({item, index}) => (
+        <CoffeeCard item={item} loading={loading} index={index} />
+      )}
     />
   );
 };

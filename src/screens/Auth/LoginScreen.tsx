@@ -32,11 +32,12 @@ import {
   LoginValidationResult,
   UserInputErrors,
 } from '../../types/types';
+import {showSnack} from '../../utils/Snack';
 import {loginValidation} from '../../utils/validator';
 
 const initialUserInput: LoginUserInput = {
-  enteredEmail: '',
-  enteredPassword: '',
+  enteredEmail: 'haseeb@gmail.com',
+  enteredPassword: '12345678',
 };
 
 const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
@@ -84,14 +85,15 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   const handleSubmit = async () => {
     Keyboard.dismiss();
 
-    console.log('There');
-
     if (!isConnected) {
-      console.log('Here');
-      Alert.alert(
-        'No Internet Connection',
-        'Please check your internet connection and try again.',
-      );
+      showSnack('No Internet Connection', {
+        duration: 3000,
+        backgroundColor: colors.deepRed,
+        textColor: colors.white,
+        actionText: 'Okay',
+        actionColor: colors.white,
+      });
+
       return;
     }
 

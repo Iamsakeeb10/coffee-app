@@ -33,6 +33,7 @@ import {
   UserInputErrors,
 } from '../../types/types';
 import {accountCreatedAlert} from '../../utils/alertHandler';
+import {showSnack} from '../../utils/Snack';
 import {createAccountValidation} from '../../utils/validator';
 
 const initialUserInput: RegUserInput = {
@@ -100,10 +101,14 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
     Keyboard.dismiss();
 
     if (!isConnected) {
-      Alert.alert(
-        'No Internet Connection',
-        'Please check your internet connection and try again.',
-      );
+      showSnack('No Internet Connection', {
+        duration: 3000,
+        backgroundColor: colors.deepRed,
+        textColor: colors.white,
+        actionText: 'Okay',
+        actionColor: colors.white,
+      });
+
       return;
     }
 
