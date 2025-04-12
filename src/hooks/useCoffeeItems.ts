@@ -2,7 +2,7 @@ import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
 import {useEffect, useState} from 'react';
-import {CoffeeItem} from '../types/types'; // Adjust path if needed
+import {CoffeeItem} from '../types/types';
 
 export const useCoffeeItems = (selectedCategory: string) => {
   const [coffeeItems, setCoffeeItems] = useState<CoffeeItem[]>([]);

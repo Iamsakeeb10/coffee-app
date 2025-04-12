@@ -1,6 +1,8 @@
 import React from 'react';
-import {Animated, View} from 'react-native';
+import {Animated, Dimensions, View} from 'react-native';
 import styles from '../../styles/coffeeScreenStyle';
+
+const {width, height} = Dimensions.get('window');
 
 const SkeletonLoader = () => {
   return (

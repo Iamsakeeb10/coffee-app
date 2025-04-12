@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 8,
+    marginTop: 6,
   },
 
   coffeeItemContainer: {
@@ -111,10 +111,7 @@ const styles = StyleSheet.create({
 
   imageInnerContainer: {
     alignItems: 'center',
-  },
-
-  pressableContainer: {
-    height: 200,
+    marginBottom: 6,
   },
 
   circle: {
@@ -141,6 +138,27 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 
+  filterInputContainer: {
+    marginTop: 14,
+  },
+
+  filterIcon: {
+    left: 2,
+    backgroundColor: 'transparent',
+  },
+
+  filterInput: {
+    width: '100%',
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: colors.cardBackground,
+    color: colors.inputTextColor,
+    paddingLeft: 48,
+    paddingRight: 10,
+    fontSize: 14,
+    fontFamily: fontFamily.regular,
+  },
+
   skeletonContainer: {
     flex: 1,
     flexDirection: 'column',
@@ -154,6 +172,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#252A32',
     padding: 10,
     borderRadius: 20,
+    height: height * 0.335,
   },
 
   skeletonImage: {
@@ -168,12 +187,14 @@ const styles = StyleSheet.create({
     height: 14,
     backgroundColor: colors.skeletonBackground,
     marginBottom: 8,
+    borderRadius: 20,
   },
   skeletonDescription: {
     width: '80%',
     height: 10,
     backgroundColor: colors.skeletonBackground,
     marginBottom: 8,
+    borderRadius: 20,
   },
 
   skeletonPriceContainer: {
@@ -181,12 +202,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 4,
+    borderRadius: 20,
   },
 
   skeletonPrice: {
     width: '40%',
     height: 14,
     backgroundColor: colors.skeletonBackground,
+    borderRadius: 20,
   },
   skeletonCardBottom: {
     width: 30,

@@ -70,7 +70,7 @@ const CoffeeCard: React.FC<Props> = ({item, loading, index = 0}) => {
             styles.imageContainer,
             {
               width: itemWidth,
-              height: height * 0.35,
+              height: height * 0.33,
             },
           ]}>
           <View style={styles.imageInnerContainer}>
@@ -78,7 +78,7 @@ const CoffeeCard: React.FC<Props> = ({item, loading, index = 0}) => {
               <Image source={{uri: item.imageURL}} style={styles.image} />
             )}
           </View>
-          <View style={{flex: 0}}>
+          <View>
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.description}>
               {item.description.split(' ').slice(0, 3).join(' ')}

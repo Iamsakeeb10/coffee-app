@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Text, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {ActivityIndicator, FlatList, Text, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import CategoryList from '../../components/Coffee/CategorySelector';
-import CoffeeList from '../../components/Coffee/CoffeeList';
+import {CoffeeList} from '../../components/Coffee/CoffeeList';
+import EmptyComponent from '../../components/Coffee/EmptyComponent';
 import IconButton from '../../components/Common/IconButton';
+import InputLocal from '../../components/Common/InputLocal';
 import {colors} from '../../constants/colors';
 import {useCoffeeItems} from '../../hooks/useCoffeeItems';
 import {AppDispatch} from '../../redux/store/store';
@@ -25,14 +27,48 @@ const CoffeeScreen = () => {
   const [firstLoad, setFirstLoad] = useState(true);
 
   const {coffeeItems, loading} = useCoffeeItems(selectedCategory);
+  const [searchQuery, setSearchQuery] = useState('');
+  const listRef = useRef<FlatList | null | any>(null);
 
   const dispatch = useDispatch<AppDispatch>();
+
+  const filteredItems = coffeeItems.filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   useEffect(() => {
     if (!loading && firstLoad) {
       setFirstLoad(false);
     }
   }, [loading, firstLoad]);
+
+  useEffect(() => {
+    if (!listRef.current) return;
+
+    if (
+      listRef.current &&
+      filteredItems.length > 0 &&
+      searchQuery.trim() !== ''
+    ) {
+      const bestMatchIndex = filteredItems.findIndex(item =>
+        item.name.toLowerCase().startsWith(searchQuery.toLowerCase()),
+      );
+
+      const scrollToIndex = bestMatchIndex !== -1 ? bestMatchIndex : 0;
+
+      listRef.current?.scrollToIndex({
+        animated: true,
+        index: scrollToIndex,
+        viewPosition: 0.5,
+      });
+    } else {
+      listRef.current?.scrollToIndex({
+        animated: true,
+        index: 0,
+        viewPosition: 0.5,
+      });
+    }
+  }, [searchQuery, filteredItems]);
 
   const logoutHandler = async () => {
     try {
@@ -72,6 +108,22 @@ const CoffeeScreen = () => {
             style={styles.logoutStyle}
           />
         </View>
+        <View style={styles.filterInputContainer}>
+          <InputLocal
+            placeholder="Find Your Coffee..."
+            textColor={colors.inputTextColor}
+            value={searchQuery}
+            onChange={setSearchQuery}
+            customStyle={styles.filterInput}
+          />
+          <IconButton
+            iconName="search"
+            iconSize={16}
+            iconColor={colors.muted}
+            activeOpacity={1}
+            style={styles.filterIcon}
+          />
+        </View>
 
         <CategoryList
           categories={categories}
@@ -79,7 +131,11 @@ const CoffeeScreen = () => {
           onSelect={setSelectedCategory}
         />
 
-        <CoffeeList data={coffeeItems} loading={loading} />
+        {filteredItems.length === 0 && searchQuery.trim() !== '' ? (
+          <EmptyComponent />
+        ) : (
+          <CoffeeList ref={listRef} data={filteredItems} loading={loading} />
+        )}
       </View>
     </View>
   );

@@ -37,10 +37,10 @@ import {showSnack} from '../../utils/Snack';
 import {createAccountValidation} from '../../utils/validator';
 
 const initialUserInput: RegUserInput = {
-  enteredName: '',
-  enteredEmail: '',
-  enteredPassword: '',
-  enteredConfirmPassword: '',
+  enteredName: 'Haseeb',
+  enteredEmail: 'haseeb@gmail.com',
+  enteredPassword: '12345678',
+  enteredConfirmPassword: '12345678',
 };
 
 const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
