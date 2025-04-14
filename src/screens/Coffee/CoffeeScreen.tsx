@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {ActivityIndicator, FlatList, Text, View} from 'react-native';
+import {ActivityIndicator, FlatList, StatusBar, Text, View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import CategoryList from '../../components/Coffee/CategorySelector';
 import {CoffeeList} from '../../components/Coffee/CoffeeList';
@@ -29,6 +30,8 @@ const CoffeeScreen = () => {
   const {coffeeItems, loading} = useCoffeeItems(selectedCategory);
   const [searchQuery, setSearchQuery] = useState('');
   const listRef = useRef<FlatList | null | any>(null);
+
+  const insets = useSafeAreaInsets();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -98,8 +101,9 @@ const CoffeeScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.flatlistContainer}>
+    <View style={[styles.container, {paddingTop: insets.top}]}>
+      <StatusBar translucent backgroundColor="transparent" />
+      <View style={[styles.flatlistContainer]}>
         <View style={styles.headerContainer}>
           <Text style={styles.title}>Find the best coffee for you</Text>
           <IconButton

@@ -22,8 +22,8 @@ export const CoffeeList = forwardRef<FlatList<CoffeeItem>, Props>(
         contentContainerStyle={{marginRight: -12}}
         ItemSeparatorComponent={() => <View style={{width: 12}} />}
         getItemLayout={(_, index) => ({
-          length: itemWidth + 10,
-          offset: (itemWidth + 10) * index,
+          length: itemWidth + 12,
+          offset: (itemWidth + 12) * index,
           index,
         })}
         renderItem={({item, index}) => (

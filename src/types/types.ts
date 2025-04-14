@@ -53,3 +53,8 @@ export interface CoffeeItem {
   description: string;
   imageURL: string;
 }
+
+export type RootStackParamList = {
+  CoffeeScreen: undefined;
+  CoffeeDetailScreen: {item: CoffeeItem};
+};
