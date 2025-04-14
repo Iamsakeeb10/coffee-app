@@ -1,60 +1,73 @@
 import {Dimensions, StyleSheet} from 'react-native';
 import {colors} from '../constants/colors';
+import {fontFamily} from '../utils/typography';
 
 const {width, height} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: colors.cardBackground,
   },
   backgroundImage: {
     flex: 1,
     width: '100%',
-    // Removed paddingTop to allow image to go behind status bar
+    justifyContent: 'space-between',
   },
   content: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 10,
+    width: width / 1.1,
+    alignSelf: 'center',
+    marginVertical: 20,
   },
   title: {
-    fontSize: 26,
-    color: colors.white,
-    fontWeight: 'bold',
+    fontSize: 22,
+    color: colors.textPrimary,
+    fontFamily: fontFamily.medium,
   },
   subTitle: {
-    fontSize: 16,
-    color: colors.gray,
-    marginVertical: 5,
+    fontSize: 14,
+    fontFamily: fontFamily.regular,
+    color: colors.subTitle,
+    marginVertical: 3,
+  },
+
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
   tagsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    marginVertical: 10,
+    justifyContent: 'space-between',
+    marginVertical: 16,
   },
   rating: {
-    color: 'yellow',
+    color: colors.circle,
+    fontFamily: fontFamily.regular,
+    fontSize: 14,
   },
   tag: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 20,
+    borderRadius: 5,
   },
   tagText: {
     color: colors.white,
-    fontSize: 12,
+    fontFamily: fontFamily.regular,
+    fontSize: 14,
   },
   descriptionTitle: {
-    color: colors.white,
-    fontWeight: 'bold',
-    marginTop: 16,
-    marginBottom: 4,
+    color: colors.subTitle,
+    fontFamily: fontFamily.medium,
+    fontSize: 14,
+    marginBottom: 8,
   },
   description: {
-    color: colors.gray,
+    color: colors.white,
     marginBottom: 16,
+    fontFamily: fontFamily.regular,
+    fontSize: 12,
+    lineHeight: 18,
+    letterSpacing: 0.5,
   },
   sizeRow: {
     flexDirection: 'row',
@@ -62,33 +75,76 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sizeButton: {
-    backgroundColor: 'black',
+    backgroundColor: colors.background,
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 10,
+    flex: 1,
+    alignItems: 'center',
+    marginTop: 6,
   },
   sizeText: {
     color: colors.white,
-    fontWeight: '600',
+    fontFamily: fontFamily.medium,
+    fontSize: 16,
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+
+  dollarSign: {
+    fontSize: 24,
+    fontFamily: fontFamily.bold,
+    color: colors.circle,
+  },
+
+  priceText: {
+    textAlign: 'left',
+  },
   price: {
     fontSize: 22,
-    fontWeight: 'bold',
+    fontFamily: fontFamily.bold,
     color: colors.white,
   },
   cartButton: {
-    backgroundColor: 'coral',
-    paddingVertical: 10,
+    backgroundColor: colors.circle,
+    paddingVertical: 12,
     paddingHorizontal: 30,
-    borderRadius: 16,
+    borderRadius: 12,
   },
   cartText: {
     color: colors.white,
-    fontWeight: 'bold',
+    fontFamily: fontFamily.medium,
+    fontSize: 18,
+  },
+
+  topButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: width / 1.1,
+    alignSelf: 'center',
+  },
+
+  iconButtonStyle: {
+    backgroundColor: colors.arrowLightBlackShadow,
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  descTransStyle: {
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    paddingVertical: 16,
+  },
+
+  horzCenter: {
+    width: width / 1.1,
+    alignSelf: 'center',
   },
 });
 

@@ -1,70 +1,112 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React from 'react';
-import {
-  Dimensions,
-  ImageBackground,
-  Pressable,
-  StatusBar,
-  Text,
-  View,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ImageBackground, Pressable, StatusBar, Text, View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {colors} from '../../constants/colors';
 import styles from '../../styles/coffeeDetailScreenStyle';
 import {RootStackParamList} from '../../types/types';
-
-const {width, height} = Dimensions.get('window');
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CoffeeDetailScreen'>;
 
 const CoffeeDetailScreen: React.FC<Props> = ({route}) => {
+  const [selectedSize, setSelectedSize] = useState(0);
   const {item} = route.params;
 
+  const top = useSafeAreaInsets();
+
+  useEffect(() => {
+    console.log(selectedSize);
+  }, [selectedSize]);
+
+  const selectedSizeHandler = (i: number) => {
+    setSelectedSize(i);
+  };
+
   return (
-    <View style={styles.container}>
-      {/* Add transparent status bar */}
+    <View style={[styles.container]}>
       <StatusBar translucent backgroundColor="transparent" />
 
-      <View style={[{width, height, flex: 1}]}>
-        <ImageBackground
-          source={{uri: item.imageURL}}
-          resizeMode="cover"
-          fadeDuration={300}
-          style={styles.backgroundImage}>
-          {/* Content can go here if needed */}
-        </ImageBackground>
-      </View>
+      <ImageBackground
+        source={{uri: item.imageURL}}
+        resizeMode="cover"
+        fadeDuration={300}
+        style={[styles.backgroundImage]}>
+        <View style={[styles.topButtons, {paddingTop: top.top + 10}]}>
+          <Pressable onPress={() => {}} style={styles.iconButtonStyle}>
+            <Ionicons
+              name="chevron-back-outline"
+              size={24}
+              color={colors.white}
+            />
+          </Pressable>
+          <Pressable style={styles.iconButtonStyle}>
+            <Ionicons name="heart-outline" size={24} color={colors.white} />
+          </Pressable>
+        </View>
+        <View style={styles.descTransStyle}>
+          <View style={styles.horzCenter}>
+            <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.subTitle}>{item.subtitle}</Text>
 
-      {/* Content */}
-      <View style={styles.content}>
-        <Text style={styles.title}>{item.name}</Text>
-        <Text style={styles.subTitle}>With Steamed Milk</Text>
-
-        {/* Rating and Tags */}
-        <View style={styles.tagsRow}>
-          <Text style={styles.rating}>⭐ 4.5 (6.8k)</Text>
-          <View style={styles.tag}>
-            <Text style={styles.tagText}>Coffee</Text>
-          </View>
-          <View style={styles.tag}>
-            <Text style={styles.tagText}>Milk</Text>
+            <View style={styles.tagsRow}>
+              <View style={styles.row}>
+                <Ionicons name="star" size={18} color={colors.circle} />
+                <Text style={styles.rating}>
+                  {item.rating} ({item.ratingCount})
+                </Text>
+              </View>
+              {item.tags.map(tag => (
+                <View key={tag} style={styles.tag}>
+                  <Text style={styles.tagText}>{tag}</Text>
+                </View>
+              ))}
+            </View>
           </View>
         </View>
+      </ImageBackground>
 
+      <View style={styles.content}>
         <Text style={styles.descriptionTitle}>Description</Text>
         <Text style={styles.description}>{item.description}</Text>
 
-        {/* Sizes */}
         <Text style={styles.descriptionTitle}>Size</Text>
         <View style={styles.sizeRow}>
-          {['S', 'M', 'L'].map(size => (
-            <Pressable key={size} style={styles.sizeButton}>
-              <Text style={styles.sizeText}>{size}</Text>
+          {item.sizes.map((size, i) => (
+            <Pressable
+              onPress={() => selectedSizeHandler(i)}
+              key={size}
+              style={[
+                styles.sizeButton,
+                {
+                  borderColor:
+                    selectedSize === i ? colors.circle : 'transparent',
+                  borderWidth: 1.5,
+                },
+              ]}>
+              <Text
+                style={[
+                  styles.sizeText,
+                  {
+                    color: selectedSize === i ? colors.circle : colors.white,
+                  },
+                ]}>
+                {size}
+              </Text>
             </Pressable>
           ))}
         </View>
 
-        {/* Price + Button */}
         <View style={styles.footer}>
-          <Text style={styles.price}>$ {item.price}</Text>
+          <View>
+            <Text style={[styles.descriptionTitle, styles.priceText]}>
+              Price
+            </Text>
+            <View style={styles.row}>
+              <Text style={styles.dollarSign}>$</Text>
+              <Text style={styles.price}>{item.price}</Text>
+            </View>
+          </View>
           <Pressable style={styles.cartButton}>
             <Text style={styles.cartText}>Add to Cart</Text>
           </Pressable>

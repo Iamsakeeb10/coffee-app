@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   filterInput: {
     width: '100%',
     height: 40,
-    borderRadius: 12,
+    borderRadius: 16,
     backgroundColor: colors.cardBackground,
     color: colors.inputTextColor,
     paddingLeft: 48,

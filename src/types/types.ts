@@ -48,10 +48,14 @@ export interface RegValidationResult {
 export interface CoffeeItem {
   id: string;
   name: string;
-  category: string;
-  price: number;
-  description: string;
   imageURL: string;
+  subtitle: string;
+  rating: number;
+  ratingCount: string;
+  tags: string[];
+  description: string;
+  sizes: string[];
+  price: number;
 }
 
 export type RootStackParamList = {

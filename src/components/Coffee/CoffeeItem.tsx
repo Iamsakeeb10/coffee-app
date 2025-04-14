@@ -69,9 +69,7 @@ const CoffeeCard: React.FC<Props> = ({item, loading, index = 0}) => {
             </View>
             <View>
               <Text style={styles.name}>{item.name}</Text>
-              <Text style={styles.description}>
-                {item.description.split(' ').slice(0, 3).join(' ')}
-              </Text>
+              <Text style={styles.description}>{item.subtitle}</Text>
             </View>
             <View style={styles.priceOuterContainer}>
               <View style={styles.priceContainer}>

@@ -1,5 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {ActivityIndicator, FlatList, StatusBar, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Animated,
+  FlatList,
+  StatusBar,
+  Text,
+  View,
+} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import CategoryList from '../../components/Coffee/CategorySelector';
@@ -26,6 +33,7 @@ const categories = [
 const CoffeeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [firstLoad, setFirstLoad] = useState(true);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const {coffeeItems, loading} = useCoffeeItems(selectedCategory);
   const [searchQuery, setSearchQuery] = useState('');
@@ -38,6 +46,16 @@ const CoffeeScreen = () => {
   const filteredItems = coffeeItems.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
+
+  useEffect(() => {
+    if (insets.top > 0 && !loading) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [insets.top, loading, fadeAnim]);
 
   useEffect(() => {
     if (!loading && firstLoad) {
@@ -94,16 +112,20 @@ const CoffeeScreen = () => {
 
   if (firstLoad && loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View style={[styles.loadingContainer, {paddingTop: insets.top}]}>
         <ActivityIndicator size="large" color={colors.circle} />
       </View>
     );
   }
 
   return (
-    <View style={[styles.container, {paddingTop: insets.top}]}>
+    <View style={[styles.container]}>
       <StatusBar translucent backgroundColor="transparent" />
-      <View style={[styles.flatlistContainer]}>
+      <Animated.View
+        style={[
+          styles.flatlistContainer,
+          {paddingTop: insets.top, opacity: fadeAnim},
+        ]}>
         <View style={styles.headerContainer}>
           <Text style={styles.title}>Find the best coffee for you</Text>
           <IconButton
@@ -140,7 +162,7 @@ const CoffeeScreen = () => {
         ) : (
           <CoffeeList ref={listRef} data={filteredItems} loading={loading} />
         )}
-      </View>
+      </Animated.View>
     </View>
   );
 };

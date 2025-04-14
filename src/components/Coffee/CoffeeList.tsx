@@ -18,6 +18,7 @@ export const CoffeeList = forwardRef<FlatList<CoffeeItem>, Props>(
         ref={ref}
         data={data}
         keyExtractor={item => item.id}
+        showsHorizontalScrollIndicator={false}
         horizontal
         contentContainerStyle={{marginRight: -12}}
         ItemSeparatorComponent={() => <View style={{width: 12}} />}
