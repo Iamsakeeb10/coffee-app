@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {ImageBackground, Pressable, StatusBar, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -9,18 +9,18 @@ import {RootStackParamList} from '../../types/types';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CoffeeDetailScreen'>;
 
-const CoffeeDetailScreen: React.FC<Props> = ({route}) => {
+const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
   const [selectedSize, setSelectedSize] = useState(0);
   const {item} = route.params;
 
   const top = useSafeAreaInsets();
 
-  useEffect(() => {
-    console.log(selectedSize);
-  }, [selectedSize]);
-
   const selectedSizeHandler = (i: number) => {
     setSelectedSize(i);
+  };
+
+  const goBack = () => {
+    navigation.goBack();
   };
 
   return (
@@ -28,12 +28,12 @@ const CoffeeDetailScreen: React.FC<Props> = ({route}) => {
       <StatusBar translucent backgroundColor="transparent" />
 
       <ImageBackground
-        source={{uri: item.imageURL}}
+        source={{uri: item?.imageURL}}
         resizeMode="cover"
         fadeDuration={300}
         style={[styles.backgroundImage]}>
         <View style={[styles.topButtons, {paddingTop: top.top + 10}]}>
-          <Pressable onPress={() => {}} style={styles.iconButtonStyle}>
+          <Pressable onPress={goBack} style={styles.iconButtonStyle}>
             <Ionicons
               name="chevron-back-outline"
               size={24}
@@ -46,17 +46,17 @@ const CoffeeDetailScreen: React.FC<Props> = ({route}) => {
         </View>
         <View style={styles.descTransStyle}>
           <View style={styles.horzCenter}>
-            <Text style={styles.title}>{item.name}</Text>
-            <Text style={styles.subTitle}>{item.subtitle}</Text>
+            <Text style={styles.title}>{item?.name}</Text>
+            <Text style={styles.subTitle}>{item?.subtitle}</Text>
 
             <View style={styles.tagsRow}>
               <View style={styles.row}>
                 <Ionicons name="star" size={18} color={colors.circle} />
                 <Text style={styles.rating}>
-                  {item.rating} ({item.ratingCount})
+                  {item?.rating} ({item?.ratingCount})
                 </Text>
               </View>
-              {item.tags.map(tag => (
+              {item?.tags.map(tag => (
                 <View key={tag} style={styles.tag}>
                   <Text style={styles.tagText}>{tag}</Text>
                 </View>
@@ -68,11 +68,11 @@ const CoffeeDetailScreen: React.FC<Props> = ({route}) => {
 
       <View style={styles.content}>
         <Text style={styles.descriptionTitle}>Description</Text>
-        <Text style={styles.description}>{item.description}</Text>
+        <Text style={styles.description}>{item?.description}</Text>
 
         <Text style={styles.descriptionTitle}>Size</Text>
         <View style={styles.sizeRow}>
-          {item.sizes.map((size, i) => (
+          {item?.sizes.map((size, i) => (
             <Pressable
               onPress={() => selectedSizeHandler(i)}
               key={size}
@@ -104,7 +104,7 @@ const CoffeeDetailScreen: React.FC<Props> = ({route}) => {
             </Text>
             <View style={styles.row}>
               <Text style={styles.dollarSign}>$</Text>
-              <Text style={styles.price}>{item.price}</Text>
+              <Text style={styles.price}>{item?.price}</Text>
             </View>
           </View>
           <Pressable style={styles.cartButton}>

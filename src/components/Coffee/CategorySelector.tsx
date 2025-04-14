@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, Pressable, Text, View} from 'react-native';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from '../../constants/colors';
 import styles from '../../styles/coffeeScreenStyle';
 
@@ -23,7 +23,8 @@ const CategoryList: React.FC<Props> = ({
       contentContainerStyle={{paddingVertical: 12}}
       ItemSeparatorComponent={() => <View style={{width: 12}} />}
       renderItem={({item}) => (
-        <Pressable
+        <TouchableOpacity
+          hitSlop={{top: 50, bottom: 50, left: 0, right: 0}}
           onPress={() => onSelect(item)}
           style={{transform: [{scale: selectedCategory === item ? 1.05 : 1}]}}>
           <Text
@@ -36,7 +37,7 @@ const CategoryList: React.FC<Props> = ({
             {item}
           </Text>
           {selectedCategory === item && <View style={styles.circle} />}
-        </Pressable>
+        </TouchableOpacity>
       )}
     />
   );

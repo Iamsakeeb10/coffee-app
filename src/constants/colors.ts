@@ -14,6 +14,7 @@ export const colors = {
   btnRed: '#B71C1C',
   deepRed: '#CC5500',
   subTitle: '#AEAEAE',
+  tabIcon: '#4E5053',
 
   background: '#0C0F14',
   cardBackground: '#252A32',

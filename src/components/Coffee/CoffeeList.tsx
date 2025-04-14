@@ -1,7 +1,7 @@
 import React, {forwardRef} from 'react';
 import {Dimensions, FlatList, View} from 'react-native';
 import {CoffeeItem} from '../../types/types';
-import CoffeeCard from './CoffeeItem';
+import CoffeeCard from './CoffeeCard';
 
 interface Props {
   data: CoffeeItem[];
