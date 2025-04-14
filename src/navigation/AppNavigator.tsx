@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import CoffeeDetailScreen from '../screens/Coffee/CoffeeDetail';
+import CoffeeDetailScreen from '../screens/Coffee/CoffeeDetailScreen';
 import CoffeeScreen from '../screens/Coffee/CoffeeScreen';
 
 import {RootStackParamList} from '../types/types';

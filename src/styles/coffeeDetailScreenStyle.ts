@@ -8,18 +8,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
   },
-  image: {
-    width: width,
-    height: height * 0.45,
-    resizeMode: 'cover',
-  },
-  topButtons: {
-    position: 'absolute',
-    top: 20,
-    left: 20,
-    right: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    // Removed paddingTop to allow image to go behind status bar
   },
   content: {
     flex: 1,
@@ -46,7 +38,6 @@ const styles = StyleSheet.create({
     color: 'yellow',
   },
   tag: {
-    // backgroundColor: 'white',
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 20,
