@@ -85,7 +85,7 @@ const IntroScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
         animatedCurrent={animatedCurrent}
         pagesLength={pages.length}
       />
-      <IntroSkipButton navigation={navigation} />
+      {currentPage !== 2 && <IntroSkipButton navigation={navigation} />}
       <IntroControls
         currentPage={currentPage}
         scrollX={scrollX}

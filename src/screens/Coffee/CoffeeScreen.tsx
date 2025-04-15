@@ -12,14 +12,13 @@ import {useDispatch} from 'react-redux';
 import CategoryList from '../../components/Coffee/CategorySelector';
 import {CoffeeList} from '../../components/Coffee/CoffeeList';
 import EmptyComponent from '../../components/Coffee/EmptyComponent';
+import LogoutButton from '../../components/Coffee/LogoutButton';
 import IconButton from '../../components/Common/IconButton';
 import InputLocal from '../../components/Common/InputLocal';
 import {colors} from '../../constants/colors';
 import {useCoffeeItems} from '../../hooks/useCoffeeItems';
 import {AppDispatch} from '../../redux/store/store';
-import {logoutUser} from '../../redux/thunks/authThunks';
 import styles from '../../styles/coffeeScreenStyle';
-import {showSnack} from '../../utils/Snack';
 
 const categories = [
   'All',
@@ -91,25 +90,6 @@ const CoffeeScreen = () => {
     }
   }, [searchQuery, filteredItems]);
 
-  const logoutHandler = async () => {
-    try {
-      await dispatch(logoutUser()).unwrap();
-      showSnack('Logged out successfully', {
-        duration: 3000,
-        backgroundColor: colors.background,
-        textColor: colors.white,
-        actionText: 'Okay',
-        actionColor: colors.circle,
-      });
-    } catch (error) {
-      showSnack('Logout failed', {
-        duration: 3000,
-        backgroundColor: colors.btnRed,
-        textColor: colors.white,
-      });
-    }
-  };
-
   if (firstLoad && loading) {
     return (
       <View style={[styles.loadingContainer, {paddingTop: insets.top}]}>
@@ -124,15 +104,11 @@ const CoffeeScreen = () => {
       <Animated.View
         style={[
           styles.flatlistContainer,
-          {paddingTop: insets.top, opacity: fadeAnim},
+          {paddingTop: insets.top + 20, opacity: fadeAnim},
         ]}>
         <View style={styles.headerContainer}>
           <Text style={styles.title}>Find the best coffee for you</Text>
-          <IconButton
-            onPress={logoutHandler}
-            iconName="log-out"
-            style={styles.logoutStyle}
-          />
+          <LogoutButton />
         </View>
         <View style={styles.filterInputContainer}>
           <InputLocal

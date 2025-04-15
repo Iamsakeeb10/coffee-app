@@ -24,4 +24,5 @@ export const colors = {
   muted: '#52555A',
 
   skeletonBackground: '#52555A',
+  logoutText: 'rgba(0,0,0,0.7)',
 };

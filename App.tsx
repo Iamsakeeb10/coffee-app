@@ -8,6 +8,7 @@ import store, {persistor} from './src/redux/store/store';
 const App = () => {
   useEffect(() => {
     const init = async () => {
+      await new Promise(resolve => setTimeout(resolve, 1000));
       await BootSplash.hide({fade: true});
     };
 

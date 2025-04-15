@@ -32,7 +32,7 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
         resizeMode="cover"
         fadeDuration={300}
         style={[styles.backgroundImage]}>
-        <View style={[styles.topButtons, {paddingTop: top.top + 10}]}>
+        <View style={[styles.topButtons, {paddingTop: top.top + 20}]}>
           <Pressable onPress={goBack} style={styles.iconButtonStyle}>
             <Ionicons
               name="chevron-back-outline"
