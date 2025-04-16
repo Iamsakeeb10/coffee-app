@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   bottomSheetSubtitle: {
     fontFamily: fontFamily.regular,
     color: colors.muted,
-    fontSize: 14,
+    fontSize: 15,
   },
   bottomSheetSpacer: {
     height: 15,

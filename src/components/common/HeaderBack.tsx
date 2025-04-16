@@ -25,7 +25,7 @@ const HeaderBack = () => {
         },
       ]}>
       <TouchableOpacity onPress={handleBack}>
-        <Ionicons name="arrow-back" size={30} color={colors.white} />
+        <Ionicons name="chevron-back" size={30} color={colors.white} />
       </TouchableOpacity>
     </View>
   );

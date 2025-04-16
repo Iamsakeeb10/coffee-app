@@ -1,12 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {
-  ActivityIndicator,
-  Animated,
-  FlatList,
-  StatusBar,
-  Text,
-  View,
-} from 'react-native';
+import {Animated, FlatList, StatusBar, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import CategoryList from '../../components/Coffee/CategorySelector';
@@ -15,6 +8,7 @@ import EmptyComponent from '../../components/Coffee/EmptyComponent';
 import LogoutButton from '../../components/Coffee/LogoutButton';
 import IconButton from '../../components/Common/IconButton';
 import InputLocal from '../../components/Common/InputLocal';
+import TypingLoader from '../../components/Common/Loader';
 import {colors} from '../../constants/colors';
 import {useCoffeeItems} from '../../hooks/useCoffeeItems';
 import {AppDispatch} from '../../redux/store/store';
@@ -91,11 +85,7 @@ const CoffeeScreen = () => {
   }, [searchQuery, filteredItems]);
 
   if (firstLoad && loading) {
-    return (
-      <View style={[styles.loadingContainer, {paddingTop: insets.top}]}>
-        <ActivityIndicator size="large" color={colors.circle} />
-      </View>
-    );
+    return <TypingLoader size={8} color={colors.white} />;
   }
 
   return (
