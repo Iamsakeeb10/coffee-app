@@ -10,7 +10,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      {/* <Stack.Screen name="CoffeeScreen" component={CoffeeScreen} /> */}
       <Stack.Screen name="MainTabs" component={BottomTabNavigator} />
       <Stack.Screen name="CoffeeDetailScreen" component={CoffeeDetailScreen} />
     </Stack.Navigator>

@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, FlatList, StatusBar, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useDispatch} from 'react-redux';
 import CategoryList from '../../components/Coffee/CategorySelector';
 import {CoffeeList} from '../../components/Coffee/CoffeeList';
 import EmptyComponent from '../../components/Coffee/EmptyComponent';
@@ -11,7 +10,6 @@ import InputLocal from '../../components/Common/InputLocal';
 import TypingLoader from '../../components/Common/Loader';
 import {colors} from '../../constants/colors';
 import {useCoffeeItems} from '../../hooks/useCoffeeItems';
-import {AppDispatch} from '../../redux/store/store';
 import styles from '../../styles/coffeeScreenStyle';
 
 const categories = [
@@ -33,8 +31,6 @@ const CoffeeScreen = () => {
   const listRef = useRef<FlatList | null | any>(null);
 
   const insets = useSafeAreaInsets();
-
-  const dispatch = useDispatch<AppDispatch>();
 
   const filteredItems = coffeeItems.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()),

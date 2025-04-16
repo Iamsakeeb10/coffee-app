@@ -25,7 +25,9 @@ export const useCoffeeItems = (selectedCategory: string) => {
           ...doc.data(),
         })) as CoffeeItem[];
         setCoffeeItems(items);
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 300);
       },
       err => {
         console.error('Error fetching coffee items:', err);

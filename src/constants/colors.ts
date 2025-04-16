@@ -22,6 +22,12 @@ export const colors = {
   textSecondary: '#DDDDDD',
   circle: '#D17842',
   muted: '#52555A',
+  favorite: '#DC3535',
+  favoriteBg: '#252A32',
+  overlay: 'rgba(0,0,0,0.4)',
+
+  emptyFavTitle: 'rgba(255,255,255, 0.9)',
+  emptyFavSubTitle: 'rgba(255,255,255, 0.7)',
 
   skeletonBackground: '#52555A',
   logoutText: 'rgba(0,0,0,0.7)',

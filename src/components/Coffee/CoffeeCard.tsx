@@ -35,7 +35,7 @@ const CoffeeCard: React.FC<Props> = ({item, loading, index = 0}) => {
   }, [loading, opacity, translateY, scale, index]);
 
   const goToDetail = () => {
-    navigation.navigate('CoffeeDetailScreen', {item});
+    navigation.navigate('CoffeeDetailScreen', {item, readonly: true});
   };
 
   if (loading) {

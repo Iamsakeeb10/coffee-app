@@ -5,7 +5,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {colors} from '../constants/colors';
 import CartScreen from '../screens/Coffee/CartScreen';
 import CoffeeScreen from '../screens/Coffee/CoffeeScreen';
-import FavoriteScreen from '../screens/Coffee/FavoriteScreen';
+import FavoritesScreen from '../screens/Coffee/FavoriteScreen';
+import {fontFamily} from '../utils/typography';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +25,7 @@ const BottomTabNavigator = () => {
 
           if (route.name === 'Coffee') {
             iconName = focused ? 'cafe' : 'cafe-outline';
-          } else if (route.name === 'Favorites') {
+          } else if (route.name === 'FavoritesScreen') {
             iconName = focused ? 'heart' : 'heart-outline';
           } else if (route.name === 'Cart') {
             iconName = focused ? 'cart' : 'cart-outline';
@@ -37,7 +38,24 @@ const BottomTabNavigator = () => {
         tabBarInactiveTintColor: colors.tabIcon,
       })}>
       <Tab.Screen name="Coffee" component={CoffeeScreen} />
-      <Tab.Screen name="Favorites" component={FavoriteScreen} />
+      <Tab.Screen
+        name="FavoritesScreen"
+        component={FavoritesScreen}
+        options={{
+          headerShown: true,
+          headerTitle: 'Favorites',
+          headerTitleAlign: 'center',
+          headerShadowVisible: false,
+          headerStyle: {
+            backgroundColor: colors.background,
+          },
+          headerTitleStyle: {
+            color: colors.white,
+            fontFamily: fontFamily.medium,
+          },
+        }}
+      />
+
       <Tab.Screen name="Cart" component={CartScreen} />
     </Tab.Navigator>
   );

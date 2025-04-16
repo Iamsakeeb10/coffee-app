@@ -59,7 +59,7 @@ export interface CoffeeItem {
 }
 
 export type RootStackParamList = {
-  // CoffeeScreen: undefined;
   MainTabs: undefined;
-  CoffeeDetailScreen: {item: CoffeeItem};
+  CoffeeDetailScreen: {item: CoffeeItem; readonly?: boolean};
+  FavoritesScreen: undefined;
 };
