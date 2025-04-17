@@ -1,7 +1,6 @@
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {colors} from '../../constants/colors';
 import {completeOnboarding} from '../../redux/slices/onboardingSlice';
 import {styles} from '../../styles/introScreenStyles';
 import {IntroSkipButtonProps} from '../../types/types';
@@ -19,7 +18,7 @@ const IntroSkipButton: React.FC<IntroSkipButtonProps> = ({navigation}) => {
       hitSlop={{top: 50, bottom: 50, left: 20, right: 20}}
       onPress={navigationHandler}
       style={styles.skipButton}>
-      <Text style={{color: colors.white}}>Skip</Text>
+      <Text style={styles.skipText}>Skip</Text>
     </TouchableOpacity>
   );
 };

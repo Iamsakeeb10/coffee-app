@@ -78,4 +78,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     elevation: 8,
   },
+
+  skipText: {
+    color: colors.white,
+    fontFamily: fontFamily.regular,
+  },
 });

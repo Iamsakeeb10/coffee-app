@@ -36,8 +36,8 @@ import {showSnack} from '../../utils/Snack';
 import {loginValidation} from '../../utils/validator';
 
 const initialUserInput: LoginUserInput = {
-  enteredEmail: '',
-  enteredPassword: '',
+  enteredEmail: 'shakib@gmail.com',
+  enteredPassword: '12345678',
 };
 
 const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
@@ -150,7 +150,7 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
               <View style={styles.logoContainer}>
                 <Image
                   style={styles.logo}
-                  source={require('../../assets/images/logo-2.png')}
+                  source={require('../../assets/images/intro-logo.png')}
                   resizeMode="contain"
                 />
               </View>
