@@ -2,12 +2,13 @@ import React from 'react';
 import {
   ActivityIndicator,
   Dimensions,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import {colors} from '../../constants/colors';
 import {fontFamily} from '../../utils/typography';
 
 const {width, height} = Dimensions.get('window');
@@ -18,8 +19,9 @@ const ButtonLocal = ({
   textStyle,
   title,
   onPressHandler,
-  iconName,
   loading,
+  url,
+  loaderColor = colors.white,
 }: any) => {
   const content = (
     <View
@@ -29,15 +31,17 @@ const ButtonLocal = ({
         disabled ? styles.disabled : null,
       ]}>
       {loading ? (
-        <ActivityIndicator size="small" color="#fff" />
+        <ActivityIndicator size="small" color={loaderColor} />
       ) : (
         <>
-          {iconName && (
-            <Ionicons
-              style={{paddingTop: 5}}
-              name={iconName}
-              size={18}
-              color="#fff"
+          {url && (
+            <Image
+              resizeMode="contain"
+              style={{
+                width: 20,
+                height: 20,
+              }}
+              source={url}
             />
           )}
           <Text style={[styles.buttonText, textStyle]}>{title}</Text>

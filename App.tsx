@@ -1,18 +1,15 @@
 import {useEffect} from 'react';
-import BootSplash from 'react-native-bootsplash';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import RootNavigator from './src/navigation/RootNavigator';
 import store, {persistor} from './src/redux/store/store';
 
+import {configureGoogleSignIn, initApp} from './src/utils/initialize';
+
 const App = () => {
   useEffect(() => {
-    const init = async () => {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      await BootSplash.hide({fade: true});
-    };
-
-    init();
+    configureGoogleSignIn();
+    initApp();
   }, []);
 
   return (

@@ -13,8 +13,6 @@ import {
   View,
 } from 'react-native';
 
-import {SafeAreaView} from 'react-native-safe-area-context';
-
 import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
 import AnimatedErrorText from '../../components/Auth/AnimatedErrorText';
@@ -24,7 +22,7 @@ import InputLocal from '../../components/Common/InputLocal';
 import {colors} from '../../constants/colors';
 import useNetInfo from '../../hooks/useNetInfo';
 import {AppDispatch, RootState} from '../../redux/store/store';
-import {loginUser} from '../../redux/thunks/authThunks';
+import {googleLogin, loginUser} from '../../redux/thunks/authThunks';
 import styles from '../../styles/authStyles';
 import {
   IntroSkipButtonProps,
@@ -36,8 +34,8 @@ import {showSnack} from '../../utils/Snack';
 import {loginValidation} from '../../utils/validator';
 
 const initialUserInput: LoginUserInput = {
-  enteredEmail: 'shakib@gmail.com',
-  enteredPassword: '12345678',
+  enteredEmail: '',
+  enteredPassword: '',
 };
 
 const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
@@ -46,7 +44,9 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   const [userInputErrors, setUserInputErrors] = useState<UserInputErrors>({});
 
   const dispatch = useDispatch<AppDispatch>();
-  const {loading} = useSelector((state: RootState) => state.auth);
+  const {loading, googleLoading} = useSelector(
+    (state: RootState) => state.auth,
+  );
 
   const {isConnected} = useNetInfo();
 
@@ -126,22 +126,36 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
     setShowPass(prev => !prev);
   };
 
+  const googleLoginHandler = async () => {
+    try {
+      dispatch(googleLogin());
+    } catch (err: any) {
+      showSnack(err, {
+        duration: 3000,
+        backgroundColor: colors.deepRed,
+        textColor: colors.white,
+        actionText: 'Okay',
+        actionColor: colors.white,
+      });
+    }
+  };
+
   return (
     <ImageBackground
       source={require('../../assets/images/auth-background-1.jpg')}
-      style={{flex: 1}}
+      style={styles.fullWidth}
       resizeMode="cover"
       blurRadius={10}>
       <LinearGradient
         colors={[colors.linearGradientStart, colors.linearGradientEnd]}
-        style={{flex: 1}}>
+        style={styles.fullWidth}>
         <StatusBar
           translucent
           backgroundColor="transparent"
           barStyle="light-content"
         />
 
-        <SafeAreaView style={styles.safeAreaContainer}>
+        <View style={styles.safeAreaContainer}>
           <ScrollView
             keyboardShouldPersistTaps={
               Platform.OS === 'android' ? 'handled' : undefined
@@ -228,9 +242,23 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                   <Text style={styles.signinText}>Sign up now</Text>
                 </TouchableOpacity>
               </View>
+              <View style={styles.orTextContainer}>
+                <Text style={styles.orText}>
+                  ---------------- <Text>Or</Text> ----------------
+                </Text>
+              </View>
+              <ButtonLocal
+                url={require('../../assets/images/google.png')}
+                title="Sign in with Google"
+                loading={googleLoading}
+                buttonStyle={{backgroundColor: colors.white}}
+                textStyle={{color: colors.background}}
+                onPressHandler={googleLoginHandler}
+                loaderColor={colors.background}
+              />
             </KeyboardAvoidingView>
           </ScrollView>
-        </SafeAreaView>
+        </View>
       </LinearGradient>
     </ImageBackground>
   );

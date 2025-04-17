@@ -1,15 +1,22 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {loginUser, logoutUser, registerUser} from '../thunks/authThunks';
+import {
+  googleLogin,
+  loginUser,
+  logoutUser,
+  registerUser,
+} from '../thunks/authThunks';
 
 interface AuthState {
   user: any;
   loading: boolean;
+  googleLoading: boolean;
   error: string | null;
 }
 
 const initialState: AuthState = {
   user: null,
   loading: false,
+  googleLoading: false,
   error: null,
 };
 
@@ -48,6 +55,17 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(googleLogin.pending, state => {
+        state.googleLoading = true;
+      })
+      .addCase(googleLogin.fulfilled, (state, action) => {
+        state.googleLoading = false;
+        state.user = action.payload;
+      })
+      .addCase(googleLogin.rejected, (state, action) => {
+        state.googleLoading = false;
         state.error = action.payload as string;
       })
 

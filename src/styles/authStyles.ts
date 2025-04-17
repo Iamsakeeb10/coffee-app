@@ -9,6 +9,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
+  fullWidth: {
+    flex: 1,
+  },
+
   headerTextContainer: {
     flex: 1,
     marginTop: height * 0.03,
@@ -19,7 +23,7 @@ const styles = StyleSheet.create({
   },
 
   logoContainer: {
-    marginBottom: -15,
+    marginBottom: -25,
     alignItems: 'center',
   },
 
@@ -61,6 +65,19 @@ const styles = StyleSheet.create({
     textShadowColor: colors.lightBlackShadow,
     textShadowOffset: {width: 0.5, height: 0.5},
     textShadowRadius: 4,
+  },
+
+  orTextContainer: {
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+
+  orText: {
+    color: colors.white,
+    textAlign: 'center',
+    fontSize: 14,
+    marginVertical: 20,
+    fontFamily: fontFamily.regular,
   },
 });
 
