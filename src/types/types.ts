@@ -63,3 +63,14 @@ export type RootStackParamList = {
   CoffeeDetailScreen: {item: CoffeeItem; readonly?: boolean};
   FavoritesScreen: undefined;
 };
+
+export type AlertProps = {
+  visible: boolean;
+  title: string;
+  message: string;
+  onCancel: () => void;
+  onConfirm: () => void;
+  confirmText?: string;
+  cancelText?: string;
+  confirmBgColor?: string;
+};

@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   FlatList,
   ImageBackground,
@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
+import CustomAlert from '../../components/Common/CustomAlert';
 import {colors} from '../../constants/colors';
 import {toggleFavorite} from '../../redux/slices/favoritesSlice';
 import {AppDispatch, RootState} from '../../redux/store/store';
@@ -19,6 +20,9 @@ import {CoffeeItem, RootStackParamList} from '../../types/types';
 import {showSnack} from '../../utils/Snack';
 
 const FavoritesScreen: React.FC = () => {
+  const [showAlert, setShowAlert] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<CoffeeItem | null>(null);
+
   const dispatch = useDispatch<AppDispatch>();
   const favorites = useSelector(
     (state: RootState) => state.favorites.favorites,
@@ -27,15 +31,22 @@ const FavoritesScreen: React.FC = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const handleRemoveFavorite = (item: CoffeeItem) => {
-    dispatch(toggleFavorite(item));
-    showSnack(`${item.name} removed from favorites`, {
-      backgroundColor: colors.background,
-      textColor: colors.white,
-      actionText: 'Okay',
-      actionColor: colors.circle,
-      duration: 1200,
-    });
+  const handleRemoveFavorite = () => {
+    if (selectedItem) {
+      dispatch(toggleFavorite(selectedItem));
+
+      setTimeout(() => {
+        showSnack(`${selectedItem.name} removed from favorites`, {
+          backgroundColor: colors.background,
+          textColor: colors.white,
+          actionText: 'Okay',
+          actionColor: colors.circle,
+          duration: 1200,
+        });
+      }, 100);
+      setSelectedItem(null);
+      setShowAlert(false);
+    }
   };
 
   const navigateToDetail = (item: CoffeeItem) => {
@@ -56,7 +67,10 @@ const FavoritesScreen: React.FC = () => {
           style={favoritesScreenStyles.imageBackground}>
           <View style={favoritesScreenStyles.topButtons}>
             <Pressable
-              onPress={() => handleRemoveFavorite(item)}
+              onPress={() => {
+                setSelectedItem(item);
+                setShowAlert(true);
+              }}
               style={favoritesScreenStyles.removeButton}>
               <Ionicons name="heart" size={24} color={colors.favorite} />
             </Pressable>
@@ -122,6 +136,18 @@ const FavoritesScreen: React.FC = () => {
         ]}
         ListEmptyComponent={renderEmptyList}
       />
+      {selectedItem && (
+        <CustomAlert
+          visible={showAlert}
+          title="Remove Favorite"
+          message={`Are you sure you want to remove "${selectedItem.name}" from favorites?`}
+          onCancel={() => {
+            setShowAlert(false);
+            setSelectedItem(null);
+          }}
+          onConfirm={handleRemoveFavorite}
+        />
+      )}
     </View>
   );
 };

@@ -127,6 +127,18 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   };
 
   const googleLoginHandler = async () => {
+    if (!isConnected) {
+      showSnack('No Internet Connection', {
+        duration: 3000,
+        backgroundColor: colors.deepRed,
+        textColor: colors.white,
+        actionText: 'Okay',
+        actionColor: colors.white,
+      });
+
+      return;
+    }
+
     try {
       dispatch(googleLogin());
     } catch (err: any) {

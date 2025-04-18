@@ -26,3 +26,18 @@ export const accountCreatedAlert = (navigation: any) => {
     {cancelable: false},
   );
 };
+
+export const showConfirmAlert = (
+  title: string,
+  message: string,
+  onConfirm: () => void,
+) => {
+  Alert.alert(title, message, [
+    {text: 'Cancel', style: 'cancel'},
+    {
+      text: 'Remove',
+      style: 'destructive',
+      onPress: onConfirm,
+    },
+  ]);
+};

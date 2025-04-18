@@ -18,6 +18,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
 import AnimatedErrorText from '../../components/Auth/AnimatedErrorText';
 import ButtonLocal from '../../components/Common/ButtonLocal';
+import CustomAlert from '../../components/Common/CustomAlert';
 import HeaderBack from '../../components/Common/HeaderBack';
 import IconButton from '../../components/Common/IconButton';
 import InputLocal from '../../components/Common/InputLocal';
@@ -32,7 +33,6 @@ import {
   RegValidationResult,
   UserInputErrors,
 } from '../../types/types';
-import {accountCreatedAlert} from '../../utils/alertHandler';
 import {showSnack} from '../../utils/Snack';
 import {createAccountValidation} from '../../utils/validator';
 
@@ -53,8 +53,9 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   });
   const [userInput, setUserInput] = useState<RegUserInput>(initialUserInput);
   const [userInputErrors, setUserInputErrors] = useState<UserInputErrors>({});
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
-  const {loading, error} = useSelector((state: RootState) => state.auth);
+  const {loading} = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
 
   const {isConnected} = useNetInfo();
@@ -140,7 +141,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
         }),
       ).unwrap();
 
-      accountCreatedAlert(navigation);
+      setShowSuccessAlert(true);
     } catch (error: any) {
       Alert.alert('Login Failed', error);
     }
@@ -314,6 +315,19 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                   <Text style={styles.signinText}>Sign In</Text>
                 </TouchableOpacity>
               </View>
+              <CustomAlert
+                visible={showSuccessAlert}
+                title="Account Created"
+                message="Your account has been created successfully!"
+                confirmText="Go to Login"
+                cancelText="Later"
+                confirmBgColor={colors.confirmBg}
+                onCancel={() => setShowSuccessAlert(false)}
+                onConfirm={() => {
+                  setShowSuccessAlert(false);
+                  navigation.navigate('LoginScreen');
+                }}
+              />
             </KeyboardAvoidingView>
           </ScrollView>
         </SafeAreaView>

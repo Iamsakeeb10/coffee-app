@@ -7,7 +7,7 @@ const {width, height} = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.cardBackground,
+    backgroundColor: colors.background,
   },
   backgroundImage: {
     flex: 1,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sizeButton: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.cardBackground,
     padding: 10,
     borderRadius: 10,
     flex: 1,
