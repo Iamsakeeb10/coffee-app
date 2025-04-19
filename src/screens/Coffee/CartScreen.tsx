@@ -1,29 +1,70 @@
-import React, {useState} from 'react';
+// CartScreen.tsx - Modified version
+import React, {useLayoutEffect, useState} from 'react';
 import {FlatList, Image, Pressable, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import CartEmpty from '../../components/Coffee/CartEmpty';
 import CustomAlert from '../../components/Common/CustomAlert';
 import {colors} from '../../constants/colors';
 import {
   CartItem,
+  clearCart,
   decrementQuantity,
   incrementQuantity,
   removeFromCart,
 } from '../../redux/slices/cartSlice';
 import {AppDispatch, RootState} from '../../redux/store/store';
 import {cartStyles} from '../../styles/cartStyles';
+import {RootStackParamList} from '../../types/types';
 import {showSnack} from '../../utils/Snack';
 
 const CartScreen = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [selectedItem, setSelectedItem] = useState<CartItem | null>(null);
+  const [isForAllItems, setIsForAllItems] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const {items, totalAmount} = useSelector((state: RootState) => state.cart);
   const insets = useSafeAreaInsets();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  // Function to clear the cart - can be called from anywhere
+  const handleClearCartPress = () => {
+    if (items.length === 0) {
+      showSnack('Cart is already empty', {
+        backgroundColor: colors.deepRed,
+        textColor: colors.white,
+        actionText: 'Okay',
+        actionColor: colors.white,
+      });
+      return;
+    }
+
+    setSelectedItem(null);
+    setIsForAllItems(true);
+    setShowAlert(true);
+  };
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+        items.length > 0 ? (
+          <Pressable
+            onPress={handleClearCartPress}
+            style={({pressed}) => ({
+              opacity: pressed ? 0.5 : 1,
+              marginRight: 16,
+            })}>
+            <Ionicons name="trash-outline" size={22} color={colors.white} />
+          </Pressable>
+        ) : null,
+    });
+  }, [navigation, items.length]);
 
   const handleIncrement = (id: string) => {
     dispatch(incrementQuantity(id));
@@ -33,6 +74,8 @@ const CartScreen = () => {
     if (quantity > 1) {
       dispatch(decrementQuantity(id));
     } else {
+      setSelectedItem(items.find(item => item.id === id) || null);
+      setIsForAllItems(false);
       setShowAlert(true);
     }
   };
@@ -46,7 +89,7 @@ const CartScreen = () => {
         actionText: 'Okay',
         actionColor: colors.white,
       });
-    }, 100);
+    }, 150);
   };
 
   const handleCheckout = () => {
@@ -62,6 +105,11 @@ const CartScreen = () => {
   if (items.length === 0) {
     return <CartEmpty />;
   }
+
+  const alertTitle = isForAllItems ? 'Clear Cart' : 'Remove Item';
+  const alertMessage = isForAllItems
+    ? 'This will remove all items from your cart.'
+    : 'This will remove the item from your cart.';
 
   return (
     <View style={cartStyles.container}>
@@ -101,16 +149,9 @@ const CartScreen = () => {
 
               <View style={cartStyles.quantityContainer}>
                 <Pressable
-                  onPress={() => {
-                    setSelectedItem(item);
-                    handleDecrement(item.id, item.quantity);
-                  }}
+                  onPress={() => handleDecrement(item.id, item.quantity)}
                   style={cartStyles.quantityButton}>
-                  <Ionicons
-                    name="remove"
-                    size={20}
-                    color={item.quantity <= 1 ? colors.white : colors.white}
-                  />
+                  <Ionicons name="remove" size={20} color={colors.white} />
                 </Pressable>
                 <View style={cartStyles.quantityBadge}>
                   <Text style={cartStyles.quantityText}>{item.quantity}</Text>
@@ -146,8 +187,8 @@ const CartScreen = () => {
       {showAlert && (
         <CustomAlert
           visible={showAlert}
-          title="Remove Item"
-          message="This will remove the item from your cart."
+          title={alertTitle}
+          message={alertMessage}
           confirmText="Okay"
           cancelText="Cancel"
           confirmBgColor={colors.deepRed}
@@ -156,7 +197,17 @@ const CartScreen = () => {
             setSelectedItem(null);
           }}
           onConfirm={() => {
-            if (selectedItem) {
+            if (isForAllItems) {
+              dispatch(clearCart());
+              setTimeout(() => {
+                showSnack('All coffee items removed from cart', {
+                  backgroundColor: colors.deepRed,
+                  textColor: colors.white,
+                  actionText: 'Okay',
+                  actionColor: colors.white,
+                });
+              }, 150);
+            } else if (selectedItem) {
               handleRemove(selectedItem.id);
             }
             setShowAlert(false);

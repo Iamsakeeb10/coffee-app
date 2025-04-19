@@ -1,3 +1,4 @@
+// BottomTabNavigator.tsx - Modified version
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {Text, View} from 'react-native';
@@ -10,6 +11,7 @@ import CartScreen from '../screens/Coffee/CartScreen';
 import CoffeeScreen from '../screens/Coffee/CoffeeScreen';
 import FavoritesScreen from '../screens/Coffee/FavoriteScreen';
 import styles from '../styles/bottomtabStyles';
+import {getIconName} from '../utils/helpers';
 import {fontFamily} from '../utils/typography';
 
 const Tab = createBottomTabNavigator();
@@ -29,15 +31,7 @@ const BottomTabNavigator = () => {
           borderTopWidth: 0,
         },
         tabBarIcon: ({color, size, focused}) => {
-          let iconName = '';
-
-          if (route.name === 'Coffee') {
-            iconName = focused ? 'cafe' : 'cafe-outline';
-          } else if (route.name === 'FavoritesScreen') {
-            iconName = focused ? 'heart' : 'heart-outline';
-          } else if (route.name === 'Cart') {
-            iconName = focused ? 'cart' : 'cart-outline';
-          }
+          const iconName = getIconName(route.name, focused);
 
           const icon = <Ionicons name={iconName} size={size} color={color} />;
 
