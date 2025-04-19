@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import CartEmpty from '../../components/Coffee/CartEmpty';
+import {renderAlertMessage} from '../../components/Common/AlertMessage';
 import CustomAlert from '../../components/Common/CustomAlert';
 import {colors} from '../../constants/colors';
 import {
@@ -33,7 +34,6 @@ const CartScreen = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  // Function to clear the cart - can be called from anywhere
   const handleClearCartPress = () => {
     if (items.length === 0) {
       showSnack('Cart is already empty', {
@@ -107,9 +107,11 @@ const CartScreen = () => {
   }
 
   const alertTitle = isForAllItems ? 'Clear Cart' : 'Remove Item';
-  const alertMessage = isForAllItems
-    ? 'This will remove all items from your cart.'
-    : 'This will remove the item from your cart.';
+  const alertMessage = renderAlertMessage(
+    isForAllItems,
+    selectedItem?.name,
+    selectedItem?.size,
+  );
 
   return (
     <View style={cartStyles.container}>

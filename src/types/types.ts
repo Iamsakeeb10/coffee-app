@@ -1,3 +1,5 @@
+import {ReactNode} from 'react';
+
 export interface IntroSkipButtonProps {
   navigation: any;
 }
@@ -70,7 +72,7 @@ export type RootStackParamList = {
 export type AlertProps = {
   visible: boolean;
   title: string;
-  message: string;
+  message: string | ReactNode;
   onCancel: () => void;
   onConfirm: () => void;
   confirmText?: string;
