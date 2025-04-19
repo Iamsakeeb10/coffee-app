@@ -74,7 +74,9 @@ const CoffeeCard: React.FC<Props> = ({item, loading, index = 0}) => {
             <View style={styles.priceOuterContainer}>
               <View style={styles.priceContainer}>
                 <Text style={styles.signStyle}>$</Text>
-                <Text style={styles.price}>{item.price}</Text>
+                <Text style={styles.price}>
+                  {item.priceBySize[item.sizes[0]].toFixed(2)}
+                </Text>
               </View>
               <View style={styles.cardBottomContainer}>
                 <Ionicons name="add" size={16} color={colors.white} />

@@ -3,8 +3,8 @@ import {Animated, FlatList, StatusBar, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import CategoryList from '../../components/Coffee/CategorySelector';
 import {CoffeeList} from '../../components/Coffee/CoffeeList';
-import EmptyComponent from '../../components/Coffee/EmptyComponent';
 import LogoutButton from '../../components/Coffee/LogoutButton';
+import SearchNotFound from '../../components/Coffee/SearchNotFound';
 import IconButton from '../../components/Common/IconButton';
 import InputLocal from '../../components/Common/InputLocal';
 import TypingLoader from '../../components/Common/Loader';
@@ -120,7 +120,7 @@ const CoffeeScreen = () => {
         />
 
         {filteredItems.length === 0 && searchQuery.trim() !== '' ? (
-          <EmptyComponent />
+          <SearchNotFound />
         ) : (
           <CoffeeList ref={listRef} data={filteredItems} loading={loading} />
         )}

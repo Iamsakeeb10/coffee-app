@@ -1,20 +1,32 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useState} from 'react';
-import {ImageBackground, Pressable, StatusBar, Text, View} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {
+  Animated,
+  ImageBackground,
+  Pressable,
+  StatusBar,
+  Text,
+  View,
+} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {colors} from '../../constants/colors';
+import {addToCart} from '../../redux/slices/cartSlice';
 import {toggleFavorite} from '../../redux/slices/favoritesSlice';
 import {AppDispatch, RootState} from '../../redux/store/store';
 import styles from '../../styles/coffeeDetailScreenStyle';
 import {RootStackParamList} from '../../types/types';
 import {showSnack} from '../../utils/Snack';
+import {triggerScaleAnimation} from '../../utils/animations';
+import {getFullSize} from '../../utils/helpers';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CoffeeDetailScreen'>;
 
 const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
   const [selectedSize, setSelectedSize] = useState(0);
+  const scaleValue = useRef(new Animated.Value(1)).current;
+
   const {item} = route.params;
 
   const top = useSafeAreaInsets();
@@ -50,6 +62,40 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
         duration: 1200,
       },
     );
+  };
+
+  const handleAddToCart = () => {
+    const selectedSizeLabel = item.sizes[selectedSize];
+    const price = item.priceBySize[selectedSizeLabel];
+
+    triggerScaleAnimation(scaleValue);
+
+    const cartItem = {
+      id: '',
+      coffeeId: item.id,
+      name: item.name,
+      subtitle: item.subtitle,
+      imageURL: item.imageURL,
+      size: selectedSizeLabel,
+      price,
+      quantity: 1,
+    };
+
+    dispatch(addToCart(cartItem));
+
+    const fullSize = getFullSize(selectedSizeLabel);
+    const sizeLabel = fullSize.charAt(0).toUpperCase() + fullSize.slice(1);
+
+    showSnack(`${sizeLabel} ${item.name} added to cart`, {
+      backgroundColor: colors.background,
+      textColor: 'white',
+      actionText: 'Okay',
+      actionColor: colors.circle,
+    });
+  };
+
+  const animatedStyle = {
+    transform: [{scale: scaleValue}],
   };
 
   return (
@@ -145,12 +191,18 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
             </Text>
             <View style={styles.row}>
               <Text style={styles.dollarSign}>$</Text>
-              <Text style={styles.price}>{item?.price}</Text>
+              <Text style={styles.price}>
+                {item?.priceBySize?.[item.sizes[selectedSize]].toFixed(2)}
+              </Text>
             </View>
           </View>
-          <Pressable style={styles.cartButton}>
-            <Text style={styles.cartText}>Add to Cart</Text>
-          </Pressable>
+          <Animated.View style={[styles.cartButton, animatedStyle]}>
+            <Pressable
+              onPress={handleAddToCart}
+              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+              <Text style={styles.cartText}>Add to Cart</Text>
+            </Pressable>
+          </Animated.View>
         </View>
       </View>
     </View>

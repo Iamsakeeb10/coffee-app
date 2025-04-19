@@ -18,6 +18,7 @@ export const colors = {
   alertColor: '#000000aa',
   black: '#000',
   confirmBg: '#007074',
+  badge: '#4F959D',
 
   background: '#0C0F14',
   cardBackground: '#252A32',

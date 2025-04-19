@@ -3,7 +3,7 @@ import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import {fontFamily} from '../../utils/typography';
 
 const {width, height} = Dimensions.get('window');
-const EmptyComponent = () => {
+const SearchNotFound = () => {
   return (
     <View style={styles.container}>
       <Image
@@ -16,7 +16,7 @@ const EmptyComponent = () => {
   );
 };
 
-export default EmptyComponent;
+export default SearchNotFound;
 
 const styles = StyleSheet.create({
   container: {

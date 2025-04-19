@@ -55,7 +55,9 @@ export interface CoffeeItem {
   tags: string[];
   description: string;
   sizes: string[];
-  price: number;
+  priceBySize: {
+    [size: string]: number;
+  };
 }
 
 export type RootStackParamList = {

@@ -37,11 +37,10 @@ const FavoritesScreen: React.FC = () => {
 
       setTimeout(() => {
         showSnack(`${selectedItem.name} removed from favorites`, {
-          backgroundColor: colors.background,
+          backgroundColor: colors.deepRed,
           textColor: colors.white,
           actionText: 'Okay',
-          actionColor: colors.circle,
-          duration: 1200,
+          actionColor: colors.white,
         });
       }, 100);
       setSelectedItem(null);
@@ -146,6 +145,7 @@ const FavoritesScreen: React.FC = () => {
             setSelectedItem(null);
           }}
           onConfirm={handleRemoveFavorite}
+          confirmBgColor={colors.deepRed}
         />
       )}
     </View>

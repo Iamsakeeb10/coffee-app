@@ -123,6 +123,8 @@ const favoritesScreenStyles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: fontFamily.regular,
     paddingHorizontal: 32,
+    lineHeight: 20,
+    letterSpacing: 0.5,
   },
   flatListContent: {
     width: width / 1.1,
