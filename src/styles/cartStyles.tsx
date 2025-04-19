@@ -2,7 +2,7 @@ import {Dimensions, StyleSheet} from 'react-native';
 import {colors} from '../constants/colors';
 import {fontFamily} from '../utils/typography';
 
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 export const cartStyles = StyleSheet.create({
   container: {
@@ -219,5 +219,43 @@ export const cartStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
+  },
+
+  groupCartItem: {
+    backgroundColor: colors.cardBackground,
+    borderRadius: 20,
+    marginBottom: 16,
+    padding: 14,
+    overflow: 'hidden',
+  },
+
+  groupItemHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  groupItemImage: {
+    height: width * 0.37,
+    width: width * 0.35,
+    borderRadius: 20,
+  },
+
+  groupItemInfo: {
+    flex: 1,
+    marginLeft: 14,
+  },
+
+  groupSizeRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 0,
+    marginTop: 6,
+  },
+
+  groupSizeInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
   },
 });
