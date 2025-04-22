@@ -67,6 +67,7 @@ export type RootStackParamList = {
   CoffeeDetailScreen: {item: CoffeeItem; readonly?: boolean};
   FavoritesScreen: undefined;
   CartScreen: undefined;
+  ProfileScreen: undefined;
 };
 
 export type AlertProps = {

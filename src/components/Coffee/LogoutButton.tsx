@@ -1,19 +1,20 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch} from 'react-redux';
 import {colors} from '../../constants/colors';
 import {AppDispatch} from '../../redux/store/store';
 import {logoutUser} from '../../redux/thunks/authThunks';
-import coffeeScreenStyles from '../../styles/coffeeScreenStyle'; // Import the styles
 import styles from '../../styles/logoutButtonStyle';
 import {showSnack} from '../../utils/Snack';
 import BottomSheet from '../Common/BottomSheet';
-import IconButton from '../Common/IconButton';
 
-const LogoutButton = () => {
-  const [showSheet, setShowSheet] = useState(false);
+type LogoutButtonProps = {
+  showSheet: boolean;
+  setShowSheet: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
+const LogoutButton = ({setShowSheet, showSheet}: LogoutButtonProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const logoutHandler = async () => {
@@ -43,11 +44,6 @@ const LogoutButton = () => {
 
   return (
     <View>
-      <IconButton
-        onPress={toggleBottomSheet}
-        iconName="log-out"
-        style={coffeeScreenStyles.logoutStyle}
-      />
       <View>
         <BottomSheet visible={showSheet} onClose={toggleBottomSheet}>
           <View style={styles.bottomSheetContainer}>
@@ -76,12 +72,7 @@ const LogoutButton = () => {
                 onPress={toggleBottomSheet}>
                 <Text style={styles.bottomSheetCancelText}>CANCEL</Text>
               </TouchableOpacity>
-              <View
-                style={{
-                  borderWidth: 0.5,
-                  borderColor: colors.gray,
-                }}
-              />
+              <View />
               <TouchableOpacity
                 style={styles.bottomSheetLogoutButton}
                 onPress={logoutHandler}>

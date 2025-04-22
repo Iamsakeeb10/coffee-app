@@ -1,15 +1,17 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Animated, FlatList, StatusBar, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useSelector} from 'react-redux';
 import CategoryList from '../../components/Coffee/CategorySelector';
 import {CoffeeList} from '../../components/Coffee/CoffeeList';
-import LogoutButton from '../../components/Coffee/LogoutButton';
+import ProfileIconButton from '../../components/Coffee/ProfileIconButton';
 import SearchNotFound from '../../components/Coffee/SearchNotFound';
 import IconButton from '../../components/Common/IconButton';
 import InputLocal from '../../components/Common/InputLocal';
 import TypingLoader from '../../components/Common/Loader';
 import {colors} from '../../constants/colors';
 import {useCoffeeItems} from '../../hooks/useCoffeeItems';
+import {RootState} from '../../redux/store/store';
 import styles from '../../styles/coffeeScreenStyle';
 
 const categories = [
@@ -31,6 +33,7 @@ const CoffeeScreen = () => {
   const listRef = useRef<FlatList | null | any>(null);
 
   const insets = useSafeAreaInsets();
+  const {user} = useSelector((state: RootState) => state.auth);
 
   const filteredItems = coffeeItems.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -94,7 +97,7 @@ const CoffeeScreen = () => {
         ]}>
         <View style={styles.headerContainer}>
           <Text style={styles.title}>Find the best coffee for you</Text>
-          <LogoutButton />
+          <ProfileIconButton profileImage={user?.photoURL} />
         </View>
         <View style={styles.filterInputContainer}>
           <InputLocal

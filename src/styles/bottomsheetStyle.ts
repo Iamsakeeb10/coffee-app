@@ -1,5 +1,6 @@
 // styles/bottomSheetStyles.js
 import {Dimensions, StyleSheet} from 'react-native';
+import {colors} from '../constants/colors';
 
 const {height} = Dimensions.get('window');
 
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
   },
   sheet: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     elevation: 10,

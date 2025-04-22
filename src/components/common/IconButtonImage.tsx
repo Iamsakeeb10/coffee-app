@@ -3,22 +3,23 @@ import {
   GestureResponderEvent,
   StyleSheet,
   TouchableOpacity,
+  View,
   ViewStyle,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {colors} from '../../constants/colors';
 
 interface IconButtonProps {
-  iconName: string;
+  iconName?: string;
   iconSize?: number;
   iconColor?: string;
   onPress?: (event: GestureResponderEvent) => void;
   style?: ViewStyle;
   activeOpacity?: number;
   iconStyle?: ViewStyle;
+  children?: React.ReactNode;
 }
 
-const IconButton: React.FC<IconButtonProps> = ({
+const IconButtonImage: React.FC<IconButtonProps> = ({
   iconName,
   iconSize = 18,
   iconColor = '#fff',
@@ -26,6 +27,7 @@ const IconButton: React.FC<IconButtonProps> = ({
   style,
   activeOpacity = 0.6,
   iconStyle,
+  children,
 }) => {
   return (
     <TouchableOpacity
@@ -37,12 +39,16 @@ const IconButton: React.FC<IconButtonProps> = ({
         e.stopPropagation();
         if (onPress) onPress(e);
       }}>
-      <Ionicons
-        name={iconName}
-        size={iconSize}
-        color={iconColor}
-        style={[styles.iconStyle, iconStyle]}
-      />
+      {children ? (
+        <View style={{flex: 1}}>{children}</View>
+      ) : (
+        <Ionicons
+          name={iconName || 'alert-circle'}
+          size={iconSize}
+          color={iconColor}
+          style={[styles.iconStyle, iconStyle]}
+        />
+      )}
     </TouchableOpacity>
   );
 };
@@ -53,14 +59,14 @@ const styles = StyleSheet.create({
     top: 10,
     right: 11,
   },
-
   iconContainerStyle: {
-    position: 'absolute',
-    right: 0,
-    backgroundColor: colors.cardBackground,
-    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 20,
     width: 40,
+    height: 40,
   },
 });
 
-export default IconButton;
+export default IconButtonImage;

@@ -19,6 +19,7 @@ export const colors = {
   black: '#000',
   confirmBg: '#007074',
   badge: '#4F959D',
+  menuIcon: '#626F47',
 
   background: '#0C0F14',
   cardBackground: '#252A32',
