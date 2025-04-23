@@ -30,6 +30,7 @@ export const colors = {
   favorite: '#DC3535',
   favoriteBg: '#252A32',
   overlay: 'rgba(0,0,0,0.4)',
+  menuContainer: '#F8F8FF',
 
   emptyFavTitle: 'rgba(255,255,255, 0.9)',
   emptyFavSubTitle: 'rgba(255,255,255, 0.7)',

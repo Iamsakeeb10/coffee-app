@@ -4,6 +4,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  updateUserProfile,
 } from '../thunks/authThunks';
 
 interface AuthState {
@@ -80,6 +81,18 @@ const authSlice = createSlice({
         console.log('User set to null in reducer');
       })
       .addCase(logoutUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      .addCase(updateUserProfile.pending, state => {
+        state.loading = true;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = {...state.user, ...action.payload};
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

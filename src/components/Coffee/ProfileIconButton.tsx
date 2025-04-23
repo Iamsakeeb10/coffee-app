@@ -2,7 +2,6 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Image, StyleSheet} from 'react-native';
 import {colors} from '../../constants/colors';
-import IconButton from '../Common/IconButton';
 import IconButtonImage from '../Common/IconButtonImage';
 
 type Props = {
@@ -16,51 +15,31 @@ const ProfileIconButton = ({profileImage}: Props) => {
     navigation.navigate('ProfileScreen');
   };
 
-  return profileImage ? (
-    <IconButtonImage onPress={navigationHandler} style={styles.imageButton}>
+  return (
+    <IconButtonImage onPress={navigationHandler}>
       <Image
-        source={{uri: profileImage}}
-        style={styles.image}
+        source={
+          profileImage
+            ? {uri: profileImage}
+            : require('../../assets/images/profile.png')
+        }
+        style={[styles.image, !profileImage && styles.border]}
         resizeMode="cover"
       />
     </IconButtonImage>
-  ) : (
-    <IconButton
-      iconName="person-circle"
-      onPress={navigationHandler}
-      iconSize={26}
-      iconColor={colors.white}
-      iconStyle={styles.icon}
-      style={styles.iconButton}
-    />
   );
 };
 
 const styles = StyleSheet.create({
-  imageButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 12,
-    overflow: 'hidden',
-    padding: 0,
-  },
   image: {
     width: 36,
     height: 36,
-    borderRadius: 12,
+    borderRadius: 18,
   },
-  iconButton: {
-    borderRadius: 8,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  icon: {
-    position: 'relative',
-    top: 0,
-    right: 0,
-    left: 0,
-    bottom: 0,
+
+  border: {
+    borderWidth: 2,
+    borderColor: colors.skeletonBackground,
   },
 });
 

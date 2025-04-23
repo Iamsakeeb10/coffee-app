@@ -44,44 +44,42 @@ const LogoutButton = ({setShowSheet, showSheet}: LogoutButtonProps) => {
 
   return (
     <View>
-      <View>
-        <BottomSheet visible={showSheet} onClose={toggleBottomSheet}>
-          <View style={styles.bottomSheetContainer}>
-            <View style={styles.bottomSheetHeader}>
-              <View style={styles.bottomSheetHeaderTextContainer}>
-                <Text style={styles.bottomSheetTitle}>Log out</Text>
-                <Text style={styles.bottomSheetSubtitle}>
-                  Log out from this account?
-                </Text>
-              </View>
-              <View>
-                <Ionicons
-                  name="close-outline"
-                  size={26}
-                  color={colors.muted}
-                  onPress={toggleBottomSheet}
-                />
-              </View>
+      <BottomSheet visible={showSheet} onClose={toggleBottomSheet}>
+        <View style={styles.bottomSheetContainer}>
+          <View style={styles.bottomSheetHeader}>
+            <View style={styles.bottomSheetHeaderTextContainer}>
+              <Text style={styles.bottomSheetTitle}>Log out</Text>
+              <Text style={styles.bottomSheetSubtitle}>
+                Log out from this account?
+              </Text>
             </View>
-
-            <View style={styles.bottomSheetSpacer} />
-
-            <View style={styles.bottomSheetButtonContainer}>
-              <TouchableOpacity
-                style={[styles.bottomSheetCancelButton]}
-                onPress={toggleBottomSheet}>
-                <Text style={styles.bottomSheetCancelText}>CANCEL</Text>
-              </TouchableOpacity>
-              <View />
-              <TouchableOpacity
-                style={styles.bottomSheetLogoutButton}
-                onPress={logoutHandler}>
-                <Text style={styles.bottomSheetLogoutText}>LOG OUT</Text>
-              </TouchableOpacity>
+            <View>
+              <Ionicons
+                name="close-outline"
+                size={26}
+                color={colors.muted}
+                onPress={toggleBottomSheet}
+              />
             </View>
           </View>
-        </BottomSheet>
-      </View>
+
+          <View style={styles.bottomSheetSpacer} />
+
+          <View style={styles.bottomSheetButtonContainer}>
+            <TouchableOpacity
+              style={[styles.bottomSheetCancelButton]}
+              onPress={toggleBottomSheet}>
+              <Text style={styles.bottomSheetCancelText}>CANCEL</Text>
+            </TouchableOpacity>
+            <View />
+            <TouchableOpacity
+              style={styles.bottomSheetLogoutButton}
+              onPress={logoutHandler}>
+              <Text style={styles.bottomSheetLogoutText}>LOG OUT</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </BottomSheet>
     </View>
   );
 };

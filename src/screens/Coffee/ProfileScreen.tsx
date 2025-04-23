@@ -1,31 +1,18 @@
 import React, {useState} from 'react';
-import {
-  Dimensions,
-  Image,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 import LogoutButton from '../../components/Coffee/LogoutButton';
+import ProfileImage from '../../components/Coffee/ProfileImage';
 import {colors} from '../../constants/colors';
 import {RootState} from '../../redux/store/store';
 import styles from '../../styles/profileScreenStyles';
-
-const {width} = Dimensions.get('window');
 
 const ProfileScreen = () => {
   const [showSheet, setShowSheet] = useState(false);
 
   const {user} = useSelector((state: RootState) => state.auth);
-
-  // const user = {
-  //   name: 'Md Abu Ubayda',
-  //   phone: '+8801712346789',
-  //   image: 'https://i.pravatar.cc/150?img=12', // fallback demo image
-  // };
 
   const menuItems = [
     {icon: 'log-out-outline', title: 'Log Out'},
@@ -39,26 +26,10 @@ const ProfileScreen = () => {
     setShowSheet(prev => !prev);
   };
 
-  // const menuItems = [
-  //   {icon: 'person-outline', title: 'My Profile'},
-  //   // {icon: 'cart-outline', title: 'My Orders'},
-  //   // {icon: 'refresh-outline', title: 'Refund'},
-  //   // {icon: 'lock-closed-outline', title: 'Change Password'},
-  //   // {icon: 'language-outline', title: 'Change Language'},
-  // ];
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.profileCard}>
-        <Image
-          source={
-            user?.photoURL
-              ? {uri: user.photoURL}
-              : require('../../assets/images/profile.png')
-          }
-          style={[styles.avatar]}
-        />
-
+        <ProfileImage photoURL={user?.photoURL} />
         <Text style={styles.name}>{user?.displayName}</Text>
         <Text style={styles.phone}>{user?.email}</Text>
       </View>

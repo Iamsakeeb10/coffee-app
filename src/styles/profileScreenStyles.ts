@@ -19,8 +19,6 @@ const styles = StyleSheet.create({
     height: 90,
     borderRadius: 45,
     marginBottom: 10,
-    borderWidth: 2,
-    borderColor: colors.white,
   },
   name: {
     color: colors.white,
@@ -43,7 +41,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   menuContainer: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.menuContainer,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingTop: 20,
@@ -122,6 +120,64 @@ const styles = StyleSheet.create({
     color: colors.circle,
     fontSize: 16,
     fontFamily: fontFamily.medium,
+  },
+
+  profileImageContainer: {
+    position: 'relative',
+    marginBottom: 5,
+  },
+
+  uploadIcon: {
+    position: 'absolute',
+    bottom: 6,
+    right: 5,
+    backgroundColor: colors.cardBackground,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: colors.white,
+  },
+
+  border: {
+    borderWidth: 2,
+    borderColor: colors.white,
+  },
+
+  uploadSheetContainer: {
+    paddingVertical: 20,
+    width: width / 1.15,
+    alignSelf: 'center',
+  },
+
+  uploadSheetTitle: {
+    fontSize: 18,
+    fontFamily: fontFamily.medium,
+    marginBottom: 16,
+  },
+
+  sheetOption: {
+    paddingVertical: 4,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  optionText: {
+    color: colors.background,
+    fontSize: 16,
+    textAlign: 'left',
+    fontFamily: fontFamily.regular,
+  },
+  optionContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  optionIcon: {
+    marginRight: 15,
+    backgroundColor: colors.cardBackground, // Make all icons have same background color
+    padding: 8,
+    borderRadius: 24,
   },
 });
 

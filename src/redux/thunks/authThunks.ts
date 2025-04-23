@@ -5,7 +5,9 @@ import auth, {
   signOut,
   updateProfile,
 } from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {colors} from '../../constants/colors';
 import {showSnack} from '../../utils/Snack';
@@ -49,20 +51,26 @@ export const loginUser = createAsyncThunk(
     {rejectWithValue},
   ) => {
     try {
-      const auth = getAuth();
+      const authInstance = getAuth();
       const userCredential = await signInWithEmailAndPassword(
-        auth,
+        authInstance,
         email,
         password,
       );
 
-      console.log('Login Credentail =>>', userCredential);
+      console.log('Login Credentials =>>', userCredential);
+
+      const snapshot = await database()
+        .ref(`users/${userCredential.user.uid}/profileImage`)
+        .once('value');
+      const profileImage = snapshot.val();
 
       return {
         uid: userCredential.user.uid,
         email: userCredential.user.email,
         displayName: userCredential.user.displayName,
         emailVerified: userCredential.user.emailVerified,
+        photoURL: profileImage ?? userCredential.user.photoURL ?? null,
       };
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -83,11 +91,16 @@ export const googleLogin = createAsyncThunk(
         googleCredential,
       );
 
+      const snapshot = await database()
+        .ref(`users/${userCredential.user.uid}/profileImage`)
+        .once('value');
+      const profileImage = snapshot.val();
+
       return {
         uid: userCredential.user.uid,
         email: userCredential.user.email,
         displayName: userCredential.user.displayName,
-        photoURL: userCredential.user.photoURL,
+        photoURL: profileImage ?? userCredential.user.photoURL ?? null,
       };
     } catch (error: any) {
       if (error.code === 'getTokens') {
@@ -132,6 +145,42 @@ export const logoutUser = createAsyncThunk(
     } catch (error: any) {
       console.log('Logout Error:', error);
       return rejectWithValue(error?.message || 'Failed to log out');
+    }
+  },
+);
+
+export const updateUserProfile = createAsyncThunk(
+  'auth/updateUserProfile',
+  async (
+    {
+      displayName,
+      photoURL,
+    }: {
+      displayName?: string;
+      photoURL?: string;
+    },
+    {rejectWithValue},
+  ) => {
+    try {
+      const currentUser = auth().currentUser;
+
+      if (!currentUser) {
+        throw new Error('User not authenticated');
+      }
+
+      const updateData: {
+        displayName?: string;
+        photoURL?: string;
+      } = {};
+
+      if (displayName) updateData.displayName = displayName;
+      if (photoURL) updateData.photoURL = photoURL;
+
+      await updateProfile(currentUser, updateData);
+
+      return updateData;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to update profile');
     }
   },
 );
