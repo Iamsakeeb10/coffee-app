@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {
   Dimensions,
   Image,
-  PermissionsAndroid,
+  Linking,
   Platform,
   Text,
   TouchableOpacity,
@@ -16,6 +16,7 @@ import {colors} from '../../constants/colors';
 import {setUser} from '../../redux/slices/authSlice';
 import {RootState} from '../../redux/store/store';
 import styles from '../../styles/profileScreenStyles';
+import {requestAndroidPermission} from '../../utils/handlePermissions';
 import {
   captureImage,
   processAndConvertToBase64,
@@ -25,6 +26,7 @@ import {
   showSuccess,
 } from '../../utils/profileImageHelpers';
 import BottomSheet from '../Common/BottomSheet';
+import CustomAlert from '../Common/CustomAlert';
 
 const {width} = Dimensions.get('window');
 
@@ -38,53 +40,64 @@ const ProfileImage: React.FC<ProfileImageProps> = ({photoURL}) => {
   const [uploading, setUploading] = useState(false);
   const [showSheet, setShowSheet] = useState(false);
 
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const [deniedPermissions, setDeniedPermissions] = useState<{
+    camera: boolean;
+    gallery: boolean;
+  }>({
+    camera: false,
+    gallery: false,
+  });
+
   const toggleBottomSheet = () => setShowSheet(prev => !prev);
 
-  const requestAndroidPermission = async (type: 'camera' | 'gallery') => {
-    try {
-      let permission;
+  const showPermissionAlert = (type: 'camera' | 'gallery') => {
+    setAlertTitle(
+      `${type === 'camera' ? 'Camera' : 'Gallery'} Permission Required`,
+    );
+    setAlertMessage(
+      `Please enable ${
+        type === 'camera' ? 'Camera' : 'Storage'
+      } access in settings.`,
+    );
+    setAlertVisible(true);
+  };
 
-      if (type === 'camera') {
-        permission = PermissionsAndroid.PERMISSIONS.CAMERA;
-      } else {
-        const androidVersion = Number(Platform.Version);
-        permission =
-          androidVersion >= 33
-            ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
-            : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
-      }
+  const handleAlertConfirm = () => {
+    setAlertVisible(false);
+    Linking.openSettings();
+  };
 
-      const hasPermission = await PermissionsAndroid.check(permission);
-      if (hasPermission) return true;
-
-      const granted = await PermissionsAndroid.request(permission);
-      return granted === PermissionsAndroid.RESULTS.GRANTED;
-    } catch (err) {
-      console.warn(err);
-      return false;
-    }
+  const handleAlertCancel = () => {
+    setAlertVisible(false);
   };
 
   const handleImage = async (
     action: () => Promise<any>,
     type: 'camera' | 'gallery',
   ) => {
+    setTimeout(() => {
+      setShowSheet(false);
+    }, 50);
+
     if (Platform.OS === 'android') {
-      const granted = await requestAndroidPermission(type);
+      const granted = await requestAndroidPermission(
+        type,
+        setDeniedPermissions,
+      );
       if (!granted) {
-        setShowSheet(false);
         setTimeout(() => {
-          showError(
-            `Permission denied. Please enable ${
-              type === 'camera' ? 'Camera' : 'Storage'
-            } access in settings.`,
-          );
-        }, 400);
+          if (deniedPermissions[type]) {
+            showPermissionAlert(type);
+          }
+        }, 300);
         return;
       }
     }
 
-    setShowSheet(false);
     try {
       const result = await action();
 
@@ -194,6 +207,17 @@ const ProfileImage: React.FC<ProfileImageProps> = ({photoURL}) => {
           </TouchableOpacity>
         </View>
       </BottomSheet>
+
+      <CustomAlert
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onCancel={handleAlertCancel}
+        onConfirm={handleAlertConfirm}
+        cancelText="Cancel"
+        confirmText="Open Settings"
+        confirmBgColor={colors.alertBtnBg}
+      />
     </View>
   );
 };

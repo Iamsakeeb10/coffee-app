@@ -20,6 +20,7 @@ export const colors = {
   confirmBg: '#007074',
   badge: '#4F959D',
   menuIcon: '#626F47',
+  alertBtnBg: '#077A7D',
 
   background: '#0C0F14',
   cardBackground: '#252A32',

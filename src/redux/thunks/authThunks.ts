@@ -104,7 +104,7 @@ export const googleLogin = createAsyncThunk(
       };
     } catch (error: any) {
       if (error.code === 'getTokens') {
-        showSnack('Google Sign-In was canceled', {
+        showSnack('Google Sign In was canceled', {
           duration: 3000,
           backgroundColor: colors.deepRed,
           textColor: colors.white,
