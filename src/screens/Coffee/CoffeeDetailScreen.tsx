@@ -1,3 +1,4 @@
+import auth from '@react-native-firebase/auth';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useRef, useState} from 'react';
 import {
@@ -12,6 +13,10 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {colors} from '../../constants/colors';
+import {
+  removeFavoriteFromFirestore,
+  saveFavoriteToFirestore,
+} from '../../firebase/service/favoritesService';
 import {addToCart} from '../../redux/slices/cartSlice';
 import {toggleFavorite} from '../../redux/slices/favoritesSlice';
 import {AppDispatch, RootState} from '../../redux/store/store';
@@ -45,10 +50,44 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
     navigation.goBack();
   };
 
+  // const handleToggleFavorite = () => {
+  //   if (item) {
+  //     dispatch(toggleFavorite(item));
+  //   }
+
+  //   const userId = auth().currentUser?.uid;
+
+  //   showSnack(
+  //     isFavorite
+  //       ? `${item.name} removed from favorites`
+  //       : `${item.name} added to favorites`,
+  //     {
+  //       backgroundColor: colors.background,
+  //       textColor: colors.white,
+  //       actionText: 'Okay',
+  //       actionColor: colors.circle,
+  //       duration: 1200,
+  //     },
+  //   );
+  // };
+
   const handleToggleFavorite = () => {
-    if (item) {
-      dispatch(toggleFavorite(item));
+    if (!item) return;
+
+    const userId = auth().currentUser?.uid;
+    if (!userId) return;
+
+    const isCurrentlyFavorite = favorites.some(fav => fav.id === item.id);
+
+    dispatch(toggleFavorite(item));
+
+    if (isCurrentlyFavorite) {
+      removeFavoriteFromFirestore(userId, item.id);
+    } else {
+      saveFavoriteToFirestore(userId, item);
     }
+
+    console.log('Saving favorite to Firestore:', item);
 
     showSnack(
       isFavorite
