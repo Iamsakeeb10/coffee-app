@@ -1,3 +1,4 @@
+import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
@@ -13,6 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import CustomAlert from '../../components/Common/CustomAlert';
 import {colors} from '../../constants/colors';
+import {removeFavoriteFromFirestore} from '../../firebase/service/favoritesService';
 import {toggleFavorite} from '../../redux/slices/favoritesSlice';
 import {AppDispatch, RootState} from '../../redux/store/store';
 import favoritesScreenStyles from '../../styles/favoriteScreenStyles';
@@ -31,9 +33,14 @@ const FavoritesScreen: React.FC = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const handleRemoveFavorite = () => {
+  const handleRemoveFavorite = async () => {
     if (selectedItem) {
       dispatch(toggleFavorite(selectedItem));
+
+      const userId = auth().currentUser?.uid;
+      if (userId) {
+        await removeFavoriteFromFirestore(userId, selectedItem.id);
+      }
 
       setTimeout(() => {
         showSnack(`${selectedItem.name} removed from favorites`, {
@@ -43,6 +50,7 @@ const FavoritesScreen: React.FC = () => {
           actionColor: colors.white,
         });
       }, 100);
+
       setSelectedItem(null);
       setShowAlert(false);
     }

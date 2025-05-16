@@ -50,27 +50,6 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
     navigation.goBack();
   };
 
-  // const handleToggleFavorite = () => {
-  //   if (item) {
-  //     dispatch(toggleFavorite(item));
-  //   }
-
-  //   const userId = auth().currentUser?.uid;
-
-  //   showSnack(
-  //     isFavorite
-  //       ? `${item.name} removed from favorites`
-  //       : `${item.name} added to favorites`,
-  //     {
-  //       backgroundColor: colors.background,
-  //       textColor: colors.white,
-  //       actionText: 'Okay',
-  //       actionColor: colors.circle,
-  //       duration: 1200,
-  //     },
-  //   );
-  // };
-
   const handleToggleFavorite = () => {
     if (!item) return;
 
