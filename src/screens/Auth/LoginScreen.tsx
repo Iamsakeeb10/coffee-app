@@ -12,15 +12,16 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
 import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
+
 import AnimatedErrorText from '../../components/Auth/AnimatedErrorText';
 import ButtonLocal from '../../components/Common/ButtonLocal';
 import IconButton from '../../components/Common/IconButton';
 import InputLocal from '../../components/Common/InputLocal';
 import {colors} from '../../constants/colors';
 import useNetInfo from '../../hooks/useNetInfo';
+import {useTranslation} from '../../i18n/useTranslations';
 import {AppDispatch, RootState} from '../../redux/store/store';
 import {googleLogin, loginUser} from '../../redux/thunks/authThunks';
 import styles from '../../styles/authStyles';
@@ -49,6 +50,7 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   );
 
   const {isConnected} = useNetInfo();
+  const {t} = useTranslation();
 
   const handleUserInputChange = (
     field: keyof LoginUserInput,
@@ -86,11 +88,11 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
     Keyboard.dismiss();
 
     if (!isConnected) {
-      showSnack('No Internet Connection', {
+      showSnack(`${t('auth.noInternetConnection')}`, {
         duration: 3000,
         backgroundColor: colors.deepRed,
         textColor: colors.white,
-        actionText: 'Okay',
+        actionText: t('common.okay'),
         actionColor: colors.white,
       });
 
@@ -99,7 +101,7 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
 
     const {enteredEmail, enteredPassword} = userInput;
 
-    const validationResult = loginValidation(enteredEmail, enteredPassword);
+    const validationResult = loginValidation(enteredEmail, enteredPassword, t);
     const validationError = hasValidationError(validationResult);
 
     if (validationError) {
@@ -114,7 +116,7 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
         loginUser({email: enteredEmail, password: enteredPassword}),
       ).unwrap();
     } catch (error: any) {
-      Alert.alert('Login Failed', error);
+      Alert.alert(t('auth.loginFailed'), error);
     }
   };
 
@@ -128,11 +130,11 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
 
   const googleLoginHandler = async () => {
     if (!isConnected) {
-      showSnack('No Internet Connection', {
+      showSnack(`${t('auth.noInternetConnection')}`, {
         duration: 3000,
         backgroundColor: colors.deepRed,
         textColor: colors.white,
-        actionText: 'Okay',
+        actionText: t('common.okay'),
         actionColor: colors.white,
       });
 
@@ -146,7 +148,7 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
         duration: 3000,
         backgroundColor: colors.deepRed,
         textColor: colors.white,
-        actionText: 'Okay',
+        actionText: t('common.okay'),
         actionColor: colors.white,
       });
     }
@@ -181,9 +183,11 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                 />
               </View>
               <Text style={[styles.headerText, {textAlign: 'left'}]}>
-                Welcome back!
+                {t('auth.welcomeBack')}
               </Text>
-              <Text style={styles.headerText}>Glad to see you,Again</Text>
+              <Text style={styles.headerText}>
+                {t('auth.gladToSeeYouAgain')}
+              </Text>
             </View>
 
             <KeyboardAvoidingView
@@ -191,7 +195,7 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
               style={styles.formContainer}>
               <View>
                 <InputLocal
-                  placeholder="Enter your email"
+                  placeholder={t('auth.enterEmail')}
                   keyboardType="email-address"
                   textColor={colors.inputTextColor}
                   value={userInput.enteredEmail}
@@ -215,7 +219,7 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
               </View>
               <View>
                 <InputLocal
-                  placeholder="Enter your password"
+                  placeholder={t('auth.enterPassword')}
                   textColor={colors.inputTextColor}
                   secureTextEntry={!showPass}
                   value={userInput.enteredPassword}
@@ -241,27 +245,27 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
               </View>
 
               <ButtonLocal
-                title="Log in"
+                title={t('auth.login')}
                 loading={loading}
                 buttonStyle={{backgroundColor: colors.btnRed}}
                 onPressHandler={handleSubmit}
               />
               <View style={styles.bottomContainer}>
                 <Text style={styles.alreadySigninText}>
-                  Don't have an account?
+                  {t('auth.dontHaveAccount')}
                 </Text>
                 <TouchableOpacity onPress={navigateToRegister}>
-                  <Text style={styles.signinText}>Sign up now</Text>
+                  <Text style={styles.signinText}>{t('auth.signupNow')}</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.orTextContainer}>
                 <Text style={styles.orText}>
-                  ---------------- <Text>Or</Text> ----------------
+                  ---------------- <Text>{t('auth.or')}</Text> ----------------
                 </Text>
               </View>
               <ButtonLocal
                 url={require('../../assets/images/google.png')}
-                title="Sign in with Google"
+                title={t('auth.signInWithGoogle')}
                 loading={googleLoading}
                 buttonStyle={{backgroundColor: colors.white}}
                 textStyle={{color: colors.background}}

@@ -1,6 +1,8 @@
 import React from 'react';
 import {Dimensions, StyleSheet, TextInput, TextInputProps} from 'react-native';
+import {useSelector} from 'react-redux';
 import {colors} from '../../constants/colors';
+import {RootState} from '../../redux/store/store';
 import {fontFamily} from '../../utils/typography';
 
 type InputLocalProps = {
@@ -32,11 +34,17 @@ const InputLocal: React.FC<InputLocalProps> = ({
   textColor = 'rgba(255,255,255,0.2)',
   error,
 }) => {
+  const {current} = useSelector((state: RootState) => state.language);
+
   const errorSpace = error ? 5 : 15;
 
   return (
     <TextInput
-      style={[styles.input, customStyle, {marginBottom: errorSpace}]}
+      style={[
+        styles.input,
+        customStyle,
+        {marginBottom: errorSpace, height: current === 'bn' ? 42 : 40},
+      ]}
       placeholder={placeholder}
       secureTextEntry={secureTextEntry}
       placeholderTextColor={textColor}
@@ -57,7 +65,6 @@ export default InputLocal;
 
 const styles = StyleSheet.create({
   input: {
-    height: 40,
     width: width / 1.2,
     borderRadius: 3,
     backgroundColor: 'rgba(211,211,211,0.2)',

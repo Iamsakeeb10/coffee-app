@@ -3,6 +3,7 @@ export const createAccountValidation = (
   email: string,
   password: string,
   confirmedPassword: string,
+  t: Function,
 ) => {
   const validNameRegex = /^[a-zA-Z\s.'()-]+$/;
   const emailRegex =
@@ -21,48 +22,51 @@ export const createAccountValidation = (
   };
 
   if (!trimmedName) {
-    errors.nameError = 'Name is required';
+    errors.nameError = t('auth.nameErrorRequired');
   } else if (trimmedName.length > 49) {
-    errors.nameError = 'Please enter less than 50 characters';
+    errors.nameError = t('auth.nameErrorMax');
   } else if (trimmedName.length < 3) {
-    errors.nameError = 'Please enter at least 3 characters';
+    errors.nameError = t('auth.nameErrorMin');
   } else if (!validNameRegex.test(trimmedName)) {
-    errors.nameError =
-      'Full name can only contain letters, spaces, dots, first bracket & dashes';
+    errors.nameError = t('auth.nameErrorInvalid');
   }
 
   if (!trimmedEmail) {
-    errors.emailError = `Email is required`;
+    errors.emailError = t('auth.emailErrorRequired');
   } else if (!emailRegex.test(trimmedEmail)) {
-    errors.emailError = `Please enter a valid email address`;
+    errors.emailError = t('auth.emailErrorInvalid');
   } else if (trimmedEmail.length > 100) {
-    errors.emailError = `Email should not contain more than 100 characters`;
+    errors.emailError = t('auth.emailErrorMax');
   }
 
   if (!trimmedPassword) {
-    errors.passwordError = `Password is required`;
+    errors.passwordError = t('auth.passwordErrorRequired');
   } else if (trimmedPassword.length >= 32) {
-    errors.passwordError = `Password must be less than 32 characters`;
+    errors.passwordError = t('auth.passwordErrorMax');
   } else if (trimmedPassword.length < 8) {
-    errors.passwordError = `Password must be at least 8 characters`;
+    errors.passwordError = t('auth.passwordErrorMin');
   }
 
   if (!trimmedReTypePassword) {
-    errors.confirmPasswordError = `Confirm password is required`;
+    errors.confirmPasswordError = t('auth.confirmPasswordErrorRequired');
   } else if (trimmedReTypePassword.length >= 32) {
-    errors.confirmPasswordError = `Password must be less than 32 characters`;
+    errors.confirmPasswordError = t('auth.confirmPasswordErrorMax');
   } else if (trimmedReTypePassword.length < 8) {
-    errors.confirmPasswordError = `Password must be at least 8 characters`;
+    errors.confirmPasswordError = t('auth.confirmPasswordErrorMin');
   }
 
   if (trimmedPassword !== trimmedReTypePassword) {
-    errors.confirmPasswordError = `Password not matched`;
+    errors.confirmPasswordError = t('auth.confirmPasswordErrorNotMatched');
   }
 
   return errors;
 };
 
-export const loginValidation = (email: string, password: string) => {
+export const loginValidation = (
+  email: string,
+  password: string,
+  t: Function,
+) => {
   const emailRegex =
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/;
 
@@ -75,19 +79,19 @@ export const loginValidation = (email: string, password: string) => {
   };
 
   if (!trimmedEmail) {
-    errors.emailError = `Email is required`;
+    errors.emailError = t('auth.emailErrorRequired');
   } else if (!emailRegex.test(trimmedEmail)) {
-    errors.emailError = `Please enter a valid email address`;
+    errors.emailError = t('auth.emailErrorInvalid');
   } else if (trimmedEmail.length > 100) {
-    errors.emailError = `Email should not contain more than 100 characters`;
+    errors.emailError = t('auth.emailErrorMax');
   }
 
   if (!trimmedPassword) {
-    errors.passwordError = `Password is required`;
+    errors.passwordError = t('auth.passwordErrorRequired');
   } else if (trimmedPassword.length >= 32) {
-    errors.passwordError = `Password must be less than 32 characters`;
+    errors.passwordError = t('auth.passwordErrorMax');
   } else if (trimmedPassword.length < 8) {
-    errors.passwordError = `Password must be at least 8 characters`;
+    errors.passwordError = t('auth.passwordErrorMin');
   }
 
   return errors;

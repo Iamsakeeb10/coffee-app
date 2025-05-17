@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     borderTopColor: colors.divider,
   },
   applyButton: {
-    backgroundColor: colors.accentPrimary,
+    backgroundColor: colors.badge,
     paddingVertical: spacing.spacing14,
     borderRadius: borderRadius.radius12,
     alignItems: 'center',

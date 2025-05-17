@@ -24,6 +24,7 @@ import IconButton from '../../components/Common/IconButton';
 import InputLocal from '../../components/Common/InputLocal';
 import {colors} from '../../constants/colors';
 import useNetInfo from '../../hooks/useNetInfo';
+import {useTranslation} from '../../i18n/useTranslations';
 import {AppDispatch, RootState} from '../../redux/store/store';
 import {registerUser} from '../../redux/thunks/authThunks';
 import styles from '../../styles/authStyles';
@@ -59,6 +60,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const {isConnected} = useNetInfo();
+  const {t} = useTranslation();
 
   const handleUserInputChange = (field: keyof RegUserInput, value: string) => {
     const updatedInput = {...userInput, [field]: value};
@@ -102,11 +104,11 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
     Keyboard.dismiss();
 
     if (!isConnected) {
-      showSnack('No Internet Connection', {
+      showSnack(`${t('auth.noInternetConnection')}`, {
         duration: 3000,
         backgroundColor: colors.deepRed,
         textColor: colors.white,
-        actionText: 'Okay',
+        actionText: t('common.okay'),
         actionColor: colors.white,
       });
 
@@ -121,6 +123,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
       enteredEmail,
       enteredPassword,
       enteredConfirmPassword,
+      t,
     );
 
     const validationError = hasValidationError(validationResult);
@@ -181,7 +184,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
             }>
             <View style={styles.headerTextContainer}>
               <Text style={styles.headerText}>
-                Hello, Register here to get started.
+                {t('auth.registerGreeting')}
               </Text>
             </View>
 
@@ -190,7 +193,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
               style={styles.formContainer}>
               <View>
                 <InputLocal
-                  placeholder="Enter your name"
+                  placeholder={t('auth.enterName')}
                   textColor={colors.inputTextColor}
                   value={userInput.enteredName}
                   onChange={val => handleUserInputChange('enteredName', val)}
@@ -214,7 +217,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
 
               <View>
                 <InputLocal
-                  placeholder="Enter your email"
+                  placeholder={t('auth.enterEmail')}
                   keyboardType="email-address"
                   textColor={colors.inputTextColor}
                   value={userInput.enteredEmail}
@@ -239,7 +242,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
 
               <View>
                 <InputLocal
-                  placeholder="Enter your password"
+                  placeholder={t('auth.enterPassword')}
                   textColor={colors.inputTextColor}
                   secureTextEntry={!showPass.password}
                   value={userInput.enteredPassword}
@@ -270,7 +273,7 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
 
               <View>
                 <InputLocal
-                  placeholder="Enter your confirm password"
+                  placeholder={t('auth.enterConfirmPassword')}
                   textColor={colors.inputTextColor}
                   secureTextEntry={!showPass.confirmPassword}
                   value={userInput.enteredConfirmPassword}
@@ -302,25 +305,25 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
               </View>
 
               <ButtonLocal
-                title="Sign up"
+                title={t('auth.signup')}
                 loading={loading}
                 buttonStyle={{backgroundColor: colors.primaryGreen}}
                 onPressHandler={handleSubmit}
               />
               <View style={styles.bottomContainer}>
                 <Text style={styles.alreadySigninText}>
-                  Already have an account?
+                  {t('auth.alreadyHaveAccount')}
                 </Text>
                 <TouchableOpacity onPress={navigateToLogin}>
-                  <Text style={styles.signinText}>Sign In</Text>
+                  <Text style={styles.signinText}>{t('auth.signIn')}</Text>
                 </TouchableOpacity>
               </View>
               <CustomAlert
                 visible={showSuccessAlert}
-                title="Account Created"
-                message="Your account has been created successfully!"
-                confirmText="Go to Login"
-                cancelText="Later"
+                title={t('auth.accountCreated')}
+                message={t('auth.accountCreatedMessage')}
+                confirmText={t('auth.goToLogin')}
+                cancelText={t('auth.later')}
                 confirmBgColor={colors.confirmBg}
                 onCancel={() => setShowSuccessAlert(false)}
                 onConfirm={() => {
