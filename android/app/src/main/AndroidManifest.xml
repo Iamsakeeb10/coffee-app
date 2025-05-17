@@ -13,11 +13,9 @@
         android:allowBackup="false"
         android:theme="@style/BootTheme"
         android:supportsRtl="true">
-
-        <!-- ✅ Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCyTgzcjaPdrc1O2DPSgvI_y2SwQ-qrJ5A" />
+            android:value="@string/google_maps_api_key" />
 
         <activity
             android:name=".MainActivity"
