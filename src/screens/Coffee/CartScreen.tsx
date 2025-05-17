@@ -243,7 +243,6 @@ const CartScreen = () => {
               const userId = auth().currentUser?.uid;
               if (!userId) return;
 
-              await clearCartFromFirestore(userId);
               dispatch(clearCart());
 
               setTimeout(() => {
@@ -254,6 +253,8 @@ const CartScreen = () => {
                   actionColor: colors.white,
                 });
               }, 150);
+
+              await clearCartFromFirestore(userId);
             } else if (selectedItem) {
               handleRemove(selectedItem.id); // already handles snack inside
             }
@@ -261,37 +262,6 @@ const CartScreen = () => {
           }}
         />
       )}
-
-      {/* {showAlert && (
-        <CustomAlert
-          visible={showAlert}
-          title={alertTitle}
-          message={alertMessage}
-          confirmText="Okay"
-          cancelText="Cancel"
-          confirmBgColor={colors.deepRed}
-          onCancel={() => {
-            setShowAlert(false);
-            setSelectedItem(null);
-          }}
-          onConfirm={() => {
-            if (isForAllItems) {
-              dispatch(clearCart());
-              setTimeout(() => {
-                showSnack('All coffee items removed from cart', {
-                  backgroundColor: colors.deepRed,
-                  textColor: colors.white,
-                  actionText: 'Okay',
-                  actionColor: colors.white,
-                });
-              }, 150);
-            } else if (selectedItem) {
-              handleRemove(selectedItem.id);
-            }
-            setShowAlert(false);
-          }}
-        />
-      )} */}
     </View>
   );
 };
