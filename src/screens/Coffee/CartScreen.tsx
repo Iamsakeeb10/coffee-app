@@ -4,6 +4,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 
+import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import CartEmpty from '../../components/Coffee/CartEmpty';
@@ -12,6 +13,11 @@ import SingleSizeCartItem from '../../components/Coffee/SingleSizeCartItem';
 import {renderAlertMessage} from '../../components/Common/AlertMessage';
 import CustomAlert from '../../components/Common/CustomAlert';
 import {colors} from '../../constants/colors';
+import {
+  clearCartFromFirestore,
+  removeCartItemFromFirestore,
+  saveCartItemToFirestore,
+} from '../../firebase/service/cartService';
 import {
   CartItem,
   clearCart,
@@ -96,22 +102,52 @@ const CartScreen = () => {
     });
   }, [navigation, items.length]);
 
-  const handleIncrement = (id: string) => {
+  const handleIncrement = async (id: string) => {
+    const item = items.find(item => item.id === id);
+    if (!item) return;
+
+    const updatedItem = {
+      ...item,
+      quantity: item.quantity + 1,
+    };
+
+    const userId = auth().currentUser?.uid;
+    if (!userId) return;
+
     dispatch(incrementQuantity(id));
+    await saveCartItemToFirestore(userId, updatedItem);
   };
 
-  const handleDecrement = (id: string, quantity: number) => {
+  const handleDecrement = async (id: string, quantity: number) => {
+    const item = items.find(item => item.id === id);
+    if (!item) return;
+
+    const userId = auth().currentUser?.uid;
+    if (!userId) return;
+
     if (quantity > 1) {
+      const updatedItem = {
+        ...item,
+        quantity: item.quantity - 1,
+      };
+
       dispatch(decrementQuantity(id));
+      await saveCartItemToFirestore(userId, updatedItem);
     } else {
-      setSelectedItem(items.find(item => item.id === id) || null);
+      // Ask for confirmation before removing the item
+      setSelectedItem(item);
       setIsForAllItems(false);
       setShowAlert(true);
     }
   };
 
-  const handleRemove = (id: string) => {
+  const handleRemove = async (id: string) => {
+    const userId = auth().currentUser?.uid;
+    if (!userId) return;
+
+    await removeCartItemFromFirestore(userId, id);
     dispatch(removeFromCart(id));
+
     setTimeout(() => {
       showSnack(`${selectedItem?.name} removed from cart`, {
         backgroundColor: colors.deepRed,
@@ -202,6 +238,42 @@ const CartScreen = () => {
             setShowAlert(false);
             setSelectedItem(null);
           }}
+          onConfirm={async () => {
+            if (isForAllItems) {
+              const userId = auth().currentUser?.uid;
+              if (!userId) return;
+
+              await clearCartFromFirestore(userId);
+              dispatch(clearCart());
+
+              setTimeout(() => {
+                showSnack('All coffee items removed from cart', {
+                  backgroundColor: colors.deepRed,
+                  textColor: colors.white,
+                  actionText: 'Okay',
+                  actionColor: colors.white,
+                });
+              }, 150);
+            } else if (selectedItem) {
+              handleRemove(selectedItem.id); // already handles snack inside
+            }
+            setShowAlert(false);
+          }}
+        />
+      )}
+
+      {/* {showAlert && (
+        <CustomAlert
+          visible={showAlert}
+          title={alertTitle}
+          message={alertMessage}
+          confirmText="Okay"
+          cancelText="Cancel"
+          confirmBgColor={colors.deepRed}
+          onCancel={() => {
+            setShowAlert(false);
+            setSelectedItem(null);
+          }}
           onConfirm={() => {
             if (isForAllItems) {
               dispatch(clearCart());
@@ -219,7 +291,7 @@ const CartScreen = () => {
             setShowAlert(false);
           }}
         />
-      )}
+      )} */}
     </View>
   );
 };

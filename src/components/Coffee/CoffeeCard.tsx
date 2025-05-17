@@ -1,9 +1,11 @@
+import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useRef} from 'react';
 import {Animated, Dimensions, Image, Pressable, Text, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch} from 'react-redux';
 import {colors} from '../../constants/colors';
+import {saveCartItemToFirestore} from '../../firebase/service/cartService';
 import {addToCart} from '../../redux/slices/cartSlice';
 import {AppDispatch} from '../../redux/store/store';
 import styles from '../../styles/coffeeScreenStyle';
@@ -44,11 +46,14 @@ const CoffeeCard: React.FC<Props> = ({item, loading, index = 0}) => {
   const handleAddToCart = () => {
     const selectedSizeLabel = item.sizes[0];
     const price = item.priceBySize[selectedSizeLabel];
+    const userId = auth().currentUser?.uid;
+
+    if (!userId) return;
 
     triggerScaleAnimation(scaleValue);
 
     const cartItem = {
-      id: '',
+      id: '', // will be generated inside slice
       coffeeId: item.id,
       name: item.name,
       subtitle: item.subtitle,
@@ -59,6 +64,13 @@ const CoffeeCard: React.FC<Props> = ({item, loading, index = 0}) => {
     };
 
     dispatch(addToCart(cartItem));
+
+    // Sync to Firestore
+    const cartItemId = `${item.id}_${selectedSizeLabel}`;
+    saveCartItemToFirestore(userId, {
+      ...cartItem,
+      id: cartItemId,
+    });
 
     const fullSize = getFullSize(selectedSizeLabel);
     const sizeLabel = fullSize.charAt(0).toUpperCase() + fullSize.slice(1);

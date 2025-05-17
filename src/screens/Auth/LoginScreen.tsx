@@ -34,8 +34,8 @@ import {showSnack} from '../../utils/Snack';
 import {loginValidation} from '../../utils/validator';
 
 const initialUserInput: LoginUserInput = {
-  enteredEmail: '',
-  enteredPassword: '',
+  enteredEmail: 'shakib@gmail.com',
+  enteredPassword: '12345678',
 };
 
 const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {

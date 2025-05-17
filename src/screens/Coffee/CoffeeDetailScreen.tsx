@@ -13,6 +13,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {colors} from '../../constants/colors';
+import {saveCartItemToFirestore} from '../../firebase/service/cartService';
 import {
   removeFavoriteFromFirestore,
   saveFavoriteToFirestore,
@@ -83,23 +84,33 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
   };
 
   const handleAddToCart = () => {
-    const selectedSizeLabel = item.sizes[selectedSize];
+    const selectedSizeLabel = item.sizes[0];
     const price = item.priceBySize[selectedSizeLabel];
+    const userId = auth().currentUser?.uid;
+
+    if (!userId) return;
 
     triggerScaleAnimation(scaleValue);
 
     const cartItem = {
-      id: '',
+      id: '', // will be generated inside slice
       coffeeId: item.id,
       name: item.name,
       subtitle: item.subtitle,
       imageURL: item.imageURL,
       size: selectedSizeLabel,
-      price,
+      price: price,
       quantity: 1,
     };
 
     dispatch(addToCart(cartItem));
+
+    // Sync to Firestore
+    const cartItemId = `${item.id}_${selectedSizeLabel}`;
+    saveCartItemToFirestore(userId, {
+      ...cartItem,
+      id: cartItemId,
+    });
 
     const fullSize = getFullSize(selectedSizeLabel);
     const sizeLabel = fullSize.charAt(0).toUpperCase() + fullSize.slice(1);

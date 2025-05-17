@@ -80,6 +80,14 @@ const cartSlice = createSlice({
       }
     },
 
+    setCart: (state, action: PayloadAction<CartItem[]>) => {
+      state.items = action.payload;
+      state.totalAmount = action.payload.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0,
+      );
+    },
+
     clearCart: state => {
       state.items = [];
       state.totalAmount = 0;
@@ -92,6 +100,7 @@ export const {
   removeFromCart,
   incrementQuantity,
   decrementQuantity,
+  setCart,
   clearCart,
 } = cartSlice.actions;
 
