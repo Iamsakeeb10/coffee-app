@@ -13,8 +13,8 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import CustomAlert from '../../components/Common/CustomAlert';
-import {colors} from '../../constants/colors';
 import {removeFavoriteFromFirestore} from '../../firebase/service/favoritesService';
+import {useTheme} from '../../hooks/useTheme';
 import {useTranslation} from '../../i18n/useTranslations';
 import {toggleFavorite} from '../../redux/slices/favoritesSlice';
 import {AppDispatch, RootState} from '../../redux/store/store';
@@ -27,6 +27,7 @@ const FavoritesScreen: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<CoffeeItem | null>(null);
 
   const dispatch = useDispatch<AppDispatch>();
+  const {colors, isDarkMode, themeMode} = useTheme();
   const favorites = useSelector(
     (state: RootState) => state.favorites.favorites,
   );
@@ -47,7 +48,7 @@ const FavoritesScreen: React.FC = () => {
 
       setTimeout(() => {
         showSnack(`${selectedItem.name} ${t('product.removedFromFavorites')}`, {
-          backgroundColor: colors.deepRed,
+          backgroundColor: colors.accentOrange,
           textColor: colors.white,
           actionText: t('common.okay'),
           actionColor: colors.white,
@@ -82,7 +83,7 @@ const FavoritesScreen: React.FC = () => {
                 setShowAlert(true);
               }}
               style={favoritesScreenStyles.removeButton}>
-              <Ionicons name="heart" size={24} color={colors.favorite} />
+              <Ionicons name="heart" size={24} color={colors.accentFavorite} />
             </Pressable>
           </View>
           <View style={favoritesScreenStyles.overlay}>
@@ -94,7 +95,7 @@ const FavoritesScreen: React.FC = () => {
 
               <View style={favoritesScreenStyles.ratingRow}>
                 <View style={favoritesScreenStyles.starRating}>
-                  <Ionicons name="star" size={18} color={colors.circle} />
+                  <Ionicons name="star" size={18} color={colors.accentCircle} />
                   <Text style={favoritesScreenStyles.ratingText}>
                     {item.rating} ({item.ratingCount})
                   </Text>
@@ -110,8 +111,8 @@ const FavoritesScreen: React.FC = () => {
         </ImageBackground>
       </View>
 
-      <View style={favoritesScreenStyles.descriptionContainer}>
-        <Text style={favoritesScreenStyles.descriptionTitle}>
+      <View style={[favoritesScreenStyles.descriptionContainer]}>
+        <Text style={[favoritesScreenStyles.descriptionTitle]}>
           {t('product.description')}
         </Text>
         <Text style={favoritesScreenStyles.descriptionText}>
@@ -138,8 +139,17 @@ const FavoritesScreen: React.FC = () => {
   );
 
   return (
-    <View style={favoritesScreenStyles.container}>
-      <StatusBar barStyle="light-content" backgroundColor={colors.background} />
+    <View
+      style={[
+        favoritesScreenStyles.container,
+        {
+          backgroundColor: colors.backgroundDefault,
+        },
+      ]}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={colors.backgroundDefault}
+      />
       <FlatList
         data={favorites}
         renderItem={renderFavoriteItem}
@@ -162,7 +172,7 @@ const FavoritesScreen: React.FC = () => {
             setSelectedItem(null);
           }}
           onConfirm={handleRemoveFavorite}
-          confirmBgColor={colors.deepRed}
+          confirmBgColor={colors.accentOrange}
         />
       )}
     </View>

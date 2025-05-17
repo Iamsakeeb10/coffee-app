@@ -5,6 +5,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import RootNavigator from './src/navigation/RootNavigator';
 import store, {persistor} from './src/redux/store/store';
 
+import {ThemeProvider} from './src/theme/ThemeProvider';
 import {configureGoogleSignIn, initApp} from './src/utils/initialize';
 
 const App = () => {
@@ -16,7 +17,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <RootNavigator />
+        <ThemeProvider>
+          <RootNavigator />
+        </ThemeProvider>
       </PersistGate>
     </Provider>
   );

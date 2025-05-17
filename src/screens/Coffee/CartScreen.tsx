@@ -12,12 +12,12 @@ import MultipleSizeCartItem from '../../components/Coffee/MultipleSizeCartItem';
 import SingleSizeCartItem from '../../components/Coffee/SingleSizeCartItem';
 import {renderAlertMessage} from '../../components/Common/AlertMessage';
 import CustomAlert from '../../components/Common/CustomAlert';
-import {colors} from '../../constants/colors';
 import {
   clearCartFromFirestore,
   removeCartItemFromFirestore,
   saveCartItemToFirestore,
 } from '../../firebase/service/cartService';
+import {useTheme} from '../../hooks/useTheme';
 import {useTranslation} from '../../i18n/useTranslations';
 import {
   CartItem,
@@ -50,6 +50,7 @@ const CartScreen = () => {
   const insets = useSafeAreaInsets();
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const {colors, isDarkMode, themeMode} = useTheme();
 
   const groupedItems = useMemo(() => {
     const groups: Record<string, GroupedCartItem> = {};
@@ -75,7 +76,7 @@ const CartScreen = () => {
   const handleClearCartPress = () => {
     if (items.length === 0) {
       showSnack('Cart is already empty', {
-        backgroundColor: colors.deepRed,
+        backgroundColor: colors.accentOrange,
         textColor: colors.white,
         actionText: 'Okay',
         actionColor: colors.white,
@@ -98,7 +99,11 @@ const CartScreen = () => {
               opacity: pressed ? 0.5 : 1,
               marginRight: 16,
             })}>
-            <Ionicons name="trash-outline" size={22} color={colors.white} />
+            <Ionicons
+              name="trash-outline"
+              size={22}
+              color={colors.textPrimary}
+            />
           </Pressable>
         ) : null,
     });
@@ -152,7 +157,7 @@ const CartScreen = () => {
 
     setTimeout(() => {
       showSnack(`${selectedItem?.name} removed from cart`, {
-        backgroundColor: colors.deepRed,
+        backgroundColor: colors.accentBadge,
         textColor: colors.white,
         actionText: 'Okay',
         actionColor: colors.white,
@@ -162,10 +167,10 @@ const CartScreen = () => {
 
   const handleCheckout = () => {
     showSnack('Checkout functionality will be implemented soon', {
-      backgroundColor: colors.background,
+      backgroundColor: colors.accentBadge,
       textColor: colors.white,
       actionText: 'Okay',
-      actionColor: colors.circle,
+      actionColor: colors.accentCircle,
       duration: 1200,
     });
   };
@@ -203,7 +208,13 @@ const CartScreen = () => {
   );
 
   return (
-    <View style={cartStyles.container}>
+    <View
+      style={[
+        cartStyles.container,
+        {
+          backgroundColor: colors.backgroundDefault,
+        },
+      ]}>
       <FlatList
         data={groupedItems}
         keyExtractor={item => item.name}
@@ -217,12 +228,27 @@ const CartScreen = () => {
 
       <View style={[cartStyles.footer, {paddingVertical: insets.bottom + 15}]}>
         <View style={cartStyles.priceContainer}>
-          <Text style={[cartStyles.descriptionTitle, cartStyles.priceText]}>
+          <Text
+            style={[
+              cartStyles.descriptionTitle,
+              cartStyles.priceText,
+              {
+                color: colors.gray300,
+              },
+            ]}>
             {t('product.totalPrice')}
           </Text>
           <View style={cartStyles.row}>
             <Text style={cartStyles.dollarSign}>$</Text>
-            <Text style={cartStyles.price}>{totalAmount.toFixed(2)}</Text>
+            <Text
+              style={[
+                cartStyles.price,
+                {
+                  color: colors.textPrimary,
+                },
+              ]}>
+              {totalAmount.toFixed(2)}
+            </Text>
           </View>
         </View>
 
@@ -236,7 +262,7 @@ const CartScreen = () => {
           visible={showAlert}
           title={alertTitle}
           message={alertMessage}
-          confirmBgColor={colors.deepRed}
+          confirmBgColor={colors.accentOrange}
           onCancel={() => {
             setShowAlert(false);
             setSelectedItem(null);
@@ -250,7 +276,7 @@ const CartScreen = () => {
 
               setTimeout(() => {
                 showSnack('All coffee items removed from cart', {
-                  backgroundColor: colors.deepRed,
+                  backgroundColor: colors.accentOrange,
                   textColor: colors.white,
                   actionText: 'Okay',
                   actionColor: colors.white,

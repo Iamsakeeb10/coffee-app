@@ -4,6 +4,7 @@ import cartReducer from '../slices/cartSlice';
 import favoritesReducer from '../slices/favoritesSlice';
 import languageReducer from '../slices/languageSlice';
 import onboardingReducer from '../slices/onboardingSlice';
+import themeReducer from '../slices/themeSlice';
 import store from '../store/store';
 
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   favorites: favoritesReducer,
   cart: cartReducer,
   language: languageReducer,
+  theme: themeReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

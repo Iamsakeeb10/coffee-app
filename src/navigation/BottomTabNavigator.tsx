@@ -5,7 +5,7 @@ import {Text, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 
-import {colors} from '../constants/colors';
+import {useTheme} from '../hooks/useTheme';
 import {useTranslation} from '../i18n/useTranslations';
 import {RootState} from '../redux/store/store';
 import CartScreen from '../screens/Coffee/CartScreen';
@@ -20,6 +20,7 @@ const Tab = createBottomTabNavigator();
 const BottomTabNavigator = () => {
   const {items} = useSelector((state: RootState) => state.cart);
   const {t} = useTranslation();
+  const {colors, isDarkMode} = useTheme();
 
   const totalQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -28,9 +29,12 @@ const BottomTabNavigator = () => {
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarShowLabel: false,
+        tabBarActiveTintColor: colors.accentCircle,
+        tabBarInactiveTintColor: colors.gray400,
         tabBarStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: colors.backgroundDefault,
           borderTopWidth: 0,
+          elevation: !isDarkMode ? 0 : 8,
         },
         tabBarIcon: ({color, size, focused}) => {
           const iconName = getIconName(route.name, focused);
@@ -41,8 +45,16 @@ const BottomTabNavigator = () => {
             return (
               <View>
                 {icon}
-                <View style={styles.badge}>
-                  <Text style={styles.badgeText}>{totalQuantity}</Text>
+                <View
+                  style={[
+                    styles.badge,
+                    {
+                      backgroundColor: colors.accentBadge,
+                    },
+                  ]}>
+                  <Text style={[styles.badgeText, {color: colors.white}]}>
+                    {totalQuantity}
+                  </Text>
                 </View>
               </View>
             );
@@ -50,8 +62,6 @@ const BottomTabNavigator = () => {
 
           return icon;
         },
-        tabBarActiveTintColor: colors.circle,
-        tabBarInactiveTintColor: colors.tabIcon,
       })}>
       <Tab.Screen name="Coffee" component={CoffeeScreen} />
       <Tab.Screen
@@ -63,10 +73,10 @@ const BottomTabNavigator = () => {
           headerTitleAlign: 'center',
           headerShadowVisible: false,
           headerStyle: {
-            backgroundColor: colors.background,
+            backgroundColor: colors.backgroundDefault,
           },
           headerTitleStyle: {
-            color: colors.white,
+            color: colors.textPrimary,
             fontFamily: fontFamily.medium,
           },
         }}
@@ -80,10 +90,10 @@ const BottomTabNavigator = () => {
           headerTitleAlign: 'center',
           headerShadowVisible: false,
           headerStyle: {
-            backgroundColor: colors.background,
+            backgroundColor: colors.backgroundDefault,
           },
           headerTitleStyle: {
-            color: colors.white,
+            color: colors.textPrimary,
             fontFamily: fontFamily.medium,
           },
         }}

@@ -1,5 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, FlatList, StatusBar, Text, View} from 'react-native';
+import {
+  Animated,
+  Dimensions,
+  FlatList,
+  StatusBar,
+  Text,
+  View,
+} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import CategoryList from '../../components/Coffee/CategorySelector';
@@ -9,11 +16,13 @@ import SearchNotFound from '../../components/Coffee/SearchNotFound';
 import IconButton from '../../components/Common/IconButton';
 import InputLocal from '../../components/Common/InputLocal';
 import TypingLoader from '../../components/Common/Loader';
-import {colors} from '../../constants/colors';
 import {useCoffeeItems} from '../../hooks/useCoffeeItems';
+import {useTheme} from '../../hooks/useTheme';
 import {useTranslation} from '../../i18n/useTranslations';
 import {RootState} from '../../redux/store/store';
 import styles from '../../styles/coffeeScreenStyle';
+
+const {width, height} = Dimensions.get('window');
 
 const categories = [
   'All',
@@ -36,6 +45,7 @@ const CoffeeScreen = () => {
   const insets = useSafeAreaInsets();
   const {user} = useSelector((state: RootState) => state.auth);
   const {t} = useTranslation();
+  const {colors} = useTheme();
 
   const filteredItems = coffeeItems.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -86,11 +96,22 @@ const CoffeeScreen = () => {
   }, [searchQuery, filteredItems]);
 
   if (firstLoad && loading) {
-    return <TypingLoader size={8} color={colors.white} />;
+    return (
+      <View style={{width, height, backgroundColor: colors.backgroundDefault}}>
+        <StatusBar translucent backgroundColor="transparent" />
+        <TypingLoader size={8} color={colors.textPrimary} />
+      </View>
+    );
   }
 
   return (
-    <View style={[styles.container]}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.backgroundDefault,
+        },
+      ]}>
       <StatusBar translucent backgroundColor="transparent" />
       <Animated.View
         style={[
@@ -98,21 +119,34 @@ const CoffeeScreen = () => {
           {paddingTop: insets.top + 20, opacity: fadeAnim},
         ]}>
         <View style={styles.headerContainer}>
-          <Text style={styles.title}>{t('product.findBestCoffeeForYou')}</Text>
+          <Text
+            style={[
+              styles.title,
+              {
+                color: colors.screenTitle,
+              },
+            ]}>
+            {t('product.findBestCoffeeForYou')}
+          </Text>
           <ProfileIconButton profileImage={user?.photoURL} />
         </View>
         <View style={styles.filterInputContainer}>
           <InputLocal
             placeholder={t('product.findYourCoffee')}
-            textColor={colors.inputTextColor}
+            textColor={colors.textLight}
             value={searchQuery}
             onChange={setSearchQuery}
-            customStyle={styles.filterInput}
+            customStyle={[
+              styles.filterInput,
+              {
+                backgroundColor: colors.backgroundSearchInput,
+              },
+            ]}
           />
           <IconButton
             iconName="search"
             iconSize={16}
-            iconColor={colors.muted}
+            iconColor={colors.gray500}
             activeOpacity={1}
             style={styles.filterIcon}
           />

@@ -68,6 +68,7 @@ export type RootStackParamList = {
   FavoritesScreen: undefined;
   CartScreen: undefined;
   ProfileScreen: undefined;
+  ThemeScreen: undefined;
 };
 
 export type AlertProps = {

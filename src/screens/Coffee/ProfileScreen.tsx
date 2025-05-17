@@ -1,15 +1,16 @@
-import React, {useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
-
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import React, {useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
+
 import LogoutButton from '../../components/Coffee/LogoutButton';
 import ProfileImage from '../../components/Coffee/ProfileImage';
 import Header from '../../components/Common/Header';
 import LanguageBottomSheet from '../../components/Profile/LanguageBottomSheet';
-import {colors} from '../../constants/colors';
+import {staticColors} from '../../constants/colors';
+import {useTheme} from '../../hooks/useTheme';
 import {useTranslation} from '../../i18n/useTranslations';
 import {RootState} from '../../redux/store/store';
 import styles from '../../styles/profileScreenStyles';
@@ -21,17 +22,19 @@ const ProfileScreen = () => {
 
   const {user} = useSelector((state: RootState) => state.auth);
   const {t} = useTranslation();
+  const {colors, themeMode, isDarkMode} = useTheme();
+
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const menuItems = [
+    {icon: 'moon-outline', title: t('profile.theme.label'), key: 'theme'},
     {
       icon: 'globe-outline',
       title: t('profile.language.label'),
       key: 'language',
     },
     {icon: 'log-out-outline', title: t('profile.logout.button'), key: 'logout'},
-    {icon: '', title: ''},
     {icon: '', title: ''},
     {icon: '', title: ''},
   ];
@@ -41,25 +44,61 @@ const ProfileScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.backgroundDefault,
+        },
+      ]}>
       <Header
         title={t('profile.header.title')}
         showBack={true}
         onBackPress={() => navigation.goBack()}
         useSafeArea={true}
-        backgroundColor={colors.background}
+        backgroundColor={colors.backgroundDefault}
         color={colors.textPrimary}
       />
 
       <View style={styles.profileCard}>
         <ProfileImage photoURL={user?.photoURL} />
-        <Text style={styles.name}>{user?.displayName}</Text>
-        <Text style={styles.phone}>{user?.email}</Text>
+        <Text
+          style={[
+            styles.name,
+            {
+              color: colors.textPrimary,
+            },
+          ]}>
+          {user?.displayName}
+        </Text>
+        <Text
+          style={[
+            styles.phone,
+            {
+              color: colors.iconDefault,
+            },
+          ]}>
+          {user?.email}
+        </Text>
       </View>
       <LogoutButton showSheet={showSheet} setShowSheet={setShowSheet} />
 
-      <View style={styles.menuContainer}>
-        <Text style={styles.accountText}>{t('profile.account.overview')}</Text>
+      <View
+        style={[
+          styles.menuContainer,
+          {
+            backgroundColor: colors.backgroundMenu,
+          },
+        ]}>
+        <Text
+          style={[
+            styles.accountText,
+            {
+              color: colors.backgroundDefault,
+            },
+          ]}>
+          {t('profile.account.overview')}
+        </Text>
         {menuItems.map((item, index) => (
           <TouchableOpacity
             key={index}
@@ -67,6 +106,9 @@ const ProfileScreen = () => {
               switch (item.key) {
                 case 'logout':
                   toggleBottomSheet();
+                  break;
+                case 'theme':
+                  navigation.navigate('ThemeScreen');
                   break;
                 case 'language':
                   setLanguageSheetVisible(true);
@@ -81,6 +123,7 @@ const ProfileScreen = () => {
               styles.menuItem,
               {
                 borderBottomWidth: item.icon ? 1 : 0,
+                borderBottomColor: colors.gray100,
               },
             ]}>
             <View
@@ -88,13 +131,15 @@ const ProfileScreen = () => {
                 styles.menuIconWrap,
                 {backgroundColor: item.icon ? colors.menuIcon : 'transparent'},
               ]}>
-              <Ionicons name={item.icon} size={20} color="#fff" />
+              <Ionicons name={item.icon} size={20} color={staticColors.white} />
             </View>
-            <Text style={styles.menuText}>{item.title}</Text>
+            <Text style={[styles.menuText, {color: colors.menuItem}]}>
+              {item.title}
+            </Text>
             <Ionicons
               name={item.icon ? 'chevron-forward' : ''}
               size={20}
-              color={colors.skeletonBackground}
+              color={colors.menuItem}
               style={{marginLeft: 'auto'}}
             />
           </TouchableOpacity>

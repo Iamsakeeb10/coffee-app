@@ -2,7 +2,7 @@ import React from 'react';
 import {FlatList, Pressable, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {useDispatch, useSelector} from 'react-redux';
-import {colors} from '../../constants/colors';
+import {useTheme} from '../../hooks/useTheme';
 import {useTranslation} from '../../i18n/useTranslations';
 import {setLanguage} from '../../redux/slices/languageSlice';
 import {AppDispatch, RootState} from '../../redux/store/store';
@@ -23,6 +23,8 @@ const LanguageBottomSheet: React.FC<LanguageBottomSheetProps> = ({
     {id: 'en', name: t('profile.language.english'), flag: '🇺🇸'},
     {id: 'bn', name: t('profile.language.bangla'), flag: '🇧🇩'},
   ];
+
+  const {colors} = useTheme();
 
   const dispatch = useDispatch<AppDispatch>();
   const currentLanguage = useSelector(
@@ -54,7 +56,7 @@ const LanguageBottomSheet: React.FC<LanguageBottomSheetProps> = ({
             <Icon
               name="globe"
               size={20}
-              color={colors.badge}
+              color={colors.accentBadge}
               style={styles.titleIcon}
             />
             <Text style={styles.titleText}>
@@ -75,7 +77,7 @@ const LanguageBottomSheet: React.FC<LanguageBottomSheetProps> = ({
                 onPress={() => setSelectedLanguage(item.id)}
                 style={({pressed}) => [
                   styles.languageItem,
-                  pressed && {backgroundColor: colors.lightGray},
+                  pressed && {backgroundColor: colors.gray100},
                 ]}>
                 <View style={styles.languageInfo}>
                   <Text style={styles.flag}>{item.flag}</Text>
@@ -103,7 +105,7 @@ const LanguageBottomSheet: React.FC<LanguageBottomSheetProps> = ({
             onPress={handleApply}
             style={({pressed}) => [
               styles.applyButton,
-              pressed && {backgroundColor: colors.lightGray},
+              pressed && {backgroundColor: colors.gray100},
             ]}>
             <Text style={styles.applyButtonText}>
               {t('profile.language.apply.button')}

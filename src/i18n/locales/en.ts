@@ -13,6 +13,7 @@ const en = {
   'profile.chooseFromGallery': 'Choose from Gallery',
   'profile.cancel': 'Cancel',
   'account.overview': 'Account Overview',
+  'profile.account.overview': 'Account Overview',
 
   // Onboarding
   'onboarding.title.1': 'Discover Great Deals',

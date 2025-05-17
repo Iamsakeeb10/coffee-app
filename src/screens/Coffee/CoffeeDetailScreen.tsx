@@ -12,12 +12,12 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
-import {colors} from '../../constants/colors';
 import {saveCartItemToFirestore} from '../../firebase/service/cartService';
 import {
   removeFavoriteFromFirestore,
   saveFavoriteToFirestore,
 } from '../../firebase/service/favoritesService';
+import {useTheme} from '../../hooks/useTheme';
 import {useTranslation} from '../../i18n/useTranslations';
 import {addToCart} from '../../redux/slices/cartSlice';
 import {toggleFavorite} from '../../redux/slices/favoritesSlice';
@@ -42,6 +42,7 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
     (state: RootState) => state.favorites.favorites,
   );
   const {t} = useTranslation();
+  const {colors} = useTheme();
 
   const isFavorite = favorites.some(favItem => favItem.id === item?.id);
 
@@ -76,10 +77,10 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
         ? `${item.name} ${t('product.removedFromFavorites')}`
         : `${item.name} ${t('product.addedToFavorites')}`,
       {
-        backgroundColor: colors.background,
+        backgroundColor: colors.backgroundDefault,
         textColor: colors.white,
         actionText: t('common.okay'),
-        actionColor: colors.circle,
+        actionColor: colors.accentCircle,
         duration: 1200,
       },
     );
@@ -118,10 +119,10 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
     const sizeLabel = fullSize.charAt(0).toUpperCase() + fullSize.slice(1);
 
     showSnack(`${sizeLabel} ${item.name} ${t('product.addedToCart')}`, {
-      backgroundColor: colors.background,
+      backgroundColor: colors.backgroundDefault,
       textColor: 'white',
       actionText: t('common.okay'),
-      actionColor: colors.circle,
+      actionColor: colors.accentCircle,
     });
   };
 
@@ -130,8 +131,18 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
   };
 
   return (
-    <View style={[styles.container]}>
-      <StatusBar translucent backgroundColor="transparent" />
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.backgroundDefault,
+        },
+      ]}>
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle="light-content"
+      />
 
       <ImageBackground
         source={{uri: item?.imageURL}}
@@ -158,7 +169,7 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
             <Ionicons
               name={isFavorite ? 'heart' : 'heart-outline'}
               size={24}
-              color={isFavorite ? colors.favorite : colors.white}
+              color={isFavorite ? colors.accentFavorite : colors.white}
             />
           </Pressable>
         </View>
@@ -169,7 +180,7 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
 
             <View style={styles.tagsRow}>
               <View style={styles.row}>
-                <Ionicons name="star" size={18} color={colors.circle} />
+                <Ionicons name="star" size={18} color={colors.accentCircle} />
                 <Text style={styles.rating}>
                   {item?.rating} ({item?.ratingCount})
                 </Text>
@@ -185,10 +196,34 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
       </ImageBackground>
 
       <View style={styles.content}>
-        <Text style={styles.descriptionTitle}>{t('product.description')}</Text>
-        <Text style={styles.description}>{item?.description}</Text>
+        <Text
+          style={[
+            styles.descriptionTitle,
+            {
+              color: colors.gray300,
+            },
+          ]}>
+          {t('product.description')}
+        </Text>
+        <Text
+          style={[
+            styles.description,
+            {
+              color: colors.textPrimary,
+            },
+          ]}>
+          {item?.description}
+        </Text>
 
-        <Text style={styles.descriptionTitle}>{t('product.size')}</Text>
+        <Text
+          style={[
+            styles.descriptionTitle,
+            {
+              color: colors.gray300,
+            },
+          ]}>
+          {t('product.size')}
+        </Text>
         <View style={styles.sizeRow}>
           {item?.sizes.map((size, i) => (
             <Pressable
@@ -198,15 +233,19 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
                 styles.sizeButton,
                 {
                   borderColor:
-                    selectedSize === i ? colors.circle : 'transparent',
+                    selectedSize === i ? colors.accentCircle : 'transparent',
                   borderWidth: 1.5,
+                  backgroundColor: colors.backgroundFavorite,
                 },
               ]}>
               <Text
                 style={[
                   styles.sizeText,
+
                   {
-                    color: selectedSize === i ? colors.circle : colors.white,
+                    color:
+                      selectedSize === i ? colors.accentCircle : colors.white,
+                    backgroundColor: colors.backgroundFavorite,
                   },
                 ]}>
                 {size}
@@ -217,12 +256,25 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
 
         <View style={styles.footer}>
           <View>
-            <Text style={[styles.descriptionTitle, styles.priceText]}>
+            <Text
+              style={[
+                styles.descriptionTitle,
+                styles.priceText,
+                {
+                  color: colors.gray300,
+                },
+              ]}>
               {t('product.price')}
             </Text>
             <View style={styles.row}>
               <Text style={styles.dollarSign}>$</Text>
-              <Text style={styles.price}>
+              <Text
+                style={[
+                  styles.price,
+                  {
+                    color: colors.textPrimary,
+                  },
+                ]}>
                 {item?.priceBySize?.[item.sizes[selectedSize]].toFixed(2)}
               </Text>
             </View>
