@@ -21,6 +21,10 @@ export const colors = {
   badge: '#4F959D',
   menuIcon: '#626F47',
   alertBtnBg: '#077A7D',
+  divider: '#F1F1F1',
+  dragHandle: '#D1D5DB',
+  langLabel: '#1A1A1A',
+  accentPrimary: '#3B82F6',
 
   background: '#0C0F14',
   cardBackground: '#252A32',

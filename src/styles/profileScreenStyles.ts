@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   profileCard: {
     alignItems: 'center',
-    marginTop: 40,
+    marginTop: 10,
   },
   avatar: {
     width: 90,

@@ -2,6 +2,7 @@ import {combineReducers} from 'redux';
 import authReducer from '../slices/authSlice';
 import cartReducer from '../slices/cartSlice';
 import favoritesReducer from '../slices/favoritesSlice';
+import languageReducer from '../slices/languageSlice';
 import onboardingReducer from '../slices/onboardingSlice';
 import store from '../store/store';
 
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   favorites: favoritesReducer,
   cart: cartReducer,
+  language: languageReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

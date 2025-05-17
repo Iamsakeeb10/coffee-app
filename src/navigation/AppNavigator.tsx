@@ -1,8 +1,10 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationOptions,
+} from '@react-navigation/native-stack';
 import React from 'react';
 import CoffeeDetailScreen from '../screens/Coffee/CoffeeDetailScreen';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {colors} from '../constants/colors';
 import ProfileScreen from '../screens/Coffee/ProfileScreen';
 import {RootStackParamList} from '../types/types';
@@ -19,29 +21,23 @@ const AppNavigator = () => {
       <Stack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
-        options={({navigation}) => ({
-          headerShown: true,
-          headerTitle: 'Profile',
-          headerTitleAlign: 'center',
-          headerShadowVisible: false,
-          headerStyle: {
-            backgroundColor: colors.background,
-          },
-          headerTitleStyle: {
-            color: colors.white,
-            fontFamily: fontFamily.medium,
-          },
-
-          headerTintColor: colors.white,
-          headerLeft: ({tintColor}) => (
-            <Ionicons
-              name="chevron-back"
-              size={26}
-              color={tintColor}
-              onPress={() => navigation.goBack()}
-            />
-          ),
-        })}
+        options={() =>
+          ({
+            headerShown: false,
+            headerTitle: '',
+            headerTitleAlign: 'center',
+            headerShadowVisible: false,
+            headerStyle: {
+              backgroundColor: colors.background,
+            },
+            headerTitleStyle: {
+              color: colors.white,
+              fontFamily: fontFamily.medium,
+            },
+            headerTintColor: colors.white,
+            headerLeft: () => '',
+          } as NativeStackNavigationOptions)
+        }
       />
     </Stack.Navigator>
   );
