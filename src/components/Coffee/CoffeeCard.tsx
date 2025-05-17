@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch} from 'react-redux';
 import {colors} from '../../constants/colors';
 import {saveCartItemToFirestore} from '../../firebase/service/cartService';
+import {useTranslation} from '../../i18n/useTranslations';
 import {addToCart} from '../../redux/slices/cartSlice';
 import {AppDispatch} from '../../redux/store/store';
 import styles from '../../styles/coffeeScreenStyle';
@@ -32,6 +33,7 @@ const CoffeeCard: React.FC<Props> = ({item, loading, index = 0}) => {
 
   const navigation = useNavigation<any>();
   const dispatch = useDispatch<AppDispatch>();
+  const {t} = useTranslation();
 
   useEffect(() => {
     if (!loading) {
@@ -75,10 +77,10 @@ const CoffeeCard: React.FC<Props> = ({item, loading, index = 0}) => {
     const fullSize = getFullSize(selectedSizeLabel);
     const sizeLabel = fullSize.charAt(0).toUpperCase() + fullSize.slice(1);
 
-    showSnack(`${sizeLabel} ${item.name} added to cart`, {
+    showSnack(`${sizeLabel} ${item.name} ${t('product.addedToCart')}`, {
       backgroundColor: colors.background,
       textColor: 'white',
-      actionText: 'Okay',
+      actionText: t('common.okay'),
       actionColor: colors.circle,
     });
   };

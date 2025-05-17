@@ -15,6 +15,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import CustomAlert from '../../components/Common/CustomAlert';
 import {colors} from '../../constants/colors';
 import {removeFavoriteFromFirestore} from '../../firebase/service/favoritesService';
+import {useTranslation} from '../../i18n/useTranslations';
 import {toggleFavorite} from '../../redux/slices/favoritesSlice';
 import {AppDispatch, RootState} from '../../redux/store/store';
 import favoritesScreenStyles from '../../styles/favoriteScreenStyles';
@@ -30,6 +31,8 @@ const FavoritesScreen: React.FC = () => {
     (state: RootState) => state.favorites.favorites,
   );
 
+  const {t} = useTranslation();
+
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
@@ -43,10 +46,10 @@ const FavoritesScreen: React.FC = () => {
       }
 
       setTimeout(() => {
-        showSnack(`${selectedItem.name} removed from favorites`, {
+        showSnack(`${selectedItem.name} ${t('product.removedFromFavorites')}`, {
           backgroundColor: colors.deepRed,
           textColor: colors.white,
-          actionText: 'Okay',
+          actionText: t('common.okay'),
           actionColor: colors.white,
         });
       }, 100);
@@ -108,7 +111,9 @@ const FavoritesScreen: React.FC = () => {
       </View>
 
       <View style={favoritesScreenStyles.descriptionContainer}>
-        <Text style={favoritesScreenStyles.descriptionTitle}>Description</Text>
+        <Text style={favoritesScreenStyles.descriptionTitle}>
+          {t('product.description')}
+        </Text>
         <Text style={favoritesScreenStyles.descriptionText}>
           {item.description}
         </Text>
@@ -123,9 +128,11 @@ const FavoritesScreen: React.FC = () => {
         size={80}
         color={favoritesScreenStyles.emptyIcon.color}
       />
-      <Text style={favoritesScreenStyles.emptyTitle}>No favorites yet</Text>
+      <Text style={favoritesScreenStyles.emptyTitle}>
+        {t('product.noFavorites')}
+      </Text>
       <Text style={favoritesScreenStyles.emptySubtitle}>
-        Your favorite coffee items will appear here
+        {t('product.favoriteMessage')}
       </Text>
     </View>
   );
@@ -146,8 +153,10 @@ const FavoritesScreen: React.FC = () => {
       {selectedItem && (
         <CustomAlert
           visible={showAlert}
-          title="Remove Favorite"
-          message={`Are you sure you want to remove "${selectedItem.name}" from favorites?`}
+          title={t('favorites.removeFavorite')}
+          message={`${t('favorites.removeFavoriteConfirmation')} "${
+            selectedItem.name
+          }" ${t('favorites.fromFavorites')}`}
           onCancel={() => {
             setShowAlert(false);
             setSelectedItem(null);

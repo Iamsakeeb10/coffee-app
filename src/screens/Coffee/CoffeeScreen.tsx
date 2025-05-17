@@ -11,6 +11,7 @@ import InputLocal from '../../components/Common/InputLocal';
 import TypingLoader from '../../components/Common/Loader';
 import {colors} from '../../constants/colors';
 import {useCoffeeItems} from '../../hooks/useCoffeeItems';
+import {useTranslation} from '../../i18n/useTranslations';
 import {RootState} from '../../redux/store/store';
 import styles from '../../styles/coffeeScreenStyle';
 
@@ -34,6 +35,7 @@ const CoffeeScreen = () => {
 
   const insets = useSafeAreaInsets();
   const {user} = useSelector((state: RootState) => state.auth);
+  const {t} = useTranslation();
 
   const filteredItems = coffeeItems.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -96,12 +98,12 @@ const CoffeeScreen = () => {
           {paddingTop: insets.top + 20, opacity: fadeAnim},
         ]}>
         <View style={styles.headerContainer}>
-          <Text style={styles.title}>Find the best coffee for you</Text>
+          <Text style={styles.title}>{t('product.findBestCoffeeForYou')}</Text>
           <ProfileIconButton profileImage={user?.photoURL} />
         </View>
         <View style={styles.filterInputContainer}>
           <InputLocal
-            placeholder="Find Your Coffee..."
+            placeholder={t('product.findYourCoffee')}
             textColor={colors.inputTextColor}
             value={searchQuery}
             onChange={setSearchQuery}

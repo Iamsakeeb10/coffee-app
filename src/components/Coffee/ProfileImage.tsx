@@ -13,6 +13,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {colors} from '../../constants/colors';
+import {useTranslation} from '../../i18n/useTranslations';
 import {setUser} from '../../redux/slices/authSlice';
 import {RootState} from '../../redux/store/store';
 import styles from '../../styles/profileScreenStyles';
@@ -51,6 +52,8 @@ const ProfileImage: React.FC<ProfileImageProps> = ({photoURL}) => {
     camera: false,
     gallery: false,
   });
+
+  const {t} = useTranslation();
 
   const toggleBottomSheet = () => setShowSheet(prev => !prev);
 
@@ -163,7 +166,9 @@ const ProfileImage: React.FC<ProfileImageProps> = ({photoURL}) => {
         onClose={toggleBottomSheet}
         heightRatio={0.36}>
         <View style={styles.uploadSheetContainer}>
-          <Text style={styles.uploadSheetTitle}>Update Profile Picture</Text>
+          <Text style={styles.uploadSheetTitle}>
+            {t('profile.updatePicture')}
+          </Text>
           <TouchableOpacity
             onPress={() => handleImage(captureImage, 'camera')}
             style={styles.sheetOption}>
@@ -174,7 +179,7 @@ const ProfileImage: React.FC<ProfileImageProps> = ({photoURL}) => {
                 color={colors.white}
                 style={styles.optionIcon}
               />
-              <Text style={styles.optionText}>Take Photo</Text>
+              <Text style={styles.optionText}>{t('profile.takePhoto')}</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -187,7 +192,9 @@ const ProfileImage: React.FC<ProfileImageProps> = ({photoURL}) => {
                 color={colors.white}
                 style={styles.optionIcon}
               />
-              <Text style={styles.optionText}>Choose from Gallery</Text>
+              <Text style={styles.optionText}>
+                {t('profile.chooseFromGallery')}
+              </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -201,7 +208,7 @@ const ProfileImage: React.FC<ProfileImageProps> = ({photoURL}) => {
                 style={[styles.optionIcon, {backgroundColor: colors.deepRed}]}
               />
               <Text style={[styles.optionText, {color: colors.deepRed}]}>
-                Cancel
+                {t('profile.cancel')}
               </Text>
             </View>
           </TouchableOpacity>

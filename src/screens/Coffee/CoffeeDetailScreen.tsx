@@ -18,6 +18,7 @@ import {
   removeFavoriteFromFirestore,
   saveFavoriteToFirestore,
 } from '../../firebase/service/favoritesService';
+import {useTranslation} from '../../i18n/useTranslations';
 import {addToCart} from '../../redux/slices/cartSlice';
 import {toggleFavorite} from '../../redux/slices/favoritesSlice';
 import {AppDispatch, RootState} from '../../redux/store/store';
@@ -40,6 +41,7 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
   const favorites = useSelector(
     (state: RootState) => state.favorites.favorites,
   );
+  const {t} = useTranslation();
 
   const isFavorite = favorites.some(favItem => favItem.id === item?.id);
 
@@ -71,12 +73,12 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
 
     showSnack(
       isFavorite
-        ? `${item.name} removed from favorites`
-        : `${item.name} added to favorites`,
+        ? `${item.name} ${t('product.removedFromFavorites')}`
+        : `${item.name} ${t('product.addedToFavorites')}`,
       {
         backgroundColor: colors.background,
         textColor: colors.white,
-        actionText: 'Okay',
+        actionText: t('common.okay'),
         actionColor: colors.circle,
         duration: 1200,
       },
@@ -115,10 +117,10 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
     const fullSize = getFullSize(selectedSizeLabel);
     const sizeLabel = fullSize.charAt(0).toUpperCase() + fullSize.slice(1);
 
-    showSnack(`${sizeLabel} ${item.name} added to cart`, {
+    showSnack(`${sizeLabel} ${item.name} ${t('product.addedToCart')}`, {
       backgroundColor: colors.background,
       textColor: 'white',
-      actionText: 'Okay',
+      actionText: t('common.okay'),
       actionColor: colors.circle,
     });
   };
@@ -183,10 +185,10 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
       </ImageBackground>
 
       <View style={styles.content}>
-        <Text style={styles.descriptionTitle}>Description</Text>
+        <Text style={styles.descriptionTitle}>{t('product.description')}</Text>
         <Text style={styles.description}>{item?.description}</Text>
 
-        <Text style={styles.descriptionTitle}>Size</Text>
+        <Text style={styles.descriptionTitle}>{t('product.size')}</Text>
         <View style={styles.sizeRow}>
           {item?.sizes.map((size, i) => (
             <Pressable
@@ -216,7 +218,7 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
         <View style={styles.footer}>
           <View>
             <Text style={[styles.descriptionTitle, styles.priceText]}>
-              Price
+              {t('product.price')}
             </Text>
             <View style={styles.row}>
               <Text style={styles.dollarSign}>$</Text>
@@ -229,7 +231,7 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
             <Pressable
               onPress={handleAddToCart}
               style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-              <Text style={styles.cartText}>Add to Cart</Text>
+              <Text style={styles.cartText}>{t('product.addToCart')}</Text>
             </Pressable>
           </Animated.View>
         </View>

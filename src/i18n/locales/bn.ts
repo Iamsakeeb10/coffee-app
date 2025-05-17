@@ -84,6 +84,16 @@ const bn = {
   'product.price': 'মূল্য',
   'product.removedFromFavorites': 'পছন্দের তালিকা থেকে সরানো হয়েছে',
   'product.addedToFavorites': 'পছন্দের তালিকায় যোগ করা হয়েছে',
+  'product.findBestCoffeeForYou': 'আপনার জন্য সেরা কফি খুঁজুন',
+  'product.findYourCoffee': 'আপনার কফি খুঁজুন...',
+  'product.noCoffeeFound': 'কোন কফি পাওয়া যায়নি',
+  'product.addedToCart': 'কার্টে যুক্ত হয়েছে',
+  'product.totalPrice': 'মোট মূল্য',
+  'product.pay': 'পরিশোধ করুন',
+  'product.clearCart': 'কার্ট খালি করুন',
+  'product.removeItem': 'আইটেম সরান',
+  'product.removeAllConfirm': 'এটি আপনার কার্ট থেকে সব আইটেম সরিয়ে দেবে।',
+  'product.allItemsRemoved': 'সকল কফির আইটেম কার্ট থেকে সরানো হয়েছে',
 
   'cart.added': 'কার্টে যোগ করা হয়েছে',
   'cart.removeAllConfirmation':

@@ -18,6 +18,7 @@ import {
   removeCartItemFromFirestore,
   saveCartItemToFirestore,
 } from '../../firebase/service/cartService';
+import {useTranslation} from '../../i18n/useTranslations';
 import {
   CartItem,
   clearCart,
@@ -43,6 +44,7 @@ const CartScreen = () => {
   const [selectedItem, setSelectedItem] = useState<CartItem | null>(null);
   const [isForAllItems, setIsForAllItems] = useState(false);
 
+  const {t} = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
   const {items, totalAmount} = useSelector((state: RootState) => state.cart);
   const insets = useSafeAreaInsets();
@@ -172,8 +174,11 @@ const CartScreen = () => {
     return <CartEmpty />;
   }
 
-  const alertTitle = isForAllItems ? 'Clear Cart' : 'Remove Item';
+  const alertTitle = isForAllItems
+    ? `${t('product.clearCart')}`
+    : `${t('product.removeItem')}`;
   const alertMessage = renderAlertMessage(
+    t,
     isForAllItems,
     selectedItem?.name,
     selectedItem?.size,
@@ -213,7 +218,7 @@ const CartScreen = () => {
       <View style={[cartStyles.footer, {paddingVertical: insets.bottom + 15}]}>
         <View style={cartStyles.priceContainer}>
           <Text style={[cartStyles.descriptionTitle, cartStyles.priceText]}>
-            Total Price
+            {t('product.totalPrice')}
           </Text>
           <View style={cartStyles.row}>
             <Text style={cartStyles.dollarSign}>$</Text>
@@ -222,7 +227,7 @@ const CartScreen = () => {
         </View>
 
         <Pressable style={cartStyles.payButtonFull} onPress={handleCheckout}>
-          <Text style={cartStyles.cartText}>Pay</Text>
+          <Text style={cartStyles.cartText}>{t('product.pay')}</Text>
         </Pressable>
       </View>
 
@@ -231,8 +236,6 @@ const CartScreen = () => {
           visible={showAlert}
           title={alertTitle}
           message={alertMessage}
-          confirmText="Okay"
-          cancelText="Cancel"
           confirmBgColor={colors.deepRed}
           onCancel={() => {
             setShowAlert(false);

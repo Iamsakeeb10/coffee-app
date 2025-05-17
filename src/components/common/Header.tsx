@@ -68,7 +68,7 @@ const Header = ({
 
   const topPadding = useSafeArea
     ? Platform.OS === 'android'
-      ? StatusBar.currentHeight || 0
+      ? StatusBar.currentHeight || 10
       : insets.top
     : 10;
 

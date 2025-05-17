@@ -3,6 +3,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch} from 'react-redux';
 import {colors} from '../../constants/colors';
+import {useTranslation} from '../../i18n/useTranslations';
 import {AppDispatch} from '../../redux/store/store';
 import {logoutUser} from '../../redux/thunks/authThunks';
 import styles from '../../styles/logoutButtonStyle';
@@ -16,6 +17,7 @@ type LogoutButtonProps = {
 
 const LogoutButton = ({setShowSheet, showSheet}: LogoutButtonProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const {t} = useTranslation();
 
   const logoutHandler = async () => {
     try {
@@ -48,9 +50,11 @@ const LogoutButton = ({setShowSheet, showSheet}: LogoutButtonProps) => {
         <View style={styles.bottomSheetContainer}>
           <View style={styles.bottomSheetHeader}>
             <View style={styles.bottomSheetHeaderTextContainer}>
-              <Text style={styles.bottomSheetTitle}>Log out</Text>
+              <Text style={styles.bottomSheetTitle}>
+                {t('settings.logout')}
+              </Text>
               <Text style={styles.bottomSheetSubtitle}>
-                Log out from this account?
+                {t('settings.logoutConfirmation')}
               </Text>
             </View>
             <View>
@@ -69,13 +73,17 @@ const LogoutButton = ({setShowSheet, showSheet}: LogoutButtonProps) => {
             <TouchableOpacity
               style={[styles.bottomSheetCancelButton]}
               onPress={toggleBottomSheet}>
-              <Text style={styles.bottomSheetCancelText}>CANCEL</Text>
+              <Text style={styles.bottomSheetCancelText}>
+                {t('settings.cancel')}
+              </Text>
             </TouchableOpacity>
             <View />
             <TouchableOpacity
               style={styles.bottomSheetLogoutButton}
               onPress={logoutHandler}>
-              <Text style={styles.bottomSheetLogoutText}>LOG OUT</Text>
+              <Text style={styles.bottomSheetLogoutText}>
+                {t('settings.confirmLogout')}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {Animated, Modal, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from '../../constants/colors';
+import {useTranslation} from '../../i18n/useTranslations';
 import styles from '../../styles/customAlertStyle';
 import {AlertProps} from '../../types/types';
 
@@ -15,6 +16,8 @@ const CustomAlert: React.FC<AlertProps> = ({
   confirmBgColor = colors.btnRed,
 }) => {
   const scaleAnim = useRef(new Animated.Value(0)).current;
+
+  const {t} = useTranslation();
 
   useEffect(() => {
     if (visible) {
@@ -37,13 +40,17 @@ const CustomAlert: React.FC<AlertProps> = ({
 
           <View style={styles.buttons}>
             <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
-              <Text style={styles.cancelText}>{cancelText || 'Cancel'}</Text>
+              <Text style={styles.cancelText}>
+                {cancelText || t('profile.cancel')}
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[styles.confirmButton, {backgroundColor: confirmBgColor}]}
               onPress={onConfirm}>
-              <Text style={styles.confirmText}>{confirmText || 'Remove'}</Text>
+              <Text style={styles.confirmText}>
+                {confirmText || t('favorites.remove')}
+              </Text>
             </TouchableOpacity>
           </View>
         </Animated.View>

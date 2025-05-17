@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 
 import {colors} from '../constants/colors';
+import {useTranslation} from '../i18n/useTranslations';
 import {RootState} from '../redux/store/store';
 import CartScreen from '../screens/Coffee/CartScreen';
 import CoffeeScreen from '../screens/Coffee/CoffeeScreen';
@@ -18,6 +19,7 @@ const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
   const {items} = useSelector((state: RootState) => state.cart);
+  const {t} = useTranslation();
 
   const totalQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -57,7 +59,7 @@ const BottomTabNavigator = () => {
         component={FavoritesScreen}
         options={{
           headerShown: true,
-          headerTitle: 'Favorites',
+          headerTitle: t('product.favorites'),
           headerTitleAlign: 'center',
           headerShadowVisible: false,
           headerStyle: {
@@ -74,7 +76,7 @@ const BottomTabNavigator = () => {
         component={CartScreen}
         options={{
           headerShown: true,
-          headerTitle: 'Cart',
+          headerTitle: t('product.cart'),
           headerTitleAlign: 'center',
           headerShadowVisible: false,
           headerStyle: {

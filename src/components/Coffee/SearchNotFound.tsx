@@ -1,9 +1,12 @@
 import React from 'react';
 import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
+import {useTranslation} from '../../i18n/useTranslations';
 import {fontFamily} from '../../utils/typography';
 
 const {width, height} = Dimensions.get('window');
 const SearchNotFound = () => {
+  const {t} = useTranslation();
+
   return (
     <View style={styles.container}>
       <Image
@@ -11,7 +14,7 @@ const SearchNotFound = () => {
         resizeMode="contain"
         style={styles.imageStyle}
       />
-      <Text style={styles.textStyle}>No Coffee Found</Text>
+      <Text style={styles.textStyle}>{t('product.noCoffeeFound')}</Text>
     </View>
   );
 };
