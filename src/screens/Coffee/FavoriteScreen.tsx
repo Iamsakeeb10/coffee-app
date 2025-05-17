@@ -138,6 +138,20 @@ const FavoritesScreen: React.FC = () => {
     </View>
   );
 
+  const showStatusbar = themeMode === 'light' && !isDarkMode && showAlert;
+
+  const backgroundColor = showStatusbar
+    ? colors.alertBackground
+    : showAlert && !isDarkMode
+    ? colors.alertBackground
+    : colors.backgroundDefault;
+
+  const barStyle = showAlert
+    ? 'light-content'
+    : isDarkMode
+    ? 'light-content'
+    : 'dark-content';
+
   return (
     <View
       style={[
@@ -147,9 +161,11 @@ const FavoritesScreen: React.FC = () => {
         },
       ]}>
       <StatusBar
-        barStyle="light-content"
-        backgroundColor={colors.backgroundDefault}
+        backgroundColor={backgroundColor}
+        // barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        barStyle={barStyle}
       />
+
       <FlatList
         data={favorites}
         renderItem={renderFavoriteItem}

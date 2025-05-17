@@ -45,7 +45,7 @@ const CoffeeScreen = () => {
   const insets = useSafeAreaInsets();
   const {user} = useSelector((state: RootState) => state.auth);
   const {t} = useTranslation();
-  const {colors} = useTheme();
+  const {colors, isDarkMode} = useTheme();
 
   const filteredItems = coffeeItems.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -112,7 +112,11 @@ const CoffeeScreen = () => {
           backgroundColor: colors.backgroundDefault,
         },
       ]}>
-      <StatusBar translucent backgroundColor="transparent" />
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={colors.backgroundDefault}
+      />
+
       <Animated.View
         style={[
           styles.flatlistContainer,

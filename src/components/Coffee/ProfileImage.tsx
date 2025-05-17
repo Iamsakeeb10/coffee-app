@@ -33,13 +33,19 @@ const {width} = Dimensions.get('window');
 
 interface ProfileImageProps {
   photoURL: string | null | undefined;
+  showSheet: boolean;
+  setShowSheet: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ProfileImage: React.FC<ProfileImageProps> = ({photoURL}) => {
+const ProfileImage: React.FC<ProfileImageProps> = ({
+  photoURL,
+  showSheet,
+  setShowSheet,
+}) => {
   const dispatch = useDispatch();
   const {user} = useSelector((state: RootState) => state.auth);
   const [uploading, setUploading] = useState(false);
-  const [showSheet, setShowSheet] = useState(false);
+  // const [showSheet, setShowSheet] = useState(false);
 
   const [alertVisible, setAlertVisible] = useState(false);
   const [alertTitle, setAlertTitle] = useState('');

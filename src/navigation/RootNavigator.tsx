@@ -2,6 +2,7 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import React from 'react';
 import {useSelector} from 'react-redux';
+import GlobalStatusBar from '../components/Common/GlobalStatusBar';
 import useSyncCart from '../hooks/useSyncCart';
 import useSyncFavorites from '../hooks/useSyncFavorites';
 import {RootState} from '../redux/store/store';
@@ -16,6 +17,7 @@ const AuthGuard = () => {
 
   return (
     <NavigationContainer>
+      <GlobalStatusBar />
       {user ? <AppNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );

@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {StatusBar, Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 
@@ -23,6 +23,7 @@ const ProfileScreen = () => {
   const {user} = useSelector((state: RootState) => state.auth);
   const {t} = useTranslation();
   const {colors, themeMode, isDarkMode} = useTheme();
+  const [showUploadSheet, setShowUploadSheet] = useState(false);
 
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -43,6 +44,18 @@ const ProfileScreen = () => {
     setShowSheet(prev => !prev);
   };
 
+  const showStatusbar =
+    ((themeMode === 'light' || !isDarkMode) && showSheet) ||
+    languageSheetVisible ||
+    showUploadSheet;
+
+  const barStyle =
+    showSheet || showUploadSheet || languageSheetVisible
+      ? 'light-content'
+      : isDarkMode
+      ? 'light-content'
+      : 'dark-content';
+
   return (
     <View
       style={[
@@ -51,6 +64,13 @@ const ProfileScreen = () => {
           backgroundColor: colors.backgroundDefault,
         },
       ]}>
+      {showStatusbar && (
+        <StatusBar
+          backgroundColor={staticColors.bottomSheetBackdrop}
+          barStyle={barStyle}
+        />
+      )}
+
       <Header
         title={t('profile.header.title')}
         showBack={true}
@@ -61,7 +81,11 @@ const ProfileScreen = () => {
       />
 
       <View style={styles.profileCard}>
-        <ProfileImage photoURL={user?.photoURL} />
+        <ProfileImage
+          photoURL={user?.photoURL}
+          showSheet={showUploadSheet}
+          setShowSheet={setShowUploadSheet}
+        />
         <Text
           style={[
             styles.name,

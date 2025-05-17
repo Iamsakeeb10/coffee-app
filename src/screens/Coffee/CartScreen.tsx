@@ -107,7 +107,7 @@ const CartScreen = () => {
           </Pressable>
         ) : null,
     });
-  }, [navigation, items.length]);
+  }, [navigation, items.length, themeMode]);
 
   const handleIncrement = async (id: string) => {
     const item = items.find(item => item.id === id);
