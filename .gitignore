@@ -73,3 +73,7 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+
+# Local strings file (contains sensitive API keys)
+android/app/src/main/res/values/strings.local.xml
