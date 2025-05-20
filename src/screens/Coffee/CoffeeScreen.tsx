@@ -1,8 +1,10 @@
+import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Animated,
   Dimensions,
   FlatList,
+  ScrollView,
   StatusBar,
   Text,
   View,
@@ -10,6 +12,7 @@ import {
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import CategoryList from '../../components/Coffee/CategorySelector';
+import CoffeeBeans from '../../components/Coffee/CoffeeBeans';
 import {CoffeeList} from '../../components/Coffee/CoffeeList';
 import ProfileIconButton from '../../components/Coffee/ProfileIconButton';
 import SearchNotFound from '../../components/Coffee/SearchNotFound';
@@ -43,12 +46,22 @@ const CoffeeScreen = () => {
   const listRef = useRef<FlatList | null | any>(null);
 
   const insets = useSafeAreaInsets();
+  const tabBarHeight = useBottomTabBarHeight();
+
   const {user} = useSelector((state: RootState) => state.auth);
   const {t} = useTranslation();
   const {colors, isDarkMode} = useTheme();
 
-  const filteredItems = coffeeItems.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  const filteredItems = coffeeItems.filter(
+    item =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      item.isCoffeeBeans === false,
+  );
+
+  const filteredItemsBeans = coffeeItems.filter(
+    item =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      item.isCoffeeBeans === true,
   );
 
   useEffect(() => {
@@ -104,6 +117,19 @@ const CoffeeScreen = () => {
     );
   }
 
+  const isSearchActive = searchQuery.trim() !== '';
+  const hasRegularProducts = filteredItems.length > 0;
+  const hasNoProducts =
+    filteredItems.length === 0 && filteredItemsBeans.length === 0;
+
+  console.log('Condition check:', {
+    isSearchActive,
+    hasNoProducts,
+    loading,
+    filteredItems: filteredItems.length,
+    filteredItemsBeans: filteredItemsBeans.length,
+  });
+
   return (
     <View
       style={[
@@ -122,51 +148,62 @@ const CoffeeScreen = () => {
           styles.flatlistContainer,
           {paddingTop: insets.top + 20, opacity: fadeAnim},
         ]}>
-        <View style={styles.headerContainer}>
-          <Text
-            style={[
-              styles.title,
-              {
-                color: colors.screenTitle,
-              },
-            ]}>
-            {t('product.findBestCoffeeForYou')}
-          </Text>
-          <ProfileIconButton profileImage={user?.photoURL} />
-        </View>
-        <View style={styles.filterInputContainer}>
-          <InputLocal
-            placeholder={t('product.findYourCoffee')}
-            textColor={colors.textLight}
-            value={searchQuery}
-            onChange={setSearchQuery}
-            customStyle={[
-              styles.filterInput,
-              {
-                backgroundColor: colors.backgroundSearchInput,
-              },
-            ]}
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator
+          contentContainerStyle={{
+            paddingBottom: tabBarHeight,
+          }}>
+          <View style={styles.headerContainer}>
+            <Text
+              style={[
+                styles.title,
+                {
+                  color: colors.screenTitle,
+                },
+              ]}>
+              {t('product.findBestCoffeeForYou')}
+            </Text>
+            <ProfileIconButton profileImage={user?.photoURL} />
+          </View>
+          <View style={styles.filterInputContainer}>
+            <InputLocal
+              placeholder={t('product.findYourCoffee')}
+              textColor={colors.textLight}
+              value={searchQuery}
+              onChange={setSearchQuery}
+              customStyle={[
+                styles.filterInput,
+                {
+                  backgroundColor: colors.backgroundSearchInput,
+                },
+              ]}
+            />
+            <IconButton
+              iconName="search"
+              iconSize={16}
+              iconColor={colors.gray500}
+              activeOpacity={1}
+              style={styles.filterIcon}
+            />
+          </View>
+          <CategoryList
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onSelect={setSelectedCategory}
           />
-          <IconButton
-            iconName="search"
-            iconSize={16}
-            iconColor={colors.gray500}
-            activeOpacity={1}
-            style={styles.filterIcon}
+          {hasRegularProducts && (
+            <CoffeeList ref={listRef} data={filteredItems} loading={loading} />
+          )}
+
+          {isSearchActive && !hasRegularProducts && <SearchNotFound />}
+
+          <CoffeeBeans
+            coffeeBeans={filteredItemsBeans}
+            loading={loading}
+            hasRegularProducts={hasRegularProducts}
           />
-        </View>
-
-        <CategoryList
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onSelect={setSelectedCategory}
-        />
-
-        {filteredItems.length === 0 && searchQuery.trim() !== '' ? (
-          <SearchNotFound />
-        ) : (
-          <CoffeeList ref={listRef} data={filteredItems} loading={loading} />
-        )}
+        </ScrollView>
       </Animated.View>
     </View>
   );

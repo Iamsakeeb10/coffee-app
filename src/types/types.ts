@@ -60,6 +60,7 @@ export interface CoffeeItem {
   priceBySize: {
     [size: string]: number;
   };
+  isCoffeeBeans: boolean;
 }
 
 export type RootStackParamList = {

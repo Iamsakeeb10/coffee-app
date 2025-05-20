@@ -1,5 +1,7 @@
 import {Dimensions, StyleSheet} from 'react-native';
 import {colors} from '../constants/colors';
+import {fontSizes} from '../constants/fontSizes';
+import {spacing} from '../constants/spacing';
 import {fontFamily} from '../utils/typography';
 
 const {width, height} = Dimensions.get('window');
@@ -140,6 +142,11 @@ const styles = StyleSheet.create({
 
   filterInputContainer: {
     marginTop: 14,
+  },
+
+  emptyStateTitleStyle: {
+    fontSize: fontSizes.font16,
+    marginTop: spacing.spacing8,
   },
 
   filterIcon: {

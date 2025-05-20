@@ -1,41 +1,42 @@
 import React from 'react';
-import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
-import {useTranslation} from '../../i18n/useTranslations';
-import {fontFamily} from '../../utils/typography';
+import {StyleSheet, View} from 'react-native';
+import {spacing} from '../../constants/spacing';
+import {useTheme} from '../../hooks/useTheme';
+import {NoSearchResultFoundProps} from '../../types/Common/NoSearchResultFoundProps.type';
+import {heightPercent} from '../../utils/dimensions';
+import EmptyState from '../Common/EmptyState'; // Adjust the import path as needed
 
-const {width, height} = Dimensions.get('window');
-const SearchNotFound = () => {
-  const {t} = useTranslation();
+const NoSearchResultFound: React.FC<NoSearchResultFoundProps> = ({
+  message = 'No coffee found',
+  iconName = 'bag-handle-outline',
+  iconSize = 80,
+  iconColor,
+  containerStyle,
+  messageStyle,
+}) => {
+  const {colors} = useTheme();
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../../assets/images/404-error.png')}
-        resizeMode="contain"
-        style={styles.imageStyle}
+      <EmptyState
+        iconName={iconName}
+        iconSize={iconSize}
+        iconColor={iconColor || colors.gray200}
+        title={message}
+        containerStyle={containerStyle}
+        titleStyle={messageStyle}
       />
-      <Text style={styles.textStyle}>{t('product.noCoffeeFound')}</Text>
     </View>
   );
 };
 
-export default SearchNotFound;
+export default NoSearchResultFound;
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: height * 0.1,
-  },
-  imageStyle: {
-    width: 80,
-    height: 80,
-    marginBottom: 14,
-  },
-  textStyle: {
-    color: '#fff',
-    fontSize: 18,
-    letterSpacing: 0.8,
-    fontFamily: fontFamily.medium,
+    marginVertical: heightPercent(10),
+    paddingHorizontal: spacing.spacing20,
   },
 });
