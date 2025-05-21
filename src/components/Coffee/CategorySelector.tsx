@@ -20,7 +20,7 @@ const CategoryList: React.FC<Props> = ({
       horizontal
       keyExtractor={item => item}
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{paddingVertical: 12}}
+      contentContainerStyle={{paddingTop: 12}}
       ItemSeparatorComponent={() => <View style={{width: 12}} />}
       renderItem={({item}) => (
         <TouchableOpacity

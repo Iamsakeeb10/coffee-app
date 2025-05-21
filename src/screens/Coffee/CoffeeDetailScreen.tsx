@@ -87,7 +87,7 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
   };
 
   const handleAddToCart = () => {
-    const selectedSizeLabel = item.sizes[0];
+    const selectedSizeLabel = item.sizes[selectedSize];
     const price = item.priceBySize[selectedSizeLabel];
     const userId = auth().currentUser?.uid;
 

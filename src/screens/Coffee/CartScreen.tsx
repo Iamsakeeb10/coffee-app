@@ -157,7 +157,7 @@ const CartScreen = () => {
 
     setTimeout(() => {
       showSnack(`${selectedItem?.name} removed from cart`, {
-        backgroundColor: colors.accentBadge,
+        backgroundColor: colors.accentOrange,
         textColor: colors.white,
         actionText: 'Okay',
         actionColor: colors.white,
@@ -167,10 +167,10 @@ const CartScreen = () => {
 
   const handleCheckout = () => {
     showSnack('Checkout functionality will be implemented soon', {
-      backgroundColor: colors.accentBadge,
+      backgroundColor: colors.accentOrange,
       textColor: colors.white,
       actionText: 'Okay',
-      actionColor: colors.accentCircle,
+      actionColor: colors.white,
       duration: 1200,
     });
   };

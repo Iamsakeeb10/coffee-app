@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   featuredTitle: {
     fontSize: fontSizes.font18,
     fontFamily: fontFamily.medium,
-    marginBottom: spacing.spacing12,
+    marginBottom: spacing.spacing4,
   },
 
   emptyStateTitleStyle: {
