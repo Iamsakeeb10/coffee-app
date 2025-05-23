@@ -1,7 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
-import {Alert, Animated, Dimensions, StyleSheet, View} from 'react-native';
+import React, {useState} from 'react';
+import {Animated, Dimensions, StyleSheet, View} from 'react-native';
 
 import OrderReview from '../../components/Checkout/OrderReview';
 import PaymentForm from '../../components/Checkout/PaymentForm';
@@ -11,14 +9,11 @@ import {useCheckoutNavigation} from '../../hooks/useCheckoutNavigation';
 import {useTheme} from '../../hooks/useTheme';
 import {PaymentFormData} from '../../types/Checkout/PaymentForm.type';
 import {ShippingFormData} from '../../types/Checkout/ShippingForm.type';
-import {RootStackParamList} from '../../types/types';
 
 const {width} = Dimensions.get('window');
 
 const CheckoutScreen = () => {
   const {colors} = useTheme();
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const [shippingData, setShippingData] = useState<ShippingFormData | null>(
     null,
@@ -31,29 +26,6 @@ const CheckoutScreen = () => {
     paymentData,
     isDirty,
   );
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', e => {
-      if (!isDirty) return;
-
-      e.preventDefault();
-
-      Alert.alert(
-        'Discard changes?',
-        'You have unsaved changes. Are you sure you want to leave?',
-        [
-          {text: "Don't leave", style: 'cancel', onPress: () => {}},
-          {
-            text: 'Discard',
-            style: 'destructive',
-            onPress: () => navigation.dispatch(e.data.action),
-          },
-        ],
-      );
-    });
-
-    return unsubscribe;
-  }, [navigation, isDirty]);
 
   return (
     <View style={{flex: 1, backgroundColor: colors.backgroundDefault}}>

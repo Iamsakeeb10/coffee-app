@@ -1,6 +1,6 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {useCallback, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Alert,
   Animated,
@@ -23,6 +23,35 @@ export const useCheckoutNavigation = (
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const animatedValue = useRef(new Animated.Value(0)).current;
   const [step, setStep] = useState(1);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', e => {
+      if (!isDirty) return;
+
+      e.preventDefault();
+
+      Alert.alert(
+        'Discard changes?',
+        'You have unsaved changes. Are you sure you want to leave?',
+        [
+          {
+            text: "Don't leave",
+            style: 'cancel',
+            onPress: () => {
+              console.log('this');
+            },
+          },
+          {
+            text: 'Discard',
+            style: 'destructive',
+            onPress: () => navigation.dispatch(e.data.action),
+          },
+        ],
+      );
+    });
+
+    return unsubscribe;
+  }, [navigation, isDirty]);
 
   const slideToStep = (targetStep: number) => {
     Animated.timing(animatedValue, {
