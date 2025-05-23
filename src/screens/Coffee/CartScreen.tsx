@@ -1,5 +1,5 @@
 import React, {useLayoutEffect, useMemo, useState} from 'react';
-import {FlatList, Pressable, Text, View} from 'react-native';
+import {FlatList, Pressable, Text, TouchableOpacity, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
@@ -246,9 +246,12 @@ const CartScreen = () => {
           </View>
         </View>
 
-        <Pressable style={cartStyles.payButtonFull} onPress={handleCheckout}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={cartStyles.payButtonFull}
+          onPress={handleCheckout}>
           <Text style={cartStyles.cartText}>{t('product.pay')}</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
 
       {showAlert && (

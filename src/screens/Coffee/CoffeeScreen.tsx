@@ -125,14 +125,6 @@ const CoffeeScreen = () => {
   const hasNoProducts =
     filteredItems.length === 0 && filteredItemsBeans.length === 0;
 
-  console.log('Condition check:', {
-    isSearchActive,
-    hasNoProducts,
-    loading,
-    filteredItems: filteredItems.length,
-    filteredItemsBeans: filteredItemsBeans.length,
-  });
-
   return (
     <View
       style={[

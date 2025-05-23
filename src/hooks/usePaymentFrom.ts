@@ -4,24 +4,27 @@ import {PaymentFormData} from '../types/Checkout/PaymentForm.type';
 import {PAYMENT_METHODS} from '../utils/staticPortion';
 import {validatePaymentForm} from '../utils/validator';
 
-export const usePaymentForm = (onSubmit: (form: PaymentFormData) => void) => {
+export const usePaymentForm = (
+  onSubmit: (form: PaymentFormData) => void,
+  setIsDirty: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
     PAYMENT_METHODS.CREDIT_CARD,
   );
-  const [form, setForm] = useState<PaymentFormData>({
-    cardNumber: '5668568868558855',
-    expirationDate: '12/28',
-    cvv: '393494',
-    cardholderName: 'Shakib',
-    paymentMethod: PAYMENT_METHODS.CREDIT_CARD,
-  });
   // const [form, setForm] = useState<PaymentFormData>({
-  //   cardNumber: '',
-  //   expirationDate: '',
-  //   cvv: '',
-  //   cardholderName: '',
+  //   cardNumber: '5668568868558855',
+  //   expirationDate: '12/28',
+  //   cvv: '393494',
+  //   cardholderName: 'Shakib',
   //   paymentMethod: PAYMENT_METHODS.CREDIT_CARD,
   // });
+  const [form, setForm] = useState<PaymentFormData>({
+    cardNumber: '',
+    expirationDate: '',
+    cvv: '',
+    cardholderName: '',
+    paymentMethod: PAYMENT_METHODS.CREDIT_CARD,
+  });
   const [isProcessing, setIsProcessing] = useState(false);
   const [saveCard, setSaveCard] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -80,7 +83,19 @@ export const usePaymentForm = (onSubmit: (form: PaymentFormData) => void) => {
       formattedValue = value.replace(/\D/g, '').substring(0, 4);
     }
 
-    setForm(prev => ({...prev, [key]: formattedValue}));
+    setForm(prev => {
+      const updatedForm = {...prev, [key]: formattedValue};
+
+      const isDirtyNow =
+        updatedForm.cardNumber !== '' ||
+        updatedForm.expirationDate !== '' ||
+        updatedForm.cvv !== '' ||
+        updatedForm.cardholderName !== '';
+
+      setIsDirty(isDirtyNow);
+
+      return updatedForm;
+    });
   };
 
   const handleSubmit = () => {
@@ -94,7 +109,7 @@ export const usePaymentForm = (onSubmit: (form: PaymentFormData) => void) => {
     setTimeout(() => {
       setIsProcessing(false);
       onSubmit(form);
-    }, 1500);
+    }, 0);
   };
 
   return {

@@ -16,7 +16,7 @@ import AlternativePaymentMethod from './AlternativePaymentMethod';
 import CreditCardForm from './CreditCardForm';
 import PaymentMethodSelector from './PaymentMethodSelector';
 
-const PaymentForm = ({onSubmit, goBack}: PaymentFormProps) => {
+const PaymentForm = ({onSubmit, goBack, setIsDirty}: PaymentFormProps) => {
   const {colors} = useTheme();
   const {
     selectedPaymentMethod,
@@ -30,7 +30,7 @@ const PaymentForm = ({onSubmit, goBack}: PaymentFormProps) => {
     handleChange,
     handleSubmit,
     detectCardType,
-  } = usePaymentForm(onSubmit);
+  } = usePaymentForm(onSubmit, setIsDirty);
 
   const cardType = detectCardType(form.cardNumber);
 

@@ -11,4 +11,5 @@ export type ShippingFormData = {
 
 export type ShippingFormProps = {
   onSubmit: (data: ShippingFormData) => void;
+  setIsDirty: any;
 };

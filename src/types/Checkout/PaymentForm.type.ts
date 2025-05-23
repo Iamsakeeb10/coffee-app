@@ -9,4 +9,5 @@ export type PaymentFormData = {
 export type PaymentFormProps = {
   onSubmit: (data: PaymentFormData) => void;
   goBack: () => void;
+  setIsDirty: any;
 };

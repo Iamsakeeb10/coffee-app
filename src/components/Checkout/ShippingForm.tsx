@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   Keyboard,
@@ -17,28 +18,31 @@ import AnimatedErrorText from '../Auth/AnimatedErrorText';
 import ButtonLocal from '../Common/ButtonLocal';
 import InputLocal from '../Common/InputLocal';
 
-const ShippingForm = ({onSubmit}: ShippingFormProps) => {
+const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
   const {colors} = useTheme();
-  const [form, setForm] = useState<ShippingFormData>({
-    fullName: 'Shakib Ahmed',
-    address: 'Dhaka',
-    city: 'Dhaka',
-    state: 'BD',
-    postalCode: '4343',
-    country: 'BD',
-    phone: '017',
-    email: 'shakib@gmail.com',
-  });
+
   // const [form, setForm] = useState<ShippingFormData>({
-  //   fullName: '',
-  //   address: '',
-  //   city: '',
-  //   state: '',
-  //   postalCode: '',
-  //   country: '',
-  //   phone: '',
-  //   email: '',
+  //   fullName: 'Shakib Ahmed',
+  //   address: 'Dhaka',
+  //   city: 'Dhaka',
+  //   state: 'BD',
+  //   postalCode: '4343',
+  //   country: 'BD',
+  //   phone: '017',
+  //   email: 'shakib@gmail.com',
   // });
+  const [form, setForm] = useState<ShippingFormData>({
+    fullName: '',
+    address: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: '',
+    phone: '',
+    email: '',
+  });
+
+  const navigation = useNavigation();
   const [errors, setErrors] = useState<
     Partial<Record<keyof ShippingFormData, string>>
   >({});
@@ -60,6 +64,7 @@ const ShippingForm = ({onSubmit}: ShippingFormProps) => {
 
   const handleChange = (key: keyof ShippingFormData, value: string) => {
     setForm(prev => ({...prev, [key]: value}));
+    setIsDirty(true);
 
     // Clear error on change
     if (errors[key]) {

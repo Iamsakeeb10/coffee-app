@@ -1,18 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React, {useRef, useState} from 'react';
-import {
-  Animated,
-  Dimensions,
-  Easing as RNEasing,
-  StyleSheet,
-  View,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, Animated, Dimensions, StyleSheet, View} from 'react-native';
 
 import OrderReview from '../../components/Checkout/OrderReview';
 import PaymentForm from '../../components/Checkout/PaymentForm';
 import ShippingForm from '../../components/Checkout/ShippingForm';
 import Header from '../../components/Common/Header';
+import {useCheckoutNavigation} from '../../hooks/useCheckoutNavigation';
 import {useTheme} from '../../hooks/useTheme';
 import {PaymentFormData} from '../../types/Checkout/PaymentForm.type';
 import {ShippingFormData} from '../../types/Checkout/ShippingForm.type';
@@ -29,44 +24,44 @@ const CheckoutScreen = () => {
     null,
   );
   const [paymentData, setPaymentData] = useState<PaymentFormData | null>(null);
-  const [step, setStep] = useState(1);
+  const [isDirty, setIsDirty] = useState(false);
 
-  const animatedValue = useRef(new Animated.Value(0)).current;
+  console.log(isDirty);
 
-  const slideToStep = (targetStep: number) => {
-    Animated.timing(animatedValue, {
-      toValue: targetStep - 1,
-      duration: 400,
-      easing: RNEasing.bezier(0.25, 0.1, 0.25, 1), // smoother
-      useNativeDriver: false,
-    }).start(() => {
-      setStep(targetStep);
+  const {goNext, goBack, translateX, headerBackPress} = useCheckoutNavigation(
+    shippingData,
+    paymentData,
+  );
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', e => {
+      if (!isDirty) return;
+
+      e.preventDefault();
+
+      Alert.alert(
+        'Discard changes?',
+        'You have unsaved changes. Are you sure you want to leave?',
+        [
+          {text: "Don't leave", style: 'cancel', onPress: () => {}},
+          {
+            text: 'Discard',
+            style: 'destructive',
+            onPress: () => navigation.dispatch(e.data.action),
+          },
+        ],
+      );
     });
-  };
 
-  const goNext = () => {
-    if (step < 3) {
-      slideToStep(step + 1);
-    }
-  };
-
-  const goBack = () => {
-    if (step > 1) {
-      slideToStep(step - 1);
-    }
-  };
-
-  const translateX = animatedValue.interpolate({
-    inputRange: [0, 1, 2],
-    outputRange: [0, -width, -2 * width],
-  });
+    return unsubscribe;
+  }, [navigation, isDirty]);
 
   return (
     <View style={{flex: 1, backgroundColor: colors.backgroundDefault}}>
       <Header
         title="Checkout"
         showBack={true}
-        onBackPress={() => navigation.goBack()}
+        onBackPress={headerBackPress}
         useSafeArea={true}
         backgroundColor={colors.backgroundDefault}
         color={colors.textPrimary}
@@ -80,6 +75,7 @@ const CheckoutScreen = () => {
               setShippingData(data);
               goNext();
             }}
+            setIsDirty={setIsDirty}
           />
         </View>
         <View style={styles.stepContainer}>
@@ -89,6 +85,7 @@ const CheckoutScreen = () => {
               goNext();
             }}
             goBack={goBack}
+            setIsDirty={setIsDirty}
           />
         </View>
         <View style={styles.stepContainer}>
