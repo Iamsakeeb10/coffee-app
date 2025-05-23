@@ -44,6 +44,7 @@ const CoffeeScreen = () => {
   const {coffeeItems, loading} = useCoffeeItems(selectedCategory);
   const [searchQuery, setSearchQuery] = useState('');
   const listRef = useRef<FlatList | null | any>(null);
+  const hasSearchedOnce = useRef(false);
 
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
@@ -83,13 +84,13 @@ const CoffeeScreen = () => {
   useEffect(() => {
     if (!listRef.current) return;
 
-    if (
-      listRef.current &&
-      filteredItems.length > 0 &&
-      searchQuery.trim() !== ''
-    ) {
+    const trimmedQuery = searchQuery.trim();
+
+    if (trimmedQuery !== '') {
+      hasSearchedOnce.current = true;
+
       const bestMatchIndex = filteredItems.findIndex(item =>
-        item.name.toLowerCase().startsWith(searchQuery.toLowerCase()),
+        item.name.toLowerCase().startsWith(trimmedQuery.toLowerCase()),
       );
 
       const scrollToIndex = bestMatchIndex !== -1 ? bestMatchIndex : 0;
@@ -99,12 +100,14 @@ const CoffeeScreen = () => {
         index: scrollToIndex,
         viewPosition: 0.5,
       });
-    } else {
+    } else if (hasSearchedOnce.current) {
       listRef.current?.scrollToIndex({
         animated: true,
         index: 0,
         viewPosition: 0.5,
       });
+
+      hasSearchedOnce.current = false;
     }
   }, [searchQuery, filteredItems]);
 
