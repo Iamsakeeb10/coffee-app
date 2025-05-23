@@ -1,6 +1,6 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useRef, useState} from 'react';
 import {
   Alert,
   Animated,
@@ -24,34 +24,34 @@ export const useCheckoutNavigation = (
   const animatedValue = useRef(new Animated.Value(0)).current;
   const [step, setStep] = useState(1);
 
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', e => {
-      if (!isDirty) return;
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('beforeRemove', e => {
+  //     if (!isDirty) return;
 
-      e.preventDefault();
+  //     e.preventDefault();
 
-      Alert.alert(
-        'Discard changes?',
-        'You have unsaved changes. Are you sure you want to leave?',
-        [
-          {
-            text: "Don't leave",
-            style: 'cancel',
-            onPress: () => {
-              console.log('this');
-            },
-          },
-          {
-            text: 'Discard',
-            style: 'destructive',
-            onPress: () => navigation.dispatch(e.data.action),
-          },
-        ],
-      );
-    });
+  //     Alert.alert(
+  //       'Discard changes?',
+  //       'You have unsaved changes. Are you sure you want to leave?',
+  //       [
+  //         {
+  //           text: "Don't leave",
+  //           style: 'cancel',
+  //           onPress: () => {
+  //             console.log('this');
+  //           },
+  //         },
+  //         {
+  //           text: 'Discard',
+  //           style: 'destructive',
+  //           onPress: () => navigation.dispatch(e.data.action),
+  //         },
+  //       ],
+  //     );
+  //   });
 
-    return unsubscribe;
-  }, [navigation, isDirty]);
+  //   return unsubscribe;
+  // }, [navigation, isDirty]);
 
   const slideToStep = (targetStep: number) => {
     Animated.timing(animatedValue, {
@@ -80,11 +80,23 @@ export const useCheckoutNavigation = (
   };
 
   const headerBackPress = () => {
-    if (shippingData || paymentData) {
-      confirmGoBack();
+    handleBackPress();
+  };
+
+  const handleBackPress = () => {
+    console.log('Step +..', step);
+    if (step > 1) {
+      slideToStep(step - 1);
     } else {
-      navigation.goBack();
+      console.log(isDirty);
+      console.log(step);
+      if (shippingData || paymentData || isDirty) {
+        confirmGoBack();
+      } else {
+        navigation.goBack();
+      }
     }
+    return true;
   };
 
   const goNext = () => {
@@ -96,23 +108,16 @@ export const useCheckoutNavigation = (
   const goBack = () => {
     if (step > 1) {
       slideToStep(step - 1);
+    } else {
+      console.log('this');
+      handleBackPress();
     }
   };
 
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
-        if (step > 1) {
-          goBack();
-          return true;
-        } else {
-          if (isDirty) {
-            confirmGoBack();
-          }
-
-          navigation.goBack();
-          return true;
-        }
+        return handleBackPress();
       };
 
       const subscription = BackHandler.addEventListener(
@@ -120,7 +125,7 @@ export const useCheckoutNavigation = (
         onBackPress,
       );
       return () => subscription.remove();
-    }, [step, navigation]),
+    }, [step, navigation, isDirty]),
   );
 
   const translateX = animatedValue.interpolate({
