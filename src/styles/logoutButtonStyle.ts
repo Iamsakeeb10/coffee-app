@@ -1,5 +1,5 @@
 import {Dimensions, StyleSheet} from 'react-native';
-import {colors} from '../constants/colors';
+import {colors, staticColors} from '../constants/colors';
 import {fontFamily} from '../utils/typography';
 
 const {width} = Dimensions.get('window');
@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
   },
 
   footerContainer: {
-    borderTopWidth: 1,
-    borderTopColor: colors.lightGray,
+    borderWidth: 0.5,
+    borderColor: staticColors.borderColor,
   },
 
   bottomSheetButtonContainer: {
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     borderWidth: 0.5,
-    borderColor: colors.lightGray,
+    borderColor: staticColors.borderColor,
     position: 'absolute',
     bottom: 0,
     right: '50%',

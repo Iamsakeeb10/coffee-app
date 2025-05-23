@@ -212,4 +212,5 @@ export const staticColors = {
   langLabel: '#1A1A1A',
   buttonBackground: '#F1F1F1',
   accentPrimary: '#3B82F6',
+  borderColor: 'rgba(211,211,211, 0.5)',
 };
