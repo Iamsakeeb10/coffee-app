@@ -9,6 +9,8 @@ import {
   View,
 } from 'react-native';
 
+import OrderReview from '../../components/Checkout/OrderReview';
+import PaymentForm from '../../components/Checkout/PaymentForm';
 import ShippingForm from '../../components/Checkout/ShippingForm';
 import Header from '../../components/Common/Header';
 import {useTheme} from '../../hooks/useTheme';
@@ -65,7 +67,7 @@ const CheckoutScreen = () => {
         title="Checkout"
         showBack={true}
         onBackPress={() => navigation.goBack()}
-        useSafeArea={false}
+        useSafeArea={true}
         backgroundColor={colors.backgroundDefault}
         color={colors.textPrimary}
       />
@@ -81,15 +83,17 @@ const CheckoutScreen = () => {
           />
         </View>
         <View style={styles.stepContainer}>
-          {/* <PaymentForm
+          <PaymentForm
             onSubmit={data => {
               setPaymentData(data);
               goNext();
             }}
             goBack={goBack}
-          /> */}
+          />
         </View>
-        <View style={styles.stepContainer}>{/* <OrderReview /> */}</View>
+        <View style={styles.stepContainer}>
+          <OrderReview />
+        </View>
       </Animated.View>
     </View>
   );

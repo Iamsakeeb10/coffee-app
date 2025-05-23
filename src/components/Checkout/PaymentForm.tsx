@@ -6,12 +6,12 @@ import {
   Text,
   View,
 } from 'react-native';
-import {PAYMENT_METHODS} from '../../constants/staticPortions';
 import {usePaymentForm} from '../../hooks/usePaymentFrom';
 import {useTheme} from '../../hooks/useTheme';
 import styles from '../../styles/Checkout/PaymentForm.styles';
 import {PaymentFormProps} from '../../types/Checkout/PaymentForm.type';
-import ButtonLocal from '../Common/ButtonLocal';
+import {PAYMENT_METHODS} from '../../utils/staticPortion';
+import DoubleButton from '../Common/DoubleButton';
 import AlternativePaymentMethod from './AlternativePaymentMethod';
 import CreditCardForm from './CreditCardForm';
 import PaymentMethodSelector from './PaymentMethodSelector';
@@ -75,14 +75,14 @@ const PaymentForm = ({onSubmit, goBack}: PaymentFormProps) => {
         <View style={styles.buttonContainer}>
           {!isKeyboardVisible && (
             <View style={{flexDirection: 'row', gap: 10}}>
-              <ButtonLocal
+              <DoubleButton
                 title="Go Back"
                 loading={false}
                 backgroundColor={colors.accentBadge}
                 onPressHandler={() => goBack()}
                 isDouble
               />
-              <ButtonLocal
+              <DoubleButton
                 title="Continue to Review"
                 loading={isProcessing}
                 backgroundColor={colors.accentBadge}

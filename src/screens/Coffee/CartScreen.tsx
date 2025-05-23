@@ -166,13 +166,7 @@ const CartScreen = () => {
   };
 
   const handleCheckout = () => {
-    showSnack('Checkout functionality will be implemented soon', {
-      backgroundColor: colors.accentOrange,
-      textColor: colors.white,
-      actionText: 'Okay',
-      actionColor: colors.white,
-      duration: 1200,
-    });
+    navigation.navigate('CheckoutScreen');
   };
 
   if (items.length === 0) {

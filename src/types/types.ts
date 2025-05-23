@@ -70,6 +70,7 @@ export type RootStackParamList = {
   CartScreen: undefined;
   ProfileScreen: undefined;
   ThemeScreen: undefined;
+  CheckoutScreen: undefined;
 };
 
 export type AlertProps = {

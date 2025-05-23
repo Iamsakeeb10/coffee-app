@@ -14,3 +14,10 @@ export const favoriteScreenHeaderOptions = {
     fontFamily: fontFamily.medium,
   },
 };
+
+export const PAYMENT_METHODS = {
+  CREDIT_CARD: 'credit_card',
+  PAYPAL: 'paypal',
+  APPLE_PAY: 'apple_pay',
+  GOOGLE_PAY: 'google_pay',
+};

@@ -1,7 +1,7 @@
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
-import {PAYMENT_METHODS} from '../../constants/staticPortions';
 import {useTheme} from '../../hooks/useTheme';
 import styles from '../../styles/Checkout/PaymentMethodSelector.styles';
+import {PAYMENT_METHODS} from '../../utils/staticPortion';
 
 interface PaymentMethodSelectorProps {
   selectedPaymentMethod: string;

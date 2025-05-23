@@ -24,3 +24,11 @@ export const getIconName = (name: string, focused: any) => {
 
   return iconName;
 };
+
+export const TAX_RATE = 0.1;
+
+export function calculateOrderTotals(subtotal: number) {
+  const tax = parseFloat((subtotal * TAX_RATE).toFixed(2));
+  const total = parseFloat((subtotal + tax).toFixed(2));
+  return {tax, total};
+}

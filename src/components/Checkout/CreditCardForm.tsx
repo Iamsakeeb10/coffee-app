@@ -3,8 +3,8 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import {useTheme} from '../../hooks/useTheme';
 import styles from '../../styles/Checkout/CreditCardForm.styles';
 import {CreditCardFormProps} from '../../types/Checkout/CreditCardForm.type';
-import InputLocal from '../Auth/InputLocal';
-import AnimatedErrorText from '../Common/AnimatedErrorText';
+import AnimatedErrorText from '../Auth/AnimatedErrorText';
+import InputLocal from '../Common/InputLocal';
 
 const CreditCardForm: React.FC<CreditCardFormProps> = ({
   form,

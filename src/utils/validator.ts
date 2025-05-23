@@ -1,3 +1,6 @@
+import {PaymentFormData} from '../types/Checkout/PaymentForm.type';
+import {ShippingFormData} from '../types/Checkout/ShippingForm.type';
+
 export const createAccountValidation = (
   name: string,
   email: string,
@@ -92,6 +95,69 @@ export const loginValidation = (
     errors.passwordError = t('auth.passwordErrorMax');
   } else if (trimmedPassword.length < 8) {
     errors.passwordError = t('auth.passwordErrorMin');
+  }
+
+  return errors;
+};
+
+export const validateShippingForm = (
+  form: ShippingFormData,
+): Partial<Record<keyof ShippingFormData, string>> => {
+  const errors: Partial<Record<keyof ShippingFormData, string>> = {};
+
+  if (!form.fullName) errors.fullName = 'Full name is required';
+  if (!form.address) errors.address = 'Address is required';
+  if (!form.city) errors.city = 'City is required';
+  if (!form.state) errors.state = 'State is required';
+  if (!form.postalCode) errors.postalCode = 'Postal code is required';
+  if (!form.country) errors.country = 'Country is required';
+  if (!form.phone) errors.phone = 'Phone number is required';
+  if (!form.email) errors.email = 'Email is required';
+
+  return errors;
+};
+
+export const validatePaymentForm = (
+  form: PaymentFormData,
+): Record<string, string> => {
+  const errors: Record<string, string> = {};
+  const cardNumberCleaned = form.cardNumber.replace(/\s/g, '');
+
+  if (!cardNumberCleaned || cardNumberCleaned.length < 15) {
+    errors.cardNumber = 'Invalid card number';
+  }
+
+  if (!form.cardholderName || form.cardholderName.trim() === '') {
+    errors.cardholderName = 'Cardholder name required';
+  }
+
+  if (!form.expirationDate || form.expirationDate.length !== 5) {
+    errors.expirationDate = 'Invalid expiration date';
+  } else {
+    const [month, year] = form.expirationDate.split('/');
+    const expiryMonth = parseInt(month, 10);
+    const expiryYear = parseInt(year, 10);
+
+    if (
+      isNaN(expiryMonth) ||
+      isNaN(expiryYear) ||
+      expiryMonth < 1 ||
+      expiryMonth > 12
+    ) {
+      errors.expirationDate = 'Invalid month';
+    }
+
+    const expiryDate = new Date();
+    expiryDate.setFullYear(2000 + expiryYear, expiryMonth - 1, 1);
+
+    const currentDate = new Date();
+    if (expiryDate < currentDate) {
+      errors.expirationDate = 'Card expired';
+    }
+  }
+
+  if (!form.cvv || form.cvv.length < 3) {
+    errors.cvv = 'Invalid CVV';
   }
 
   return errors;
