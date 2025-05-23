@@ -6,8 +6,8 @@ const {width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   bottomSheetContainer: {
-    width: width / 1.1,
-    alignSelf: 'center',
+    // width: width / 1.1,
+    // alignSelf: 'center',
     marginTop: 16,
     borderRadius: 8,
   },
@@ -15,6 +15,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 16,
+    width: width / 1.1,
+    alignSelf: 'center',
   },
   bottomSheetHeaderTextContainer: {
     flex: 1,
@@ -34,11 +36,32 @@ const styles = StyleSheet.create({
   bottomSheetSpacer: {
     height: 15,
   },
+
+  footerContainer: {
+    borderTopWidth: 1,
+    borderTopColor: colors.lightGray,
+  },
+
   bottomSheetButtonContainer: {
+    width: width / 1.1,
+    alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+    paddingVertical: 8,
   },
+
+  border: {
+    flex: 1,
+    alignItems: 'center',
+    borderWidth: 0.5,
+    borderColor: colors.lightGray,
+    position: 'absolute',
+    bottom: 0,
+    right: '50%',
+    top: 0,
+  },
+
   bottomSheetCancelButton: {
     paddingVertical: 8,
     paddingHorizontal: 12,

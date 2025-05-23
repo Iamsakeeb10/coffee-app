@@ -68,23 +68,25 @@ const LogoutButton = ({setShowSheet, showSheet}: LogoutButtonProps) => {
           </View>
 
           <View style={styles.bottomSheetSpacer} />
+          <View style={styles.footerContainer}>
+            <View style={styles.bottomSheetButtonContainer}>
+              <TouchableOpacity
+                style={[styles.bottomSheetCancelButton]}
+                onPress={toggleBottomSheet}>
+                <Text style={styles.bottomSheetCancelText}>
+                  {t('settings.cancel')}
+                </Text>
+              </TouchableOpacity>
+              <View style={styles.border} />
 
-          <View style={styles.bottomSheetButtonContainer}>
-            <TouchableOpacity
-              style={[styles.bottomSheetCancelButton]}
-              onPress={toggleBottomSheet}>
-              <Text style={styles.bottomSheetCancelText}>
-                {t('settings.cancel')}
-              </Text>
-            </TouchableOpacity>
-            <View />
-            <TouchableOpacity
-              style={styles.bottomSheetLogoutButton}
-              onPress={logoutHandler}>
-              <Text style={styles.bottomSheetLogoutText}>
-                {t('settings.confirmLogout')}
-              </Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.bottomSheetLogoutButton}
+                onPress={logoutHandler}>
+                <Text style={styles.bottomSheetLogoutText}>
+                  {t('settings.confirmLogout')}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </BottomSheet>
