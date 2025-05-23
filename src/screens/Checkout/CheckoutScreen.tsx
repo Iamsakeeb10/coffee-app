@@ -26,11 +26,10 @@ const CheckoutScreen = () => {
   const [paymentData, setPaymentData] = useState<PaymentFormData | null>(null);
   const [isDirty, setIsDirty] = useState(false);
 
-  console.log(isDirty);
-
   const {goNext, goBack, translateX, headerBackPress} = useCheckoutNavigation(
     shippingData,
     paymentData,
+    isDirty,
   );
 
   useEffect(() => {

@@ -22,7 +22,7 @@ const OrderReviewFooter = ({items = 1, total = 470, onPlaceOrder}: any) => {
         ]}>
         <View style={styles.infoRow}>
           <Text style={styles.infoText}>Items: {items}</Text>
-          <Text style={styles.infoText}>Total: $ {total}</Text>
+          <Text style={styles.infoText}>Total: $ {total.toFixed(2)}</Text>
         </View>
 
         <TouchableOpacity

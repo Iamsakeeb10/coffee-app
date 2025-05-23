@@ -17,6 +17,7 @@ const {width} = Dimensions.get('window');
 export const useCheckoutNavigation = (
   shippingData: ShippingFormData | null,
   paymentData: PaymentFormData | null,
+  isDirty: boolean,
 ) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -76,6 +77,10 @@ export const useCheckoutNavigation = (
           goBack();
           return true;
         } else {
+          if (isDirty) {
+            confirmGoBack();
+          }
+
           navigation.goBack();
           return true;
         }
