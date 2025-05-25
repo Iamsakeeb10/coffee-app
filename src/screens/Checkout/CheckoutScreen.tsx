@@ -28,7 +28,22 @@ const CheckoutScreen = () => {
     translateX,
     headerBackPress,
     step: currentStep,
+    slideToStep,
   } = useCheckoutNavigation(shippingData, paymentData, isDirty);
+
+  const guardedSlideToStep = (targetStep: number) => {
+    if (targetStep < currentStep) {
+      // Allow going back without validation
+      slideToStep(targetStep);
+    } else {
+      // Only go forward if current step's form is valid
+      if (currentStep === 1 && shippingData) {
+        slideToStep(targetStep);
+      } else if (currentStep === 2 && paymentData) {
+        slideToStep(targetStep);
+      }
+    }
+  };
 
   return (
     <View style={{flex: 1, backgroundColor: colors.backgroundDefault}}>
@@ -41,7 +56,10 @@ const CheckoutScreen = () => {
         color={colors.textPrimary}
       />
 
-      <StepIndicator currentStep={currentStep} colors={colors} />
+      <StepIndicator
+        currentStep={currentStep}
+        slideToStep={guardedSlideToStep}
+      />
 
       <Animated.View
         style={[styles.sliderContainer, {transform: [{translateX}]}]}>

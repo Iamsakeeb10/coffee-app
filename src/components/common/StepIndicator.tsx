@@ -1,14 +1,18 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import {staticColors} from '../../constants/colors';
 import {useTheme} from '../../hooks/useTheme';
 import styles from '../../styles/StepIndicator.style';
 
 type StepIndicatorProps = {
   currentStep: number;
+  slideToStep: (targetStep: number) => void;
 };
 
-const StepIndicator: React.FC<StepIndicatorProps> = ({currentStep}) => {
+const StepIndicator: React.FC<StepIndicatorProps> = ({
+  currentStep,
+  slideToStep,
+}) => {
   const steps = [
     {label: 'Shipping', number: 1},
     {label: 'Payment', number: 2},
@@ -26,19 +30,20 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({currentStep}) => {
 
           return (
             <React.Fragment key={index}>
-              <View style={styles.stepItem}>
-                {/* Step Circle with Number/Check */}
+              <TouchableOpacity
+                style={styles.stepItem}
+                onPress={() => slideToStep(step.number)}>
                 <View
                   style={[
                     styles.stepCircle,
                     {
                       backgroundColor:
                         isCompleted || isActive
-                          ? colors.accentCircle
+                          ? colors.accentBadge
                           : colors.backgroundCard,
                       borderColor:
                         isCompleted || isActive
-                          ? colors.accentCircle
+                          ? colors.gray300
                           : colors.accentCircle,
                     },
                   ]}>
@@ -73,7 +78,7 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({currentStep}) => {
                   ]}>
                   {step.label}
                 </Text>
-              </View>
+              </TouchableOpacity>
 
               {/* Progress Line between steps */}
               {index < steps.length - 1 && (
