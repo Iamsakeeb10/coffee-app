@@ -5,6 +5,7 @@ import OrderReview from '../../components/Checkout/OrderReview';
 import PaymentForm from '../../components/Checkout/PaymentForm';
 import ShippingForm from '../../components/Checkout/ShippingForm';
 import Header from '../../components/Common/Header';
+import StepIndicator from '../../components/Common/StepIndicator';
 import {useCheckoutNavigation} from '../../hooks/useCheckoutNavigation';
 import {useTheme} from '../../hooks/useTheme';
 import {PaymentFormData} from '../../types/Checkout/PaymentForm.type';
@@ -21,11 +22,13 @@ const CheckoutScreen = () => {
   const [paymentData, setPaymentData] = useState<PaymentFormData | null>(null);
   const [isDirty, setIsDirty] = useState(false);
 
-  const {goNext, goBack, translateX, headerBackPress} = useCheckoutNavigation(
-    shippingData,
-    paymentData,
-    isDirty,
-  );
+  const {
+    goNext,
+    goBack,
+    translateX,
+    headerBackPress,
+    step: currentStep,
+  } = useCheckoutNavigation(shippingData, paymentData, isDirty);
 
   return (
     <View style={{flex: 1, backgroundColor: colors.backgroundDefault}}>
@@ -37,6 +40,8 @@ const CheckoutScreen = () => {
         backgroundColor={colors.backgroundDefault}
         color={colors.textPrimary}
       />
+
+      <StepIndicator currentStep={currentStep} colors={colors} />
 
       <Animated.View
         style={[styles.sliderContainer, {transform: [{translateX}]}]}>
