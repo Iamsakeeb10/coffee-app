@@ -1,7 +1,13 @@
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
-import {StatusBar, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Dimensions,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 
@@ -15,6 +21,10 @@ import {useTranslation} from '../../i18n/useTranslations';
 import {RootState} from '../../redux/store/store';
 import styles from '../../styles/profileScreenStyles';
 import {RootStackParamList} from '../../types/types';
+
+const {width} = Dimensions.get('window');
+
+const isSmallDevice = width < 360;
 
 const ProfileScreen = () => {
   const [showSheet, setShowSheet] = useState(false);
@@ -36,7 +46,7 @@ const ProfileScreen = () => {
       key: 'language',
     },
     {icon: 'log-out-outline', title: t('profile.logout.button'), key: 'logout'},
-    {icon: '', title: ''},
+    ...(!isSmallDevice ? [{icon: '', title: '', key: ''}] : []),
     {icon: '', title: ''},
   ];
 

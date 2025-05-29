@@ -108,7 +108,9 @@ const styles = StyleSheet.create({
 
   imageContainer: {
     elevation: 8,
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    paddingBottom: 16,
   },
 
   imageInnerContainer: {

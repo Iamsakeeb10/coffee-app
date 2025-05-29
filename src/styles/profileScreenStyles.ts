@@ -4,6 +4,8 @@ import {fontFamily} from '../utils/typography';
 
 const {width, height} = Dimensions.get('window');
 
+const AVATAR_SIZE = width * 0.25;
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.background,
@@ -14,10 +16,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
+  // avatar: {
+  //   width: 90,
+  //   height: 90,
+  //   borderRadius: 45,
+  //   marginBottom: 10,
+  // },
   avatar: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: AVATAR_SIZE / 2,
     marginBottom: 10,
   },
   name: {

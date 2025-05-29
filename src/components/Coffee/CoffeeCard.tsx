@@ -113,8 +113,8 @@ const CoffeeCard: React.FC<Props> = ({item, loading, index = 0}) => {
             style={[
               styles.imageContainer,
               {
-                width: itemWidth,
-                height: height * 0.33,
+                // width: itemWidth,
+                // height: height * 0.33,
               },
             ]}>
             <View style={styles.imageInnerContainer}>

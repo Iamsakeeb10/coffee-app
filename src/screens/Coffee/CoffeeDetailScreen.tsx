@@ -254,7 +254,7 @@ const CoffeeDetailScreen: React.FC<Props> = ({route, navigation}) => {
           ))}
         </View>
 
-        <View style={styles.footer}>
+        <View style={[styles.footer, {paddingBottom: top.bottom}]}>
           <View>
             <Text
               style={[
