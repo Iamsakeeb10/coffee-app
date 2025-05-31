@@ -6,6 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {usePaymentForm} from '../../hooks/usePaymentFrom';
 import {useTheme} from '../../hooks/useTheme';
 import styles from '../../styles/Checkout/PaymentForm.styles';
@@ -33,6 +34,7 @@ const PaymentForm = ({onSubmit, goBack, setIsDirty}: PaymentFormProps) => {
   } = usePaymentForm(onSubmit, setIsDirty);
 
   const cardType = detectCardType(form.cardNumber);
+  const insets = useSafeAreaInsets();
 
   return (
     <KeyboardAvoidingView
@@ -92,7 +94,13 @@ const PaymentForm = ({onSubmit, goBack, setIsDirty}: PaymentFormProps) => {
             </View>
           )}
 
-          <View style={styles.securityRow}>
+          <View
+            style={[
+              styles.securityRow,
+              {
+                paddingBottom: insets.bottom,
+              },
+            ]}>
             <Text style={[styles.securityText, {color: colors.textSecondary}]}>
               🔒 Your payment information is secure.
             </Text>

@@ -7,6 +7,7 @@ import {
   ScrollView,
   View,
 } from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTheme} from '../../hooks/useTheme';
 import styles from '../../styles/Checkout/ShippingForm.styles';
 import {
@@ -47,6 +48,8 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
     Partial<Record<keyof ShippingFormData, string>>
   >({});
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -273,7 +276,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
         </ScrollView>
 
         {!isKeyboardVisible && (
-          <View>
+          <View style={{paddingBottom: insets.bottom}}>
             <ButtonLocal
               title="Next"
               loading={false}

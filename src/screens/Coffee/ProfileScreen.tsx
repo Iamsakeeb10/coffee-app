@@ -46,7 +46,7 @@ const ProfileScreen = () => {
       key: 'language',
     },
     {icon: 'log-out-outline', title: t('profile.logout.button'), key: 'logout'},
-    ...(!isSmallDevice ? [{icon: '', title: '', key: ''}] : []),
+    ...(isSmallDevice ? [{icon: '', title: '', key: ''}] : []),
     {icon: '', title: ''},
   ];
 

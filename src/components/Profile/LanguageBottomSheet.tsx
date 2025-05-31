@@ -48,7 +48,7 @@ const LanguageBottomSheet: React.FC<LanguageBottomSheetProps> = ({
   };
 
   return (
-    <BottomSheet visible={visible} onClose={onClose} heightRatio={0.43}>
+    <BottomSheet visible={visible} onClose={onClose} heightRatio={0.5}>
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.header}>

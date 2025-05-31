@@ -11,7 +11,7 @@ import bottomSheetStyles from '../../styles/bottomsheetStyle';
 
 const {height} = Dimensions.get('window');
 
-const BottomSheet = ({visible, onClose, children, heightRatio = 0.23}: any) => {
+const BottomSheet = ({visible, onClose, children, heightRatio = 0.3}: any) => {
   const slideAnim = useRef(new Animated.Value(height)).current;
   const [modalVisible, setModalVisible] = useState(visible);
 
