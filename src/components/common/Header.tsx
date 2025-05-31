@@ -3,6 +3,7 @@ import {Platform, StatusBar, Text, TouchableOpacity, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {colors} from '../../constants/colors';
+import {useTheme} from '../../hooks/useTheme';
 import styles from '../../styles/Header.styles';
 import {HeaderProps} from '../../types/Common/HeaderProps.type';
 // import {colors} from '../../constants/colors';
@@ -23,6 +24,8 @@ const Header = ({
   useSafeArea = true,
 }: HeaderProps) => {
   const insets = useSafeAreaInsets();
+
+  const {isDarkMode} = useTheme();
 
   const renderLeftContent = () => {
     if (leftComponent) {
@@ -80,6 +83,7 @@ const Header = ({
           backgroundColor: backgroundColor || colors.background,
           paddingTop: topPadding,
           paddingBottom: 16,
+          elevation: isDarkMode ? 0 : 8,
         },
         headerStyle,
       ]}>
