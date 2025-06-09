@@ -304,7 +304,13 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             presentationStyle="fullScreen"
             onRequestClose={closeModal}
             statusBarTranslucent={true}>
-            <SetLocationModal />
+            <SetLocationModal
+              onClose={closeModal}
+              onLocationSelected={(location, address) => {
+                console.log('Address =>>', address);
+                // Handle the selected location
+              }}
+            />
           </Modal>
         )}
       </View>
