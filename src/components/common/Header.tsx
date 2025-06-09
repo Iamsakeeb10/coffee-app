@@ -22,6 +22,7 @@ const Header = ({
   backgroundColor,
   color,
   useSafeArea = true,
+  modalHeader = false,
 }: HeaderProps) => {
   const insets = useSafeAreaInsets();
 
@@ -81,7 +82,7 @@ const Header = ({
         styles.container,
         {
           backgroundColor: backgroundColor || colors.background,
-          paddingTop: topPadding,
+          paddingTop: !modalHeader ? topPadding : 0,
           paddingBottom: 16,
           elevation: isDarkMode ? 0 : 8,
         },

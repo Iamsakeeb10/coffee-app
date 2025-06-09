@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
+  Modal,
   Platform,
   ScrollView,
   View,
@@ -18,6 +19,8 @@ import {validateShippingForm} from '../../utils/validator';
 import AnimatedErrorText from '../Auth/AnimatedErrorText';
 import ButtonLocal from '../Common/ButtonLocal';
 import InputLocal from '../Common/InputLocal';
+import LocationPickerButton from './LocationPickerButton';
+import SetLocationModal from './SetLocationModal';
 
 const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
   const {colors} = useTheme();
@@ -48,6 +51,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
     Partial<Record<keyof ShippingFormData, string>>
   >({});
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const insets = useSafeAreaInsets();
 
@@ -75,6 +79,9 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
     }
   };
 
+  const openModal = () => setVisible(true);
+  const closeModal = () => setVisible(false);
+
   const handleSubmit = () => {
     const newErrors = validateShippingForm(form);
 
@@ -99,6 +106,10 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
           contentContainerStyle={{paddingBottom: 24}}
           showsVerticalScrollIndicator={false}
           automaticallyAdjustKeyboardInsets>
+          <LocationPickerButton
+            onPress={openModal}
+            backgroundColor={colors.accentBadge}
+          />
           {/* All InputLocal fields */}
           <InputLocal
             placeholder="Full Name"
@@ -285,6 +296,16 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
               onPressHandler={handleSubmit}
             />
           </View>
+        )}
+        {visible && (
+          <Modal
+            visible={visible}
+            animationType="slide"
+            presentationStyle="fullScreen"
+            onRequestClose={closeModal}
+            statusBarTranslucent={true}>
+            <SetLocationModal />
+          </Modal>
         )}
       </View>
     </KeyboardAvoidingView>

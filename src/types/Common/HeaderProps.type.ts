@@ -12,4 +12,5 @@ export interface HeaderProps {
   backgroundColor?: string;
   color?: string;
   useSafeArea?: boolean;
+  modalHeader?: boolean;
 }
