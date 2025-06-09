@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   stepIndicatorContainer: {
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingTop: 16,
     backgroundColor: 'transparent',
   },
   stepsWrapper: {

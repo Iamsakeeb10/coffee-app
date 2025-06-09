@@ -607,8 +607,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   selectedAddress: {
-    color: '#000',
+    color: colors.cardBackground,
     fontSize: 14,
+    fontFamily: fontFamily.medium,
     lineHeight: 18,
   },
   actionButtons: {
@@ -630,8 +631,7 @@ const styles = StyleSheet.create({
   },
   actionText: {
     marginLeft: 6,
-    fontWeight: '500',
-    color: '#000',
+    fontFamily: fontFamily.medium,
     fontSize: 14,
   },
   confirmContainer: {
@@ -639,7 +639,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   confirmBtn: {
-    backgroundColor: colors.primary || '#007AFF',
+    backgroundColor: colors.deepRed,
     borderRadius: 10,
     paddingVertical: 15,
     alignItems: 'center',
@@ -647,7 +647,7 @@ const styles = StyleSheet.create({
   confirmBtnText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: fontFamily.medium,
   },
 
   // Map styles
