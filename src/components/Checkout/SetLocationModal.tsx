@@ -535,7 +535,9 @@ const SetLocationModal = ({
       <View style={styles.searchBar}>
         <Ionicons name="location-outline" size={20} color="#666" />
         <View style={styles.input}>
-          {address ? (
+          {loading ? (
+            <ActivityIndicator size="small" color="#666" />
+          ) : address ? (
             <Text style={styles.selectedAddress} numberOfLines={2}>
               {address}
             </Text>
