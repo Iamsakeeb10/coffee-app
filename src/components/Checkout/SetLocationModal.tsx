@@ -147,6 +147,7 @@ import {
   ActivityIndicator,
   Alert,
   Dimensions,
+  Linking,
   PermissionsAndroid,
   Platform,
   SafeAreaView,
@@ -160,6 +161,8 @@ import MapView, {Marker, PROVIDER_GOOGLE, UrlTile} from 'react-native-maps';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {colors} from '../../constants/colors';
+import {bangladeshRegion} from '../../utils/staticPortion';
+import {fontFamily} from '../../utils/typography';
 import Header from '../Common/Header';
 
 const {width, height} = Dimensions.get('window');
@@ -189,11 +192,14 @@ const SetLocationModal = ({
   const [addressLoading, setAddressLoading] = useState(false);
   const [fetchTimeoutId, setFetchTimeoutId] = useState(null);
 
+  console.log('Region =>>', region);
+  console.log('Address =>>', address);
+  console.log('Location =>>', currentLocation);
+
   useFocusEffect(
     useCallback(() => {
       StatusBar.setBarStyle('dark-content');
       StatusBar.setBackgroundColor('#fff');
-      initializeApp();
     }, []),
   );
 
@@ -219,24 +225,35 @@ const SetLocationModal = ({
             buttonPositive: 'OK',
           },
         );
-        setLocationPermission(granted === PermissionsAndroid.RESULTS.GRANTED);
+        const isGranted = granted === PermissionsAndroid.RESULTS.GRANTED;
+        setLocationPermission(isGranted);
+        return isGranted;
       } catch (err) {
         console.warn(err);
         setLocationPermission(false);
+        return false;
       }
     } else {
       setLocationPermission(true);
+      return true;
     }
   };
 
-  const getCurrentLocation = () => {
-    if (!locationPermission) {
+  const openAppSettings = () => {
+    Linking.openSettings().catch(() => {
+      console.warn('Unable to open app settings');
+    });
+  };
+
+  const getCurrentLocation = async () => {
+    const hasPermission = await checkLocationPermission();
+    if (!hasPermission) {
       Alert.alert(
         'Permission Required',
         'Location permission is required to fetch your current location.',
         [
           {text: 'Cancel', style: 'cancel'},
-          {text: 'Settings', onPress: () => checkLocationPermission()},
+          {text: 'Open Settings', onPress: () => openAppSettings()},
         ],
       );
       return;
@@ -256,8 +273,8 @@ const SetLocationModal = ({
         const newRegion = {
           latitude,
           longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
+          latitudeDelta: 0.02,
+          longitudeDelta: 0.02,
         };
         setRegion(newRegion);
 
@@ -267,7 +284,6 @@ const SetLocationModal = ({
       error => {
         setLoading(false);
         console.error('Location error:', error);
-
         let errorMessage = 'Error getting location. ';
         switch (error.code) {
           case 1:
@@ -293,11 +309,25 @@ const SetLocationModal = ({
     );
   };
 
-  const openMapPicker = () => {
+  const openMapPicker = async () => {
+    const hasPermission = await checkLocationPermission();
+    if (!hasPermission) {
+      Alert.alert(
+        'Permission Required',
+        'Location permission is required to pick a location on map.',
+        [
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'Open Settings', onPress: () => openAppSettings()},
+        ],
+      );
+      return;
+    }
+
     if (!currentLocation) {
       setLoading(true);
-      getCurrentLocation();
+      await getCurrentLocation(); // fetch location first if not set
     }
+
     setShowMap(true);
   };
 
@@ -366,10 +396,10 @@ const SetLocationModal = ({
   if (showMap) {
     return (
       <View style={styles.mapContainer}>
-        <StatusBar barStyle="light-content" backgroundColor="#007AFF" />
+        <StatusBar barStyle="dark-content" backgroundColor="#007AFF" />
 
         {/* Map Header */}
-        <View style={[styles.mapHeader, {paddingTop: insets.top + 10}]}>
+        {/* <View style={[styles.mapHeader, {paddingTop: insets.top + 10}]}>
           <TouchableOpacity
             style={styles.headerButton}
             onPress={handleCancelMapPicker}>
@@ -393,56 +423,94 @@ const SetLocationModal = ({
               Confirm
             </Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         {/* Map */}
-        {region ? (
-          <MapView
-            style={styles.map}
-            region={region}
-            onPress={handleMapPress}
-            provider={PROVIDER_GOOGLE}
-            showsUserLocation={true}
-            showsMyLocationButton={true}>
-            <UrlTile
-              urlTemplate="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              maximumZ={19}
-              flipY={false}
-            />
+        {/* {region && ( */}
+        <MapView
+          style={styles.map}
+          region={region || bangladeshRegion}
+          onPress={handleMapPress}
+          provider={PROVIDER_GOOGLE}
+          showsUserLocation={true}
+          loadingEnabled
+          loadingBackgroundColor={colors.white}
+          loadingIndicatorColor={colors.badge}
+          showsMyLocationButton={true}>
+          <UrlTile
+            urlTemplate="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            maximumZ={19}
+            flipY={false}
+          />
 
-            {marker && (
-              <Marker
-                coordinate={marker}
-                title="Selected Location"
-                description={address || 'Fetching address...'}
-              />
-            )}
-          </MapView>
-        ) : (
-          <View style={styles.mapLoadingContainer}>
-            <ActivityIndicator size="large" color="#007AFF" />
-            <Text style={styles.mapLoadingText}>Loading map...</Text>
-          </View>
-        )}
+          {marker && (
+            <Marker
+              coordinate={marker}
+              title="Selected Location"
+              description={address || 'Fetching address...'}
+            />
+          )}
+        </MapView>
+        {/* )} */}
 
         {/* Address Footer */}
         <View style={styles.mapFooter}>
           <View style={styles.addressHeader}>
-            <Text style={styles.mapAddressTitle}>Selected Location:</Text>
-            {addressLoading && (
-              <ActivityIndicator
-                size="small"
-                color="#007AFF"
-                style={styles.addressLoader}
-              />
+            <Text style={styles.mapAddressTitle}>
+              Help to find you quickly!
+            </Text>
+            <Text style={styles.mapAddressSubTitle}>
+              Choose a spot where the rider can easily find you.
+            </Text>
+          </View>
+
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center', // vertically center content
+              borderWidth: 1,
+              borderColor: colors.lightGray,
+              paddingHorizontal: 16, // horizontal padding
+              height: 60, // fixed height
+              borderRadius: 12,
+              backgroundColor: colors.white,
+            }}>
+            {addressLoading ? (
+              <ActivityIndicator size="small" color={colors.deepRed} />
+            ) : (
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Ionicons
+                  name="man-outline"
+                  size={16}
+                  color="#000"
+                  style={{marginRight: 6}}
+                />
+                <Text style={styles.mapAddressText} numberOfLines={3}>
+                  {address}
+                </Text>
+              </View>
             )}
           </View>
-          <Text style={styles.mapAddressText} numberOfLines={3}>
-            {/* {addressLoading
-              ? 'Fetching address...'
-              : address || 'Tap on map to select a location'} */}
-            {address}
-          </Text>
+
+          {/* Confirm Pickup Point Button */}
+          <TouchableOpacity
+            onPress={handleConfirmLocation}
+            style={{
+              marginVertical: 16,
+              backgroundColor: colors.deepRed,
+              paddingVertical: 14,
+              borderRadius: 30,
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: '#fff',
+                fontSize: 16,
+                fontFamily: fontFamily.medium,
+              }}>
+              Confirm Pickup Point
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -546,17 +614,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 10,
     paddingHorizontal: 16,
-    gap: 12,
   },
   actionBtn: {
     backgroundColor: '#f9f9f9',
     borderRadius: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
   },
   disabledBtn: {
     opacity: 0.6,
@@ -641,22 +706,31 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   addressHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
+    // flexDirection: 'row',
+    justifyContent: 'flex-start',
+    // alignItems: 'center',
+    marginBottom: 12,
   },
   addressLoader: {
     marginLeft: 8,
   },
   mapAddressTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#343a40',
+    fontSize: 16,
+    fontFamily: fontFamily.bold,
+    color: colors.background,
+  },
+
+  mapAddressSubTitle: {
+    fontSize: 12,
+    fontWeight: 300,
+    color: colors.arrowLightBlackShadow,
+    marginTop: 4,
   },
   mapAddressText: {
     fontSize: 14,
-    color: '#495057',
+    color: colors.cardBackground,
     lineHeight: 18,
+    fontFamily: fontFamily.medium,
   },
 });
 

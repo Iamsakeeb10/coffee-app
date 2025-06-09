@@ -21,3 +21,10 @@ export const PAYMENT_METHODS = {
   APPLE_PAY: 'apple_pay',
   GOOGLE_PAY: 'google_pay',
 };
+
+export const bangladeshRegion = {
+  latitude: 23.685, // Approx center of Bangladesh
+  longitude: 90.3563,
+  latitudeDelta: 2.5, // Controls zoom level
+  longitudeDelta: 2.5,
+};
