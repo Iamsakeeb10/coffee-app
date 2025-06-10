@@ -23,6 +23,7 @@ const Header = ({
   color,
   useSafeArea = true,
   modalHeader = false,
+  hideElevation = false,
 }: HeaderProps) => {
   const insets = useSafeAreaInsets();
 
@@ -84,7 +85,7 @@ const Header = ({
           backgroundColor: backgroundColor || colors.background,
           paddingTop: !modalHeader ? topPadding : 0,
           paddingBottom: 16,
-          elevation: isDarkMode ? 0 : 8,
+          elevation: !hideElevation && !isDarkMode ? 8 : 0,
         },
         headerStyle,
       ]}>

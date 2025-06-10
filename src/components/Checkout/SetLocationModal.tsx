@@ -609,9 +609,10 @@ const SetLocationModal = ({
         showBack={true}
         onBackPress={onClose}
         modalHeader
-        useSafeArea={true}
+        useSafeArea={false}
         backgroundColor={colors.white}
         color={colors.black}
+        hideElevation
       />
 
       {/* Search Bar / Address Display */}

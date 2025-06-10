@@ -95,7 +95,6 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
 
     setErrors({});
     onSubmit(form);
-    console.log('Form Data =>>', form);
   };
 
   const keyboardOffset = Object.keys(errors).length > 0 ? 0 : 64;
@@ -120,11 +119,13 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             value={form.fullName}
             onChange={text => handleChange('fullName', text)}
             error={errors?.fullName}
+            textColor={colors.shippingPlaceholderColor}
             customStyle={[
               styles.input,
               {
                 backgroundColor: colors.backgroundDefault,
                 borderColor: colors.gray500,
+                color: colors.shippingInputColor,
               },
             ]}
           />
@@ -150,6 +151,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
           /> */}
           <MultilineInput
             placeholder="Full Address"
+            textColor={colors.shippingPlaceholderColor}
             value={form.address}
             onChange={text => handleChange('address', text)}
             error={errors?.address}
@@ -160,6 +162,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
               {
                 backgroundColor: colors.backgroundDefault,
                 borderColor: colors.gray500,
+                color: colors.shippingInputColor,
               },
             ]}
           />
@@ -175,6 +178,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             <View style={styles.halfWidth}>
               <InputLocal
                 placeholder="City"
+                textColor={colors.shippingPlaceholderColor}
                 value={form.city}
                 onChange={text => handleChange('city', text)}
                 error={errors?.city}
@@ -183,6 +187,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
                   {
                     backgroundColor: colors.backgroundDefault,
                     borderColor: colors.gray500,
+                    color: colors.shippingInputColor,
                   },
                 ]}
               />
@@ -197,6 +202,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             <View style={styles.halfWidth}>
               <InputLocal
                 placeholder="State"
+                textColor={colors.shippingPlaceholderColor}
                 value={form.state}
                 onChange={text => handleChange('state', text)}
                 error={errors?.state}
@@ -205,6 +211,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
                   {
                     backgroundColor: colors.backgroundDefault,
                     borderColor: colors.gray500,
+                    color: colors.shippingInputColor,
                   },
                 ]}
               />
@@ -221,6 +228,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             <View style={styles.halfWidth}>
               <InputLocal
                 placeholder="Thana"
+                textColor={colors.shippingPlaceholderColor}
                 value={getTruncatedThana(form.thana)}
                 onChange={text => handleChange('thana', text)}
                 error={errors?.thana}
@@ -232,6 +240,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
                   {
                     backgroundColor: colors.backgroundDefault,
                     borderColor: colors.gray500,
+                    color: colors.shippingInputColor,
                   },
                 ]}
               />
@@ -246,6 +255,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             <View style={styles.halfWidth}>
               <InputLocal
                 placeholder="Country"
+                textColor={colors.shippingPlaceholderColor}
                 value={form.country}
                 onChange={text => handleChange('country', text)}
                 error={errors?.country}
@@ -254,6 +264,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
                   {
                     backgroundColor: colors.backgroundDefault,
                     borderColor: colors.gray500,
+                    color: colors.shippingInputColor,
                   },
                 ]}
               />
@@ -268,6 +279,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
 
           <InputLocal
             placeholder="Phone Number"
+            textColor={colors.shippingPlaceholderColor}
             keyboardType="phone-pad"
             value={form.phone}
             onChange={text => handleChange('phone', text)}
@@ -277,6 +289,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
               {
                 backgroundColor: colors.backgroundDefault,
                 borderColor: colors.gray500,
+                color: colors.shippingInputColor,
               },
             ]}
           />
@@ -289,6 +302,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
 
           <InputLocal
             placeholder="Email"
+            textColor={colors.shippingPlaceholderColor}
             keyboardType="email-address"
             value={form.email}
             onChange={text => handleChange('email', text)}
@@ -298,6 +312,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
               {
                 backgroundColor: colors.backgroundDefault,
                 borderColor: colors.gray500,
+                color: colors.shippingInputColor,
               },
             ]}
           />
@@ -329,15 +344,42 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             statusBarTranslucent={true}>
             <SetLocationModal
               onClose={closeModal}
+              // onLocationSelected={(location, address) => {
+              //   setForm(prev => ({
+              //     ...prev,
+              //     address: address.displayName || '',
+              //     city: address.details?.city || '',
+              //     state: address.details?.state || '',
+              //     country: address.details?.country || '',
+              //     thana: address.details?.county || '',
+              //   }));
+              //   setIsDirty(true);
+              // }}
               onLocationSelected={(location, address) => {
-                setForm(prev => ({
-                  ...prev,
+                const updatedFields = {
                   address: address.displayName || '',
                   city: address.details?.city || '',
                   state: address.details?.state || '',
                   country: address.details?.country || '',
                   thana: address.details?.county || '',
+                };
+
+                setForm(prev => ({
+                  ...prev,
+                  ...updatedFields,
                 }));
+
+                // Clear corresponding errors
+                setErrors(prevErrors => {
+                  const clearedErrors = {...prevErrors};
+                  for (const key in updatedFields) {
+                    if (clearedErrors[key as keyof ShippingFormData]) {
+                      clearedErrors[key as keyof ShippingFormData] = '';
+                    }
+                  }
+                  return clearedErrors;
+                });
+
                 setIsDirty(true);
               }}
             />

@@ -80,11 +80,14 @@ export const lightColors = {
   // Text Colors
   textPrimary: '#000000',
   textSecondary: '#DDDDDD',
+  stepLabel: 'rgba(0,0,0,0.5)',
   textMuted: 'rgba(0,0,0, 0.7)',
   textLight: 'rgba(0, 0, 0, 0.7)',
   emptyStateTitle: 'rgba(0,0,0, 0.9)',
   textLogout: 'rgba(0,0,0,0.7)',
   textInput: '#33372C',
+  shippingPlaceholderColor: 'rgba(41, 40, 40, 0.7)',
+  shippingInputColor: '#252A32',
 
   // Primary / Accent Colors
   primaryGreen: 'rgba(0, 121, 107, 1.0)',
@@ -165,11 +168,14 @@ export const darkColors = {
   // Text Colors
   textPrimary: '#FFFFFF',
   textSecondary: '#DDDDDD',
+  stepLabel: '#DDDDDD',
   textMuted: 'rgba(255,255,255, 0.7)',
   textLight: 'rgba(255, 255, 255, 0.5)',
   emptyStateTitle: 'rgba(255,255,255, 0.9)',
   textLogout: 'rgba(255,255,255,0.7)',
   textInput: '#FFFFFF',
+  shippingPlaceholderColor: 'rgba(255,255,255,0.2)',
+  shippingInputColor: '#fff',
 
   // Primary / Accent Colors
   primaryGreen: 'rgba(0, 121, 107, 1.0)',

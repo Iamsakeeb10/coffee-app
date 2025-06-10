@@ -72,7 +72,7 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({
                       color:
                         isActive || isCompleted
                           ? colors.textPrimary
-                          : colors.textSecondary,
+                          : colors.stepLabel,
                       fontWeight: isActive ? '600' : '400',
                     },
                   ]}>
