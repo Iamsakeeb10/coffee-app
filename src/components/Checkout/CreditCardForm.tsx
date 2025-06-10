@@ -27,11 +27,13 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({
         value={form.cardholderName}
         onChange={text => onChange('cardholderName', text)}
         error={errors?.cardholderName}
+        textColor={colors.inputPlaceholder}
         customStyle={[
           styles.input,
           {
             backgroundColor: colors.backgroundDefault,
             borderColor: colors.gray500,
+            color: colors.inputColor,
           },
         ]}
       />
@@ -47,6 +49,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({
           placeholder="Card Number"
           value={form.cardNumber}
           onChange={text => onChange('cardNumber', text)}
+          textColor={colors.inputPlaceholder}
           error={errors?.cardNumber}
           keyboardType="numeric"
           customStyle={[
@@ -54,6 +57,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({
             {
               backgroundColor: colors.backgroundDefault,
               borderColor: colors.gray500,
+              color: colors.inputColor,
             },
           ]}
         />
@@ -74,11 +78,13 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({
             onChange={text => onChange('expirationDate', text)}
             error={errors?.expirationDate}
             keyboardType="numeric"
+            textColor={colors.inputPlaceholder}
             customStyle={[
               styles.input,
               {
                 backgroundColor: colors.backgroundDefault,
                 borderColor: colors.gray500,
+                color: colors.inputColor,
               },
             ]}
           />
@@ -96,11 +102,13 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({
             onChange={text => onChange('cvv', text)}
             error={errors?.cvv}
             keyboardType="numeric"
+            textColor={colors.inputPlaceholder}
             customStyle={[
               styles.input,
               {
                 backgroundColor: colors.backgroundDefault,
                 borderColor: colors.gray500,
+                color: colors.inputColor,
               },
             ]}
           />
@@ -124,7 +132,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({
           ]}>
           {saveCard && <Text style={styles.checkmark}>✓</Text>}
         </View>
-        <Text style={[styles.saveCardText, {color: colors.textSecondary}]}>
+        <Text style={[styles.saveCardText, {color: colors.stepLabel}]}>
           Save card for future payments
         </Text>
       </TouchableOpacity>

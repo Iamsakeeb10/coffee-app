@@ -67,6 +67,7 @@ export const lightColors = {
   skeletonBg: '#52555A',
   iconBg: '#CCC',
   categoryText: 'rgba(0, 0, 0, 0.7)',
+  paymentMethodText: '#fff',
 
   // Backgrounds
   backgroundDefault: '#EFEEEA',
@@ -86,8 +87,8 @@ export const lightColors = {
   emptyStateTitle: 'rgba(0,0,0, 0.9)',
   textLogout: 'rgba(0,0,0,0.7)',
   textInput: '#33372C',
-  shippingPlaceholderColor: 'rgba(41, 40, 40, 0.7)',
-  shippingInputColor: '#252A32',
+  inputPlaceholder: 'rgba(41, 40, 40, 0.7)',
+  inputColor: '#252A32',
 
   // Primary / Accent Colors
   primaryGreen: 'rgba(0, 121, 107, 1.0)',
@@ -146,6 +147,7 @@ export const darkColors = {
   gray300: '#AEAEAE',
   gray400: '#4E5053',
   gray500: '#52555A',
+  paymentMethodText: '#52555A',
   onboardingDesc: 'rgba(231, 231, 231, 0.9)',
   authTitle: 'rgba(231, 231, 231, 0.9)',
   skipButton: 'rgba(128, 128, 128, 0.3)',
@@ -174,8 +176,8 @@ export const darkColors = {
   emptyStateTitle: 'rgba(255,255,255, 0.9)',
   textLogout: 'rgba(255,255,255,0.7)',
   textInput: '#FFFFFF',
-  shippingPlaceholderColor: 'rgba(255,255,255,0.2)',
-  shippingInputColor: '#fff',
+  inputPlaceholder: 'rgba(255,255,255,0.2)',
+  inputColor: '#fff',
 
   // Primary / Accent Colors
   primaryGreen: 'rgba(0, 121, 107, 1.0)',

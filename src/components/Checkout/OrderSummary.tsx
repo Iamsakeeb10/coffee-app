@@ -26,7 +26,7 @@ const OrderSummary = () => {
           },
         ]}>
         <View style={styles.orderRow}>
-          <Text style={[styles.orderItemText, {color: colors.textSecondary}]}>
+          <Text style={[styles.orderItemText, {color: colors.stepLabel}]}>
             Subtotal
           </Text>
           <Text style={[styles.orderItemValue, {color: colors.textPrimary}]}>
@@ -35,7 +35,7 @@ const OrderSummary = () => {
         </View>
 
         <View style={styles.orderRow}>
-          <Text style={[styles.orderItemText, {color: colors.textSecondary}]}>
+          <Text style={[styles.orderItemText, {color: colors.stepLabel}]}>
             Tax (10%)
           </Text>
           <Text style={[styles.orderItemValue, {color: colors.textPrimary}]}>
@@ -44,7 +44,7 @@ const OrderSummary = () => {
         </View>
 
         <View style={styles.orderRow}>
-          <Text style={[styles.orderItemText, {color: colors.textSecondary}]}>
+          <Text style={[styles.orderItemText, {color: colors.stepLabel}]}>
             Shipping
           </Text>
           <Text style={[styles.orderItemValue, {color: colors.textPrimary}]}>

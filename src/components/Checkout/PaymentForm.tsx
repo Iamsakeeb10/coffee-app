@@ -101,7 +101,7 @@ const PaymentForm = ({onSubmit, goBack, setIsDirty}: PaymentFormProps) => {
                 paddingBottom: insets.bottom,
               },
             ]}>
-            <Text style={[styles.securityText, {color: colors.textSecondary}]}>
+            <Text style={[styles.securityText, {color: colors.stepLabel}]}>
               🔒 Your payment information is secure.
             </Text>
           </View>

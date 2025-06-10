@@ -14,7 +14,11 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
 }) => {
   const {colors} = useTheme();
 
-  const renderPaymentMethodIcon = (method: string) => {
+  const renderPaymentMethodIcon = (method: string, isActive: boolean) => {
+    const activeTextColor = isActive
+      ? colors.accentBadge
+      : colors.backgroundFavorite;
+
     switch (method) {
       case PAYMENT_METHODS.CREDIT_CARD:
         return (
@@ -24,7 +28,7 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
             </Text>
             <Text
               style={{
-                color: colors.gray500,
+                color: activeTextColor,
                 fontSize: 12,
                 textAlign: 'center',
               }}>
@@ -38,7 +42,7 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
             <Text style={[styles.paymentIconText, {color: colors.accentBadge}]}>
               P
             </Text>
-            <Text style={{color: colors.gray500, fontSize: 12}}>PayPal</Text>
+            <Text style={{color: activeTextColor, fontSize: 12}}>PayPal</Text>
           </View>
         );
       case PAYMENT_METHODS.APPLE_PAY:
@@ -47,18 +51,24 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
             <Text style={[styles.paymentIconText, {color: colors.gray300}]}>
               🍎
             </Text>
-            <Text style={{color: colors.gray500, fontSize: 12}}>Apple Pay</Text>
+            <Text style={{color: activeTextColor, fontSize: 12}}>
+              Apple Pay
+            </Text>
           </View>
         );
       case PAYMENT_METHODS.GOOGLE_PAY:
         return (
           <View style={styles.paymentIconContainer}>
-            <Text style={[styles.paymentIconText, {color: colors.gray300}]}>
+            <Text
+              style={[
+                styles.paymentIconText,
+                {color: colors.paymentMethodText},
+              ]}>
               G
             </Text>
             <Text
               style={{
-                color: colors.gray500,
+                color: activeTextColor,
                 fontSize: 12,
                 textAlign: 'center',
               }}>
@@ -83,25 +93,24 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
         keyExtractor={item => item}
         contentContainerStyle={styles.paymentMethodsContainer}
         ItemSeparatorComponent={() => <View style={{width: 12}} />}
-        renderItem={({item: method}) => (
-          <TouchableOpacity
-            style={[
-              styles.paymentMethodCard,
-              {
-                borderColor:
-                  selectedPaymentMethod === method
-                    ? colors.accentBadge
-                    : colors.gray400,
-                backgroundColor:
-                  selectedPaymentMethod === method
+        renderItem={({item: method}) => {
+          const isActive = selectedPaymentMethod === method;
+          return (
+            <TouchableOpacity
+              style={[
+                styles.paymentMethodCard,
+                {
+                  borderColor: isActive ? colors.accentBadge : colors.gray400,
+                  backgroundColor: isActive
                     ? colors.backgroundFavorite
                     : colors.backgroundDefault,
-              },
-            ]}
-            onPress={() => onSelect(method)}>
-            {renderPaymentMethodIcon(method)}
-          </TouchableOpacity>
-        )}
+                },
+              ]}
+              onPress={() => onSelect(method)}>
+              {renderPaymentMethodIcon(method, isActive)}
+            </TouchableOpacity>
+          );
+        }}
       />
     </View>
   );

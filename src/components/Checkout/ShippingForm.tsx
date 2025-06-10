@@ -27,27 +27,27 @@ import SetLocationModal from './SetLocationModal';
 const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
   const {colors} = useTheme();
 
-  // const [form, setForm] = useState<ShippingFormData>({
-  //   fullName: 'Shakib Ahmed',
-  //   address: 'Dhaka',
-  //   city: 'Dhaka',
-  //   state: 'BD',
-  //   thana: 'Ghoraghat',
-  //   country: 'BD',
-  //   phone: '017',
-  //   email: 'shakib@gmail.com',
-  // });
-
   const [form, setForm] = useState<ShippingFormData>({
-    fullName: '',
-    address: '',
-    city: '',
-    state: '',
-    thana: '',
-    country: '',
-    phone: '',
-    email: '',
+    fullName: 'Shakib Ahmed',
+    address: 'Dhaka',
+    city: 'Dhaka',
+    state: 'BD',
+    thana: 'Ghoraghat',
+    country: 'BD',
+    phone: '017',
+    email: 'shakib@gmail.com',
   });
+
+  // const [form, setForm] = useState<ShippingFormData>({
+  //   fullName: '',
+  //   address: '',
+  //   city: '',
+  //   state: '',
+  //   thana: '',
+  //   country: '',
+  //   phone: '',
+  //   email: '',
+  // });
 
   const navigation = useNavigation();
   const [errors, setErrors] = useState<
@@ -119,13 +119,13 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             value={form.fullName}
             onChange={text => handleChange('fullName', text)}
             error={errors?.fullName}
-            textColor={colors.shippingPlaceholderColor}
+            textColor={colors.inputPlaceholder}
             customStyle={[
               styles.input,
               {
                 backgroundColor: colors.backgroundDefault,
                 borderColor: colors.gray500,
-                color: colors.shippingInputColor,
+                color: colors.inputColor,
               },
             ]}
           />
@@ -151,7 +151,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
           /> */}
           <MultilineInput
             placeholder="Full Address"
-            textColor={colors.shippingPlaceholderColor}
+            textColor={colors.inputPlaceholder}
             value={form.address}
             onChange={text => handleChange('address', text)}
             error={errors?.address}
@@ -162,7 +162,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
               {
                 backgroundColor: colors.backgroundDefault,
                 borderColor: colors.gray500,
-                color: colors.shippingInputColor,
+                color: colors.inputColor,
               },
             ]}
           />
@@ -178,7 +178,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             <View style={styles.halfWidth}>
               <InputLocal
                 placeholder="City"
-                textColor={colors.shippingPlaceholderColor}
+                textColor={colors.inputPlaceholder}
                 value={form.city}
                 onChange={text => handleChange('city', text)}
                 error={errors?.city}
@@ -187,7 +187,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
                   {
                     backgroundColor: colors.backgroundDefault,
                     borderColor: colors.gray500,
-                    color: colors.shippingInputColor,
+                    color: colors.inputColor,
                   },
                 ]}
               />
@@ -202,7 +202,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             <View style={styles.halfWidth}>
               <InputLocal
                 placeholder="State"
-                textColor={colors.shippingPlaceholderColor}
+                textColor={colors.inputPlaceholder}
                 value={form.state}
                 onChange={text => handleChange('state', text)}
                 error={errors?.state}
@@ -211,7 +211,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
                   {
                     backgroundColor: colors.backgroundDefault,
                     borderColor: colors.gray500,
-                    color: colors.shippingInputColor,
+                    color: colors.inputColor,
                   },
                 ]}
               />
@@ -228,7 +228,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             <View style={styles.halfWidth}>
               <InputLocal
                 placeholder="Thana"
-                textColor={colors.shippingPlaceholderColor}
+                textColor={colors.inputPlaceholder}
                 value={getTruncatedThana(form.thana)}
                 onChange={text => handleChange('thana', text)}
                 error={errors?.thana}
@@ -240,7 +240,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
                   {
                     backgroundColor: colors.backgroundDefault,
                     borderColor: colors.gray500,
-                    color: colors.shippingInputColor,
+                    color: colors.inputColor,
                   },
                 ]}
               />
@@ -255,7 +255,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             <View style={styles.halfWidth}>
               <InputLocal
                 placeholder="Country"
-                textColor={colors.shippingPlaceholderColor}
+                textColor={colors.inputPlaceholder}
                 value={form.country}
                 onChange={text => handleChange('country', text)}
                 error={errors?.country}
@@ -264,7 +264,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
                   {
                     backgroundColor: colors.backgroundDefault,
                     borderColor: colors.gray500,
-                    color: colors.shippingInputColor,
+                    color: colors.inputColor,
                   },
                 ]}
               />
@@ -279,7 +279,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
 
           <InputLocal
             placeholder="Phone Number"
-            textColor={colors.shippingPlaceholderColor}
+            textColor={colors.inputPlaceholder}
             keyboardType="phone-pad"
             value={form.phone}
             onChange={text => handleChange('phone', text)}
@@ -289,7 +289,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
               {
                 backgroundColor: colors.backgroundDefault,
                 borderColor: colors.gray500,
-                color: colors.shippingInputColor,
+                color: colors.inputColor,
               },
             ]}
           />
@@ -302,7 +302,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
 
           <InputLocal
             placeholder="Email"
-            textColor={colors.shippingPlaceholderColor}
+            textColor={colors.inputPlaceholder}
             keyboardType="email-address"
             value={form.email}
             onChange={text => handleChange('email', text)}
@@ -312,7 +312,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
               {
                 backgroundColor: colors.backgroundDefault,
                 borderColor: colors.gray500,
-                color: colors.shippingInputColor,
+                color: colors.inputColor,
               },
             ]}
           />
