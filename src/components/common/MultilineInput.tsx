@@ -1,11 +1,18 @@
-import React from 'react';
-import {Dimensions, StyleSheet, TextInput, TextInputProps} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Dimensions,
+  NativeSyntheticEvent,
+  StyleSheet,
+  TextInput,
+  TextInputContentSizeChangeEventData,
+  TextInputProps,
+} from 'react-native';
 import {useSelector} from 'react-redux';
 import {colors} from '../../constants/colors';
 import {RootState} from '../../redux/store/store';
 import {fontFamily} from '../../utils/typography';
 
-type InputLocalProps = {
+type MultilineInputProps = {
   customStyle?: object;
   placeholder?: string;
   secureTextEntry?: boolean;
@@ -17,12 +24,13 @@ type InputLocalProps = {
   returnKeyType?: TextInputProps['returnKeyType'];
   textColor?: string;
   error?: string;
-  onFocus?: () => void;
+  multiline?: boolean;
+  numberOfLines?: number;
 };
 
-const {width, height} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
-const InputLocal: React.FC<InputLocalProps> = ({
+const MultilineInput: React.FC<MultilineInputProps> = ({
   customStyle,
   placeholder,
   secureTextEntry = false,
@@ -34,18 +42,32 @@ const InputLocal: React.FC<InputLocalProps> = ({
   returnKeyType,
   textColor = 'rgba(255,255,255,0.2)',
   error,
-  onFocus,
+  multiline = false,
+  numberOfLines = 1,
 }) => {
   const {current} = useSelector((state: RootState) => state.language);
+  const [inputHeight, setInputHeight] = useState(current === 'bn' ? 42 : 40);
 
   const errorSpace = error ? 5 : 15;
+
+  const handleContentSizeChange = (
+    e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>,
+  ) => {
+    if (multiline) {
+      setInputHeight(e.nativeEvent.contentSize.height);
+    }
+  };
 
   return (
     <TextInput
       style={[
         styles.input,
         customStyle,
-        {marginBottom: errorSpace, height: current === 'bn' ? 42 : 40},
+        {
+          marginBottom: errorSpace,
+          height: multiline ? inputHeight : current === 'bn' ? 42 : 40,
+          textAlignVertical: multiline ? 'top' : 'center',
+        },
       ]}
       placeholder={placeholder}
       secureTextEntry={secureTextEntry}
@@ -54,17 +76,19 @@ const InputLocal: React.FC<InputLocalProps> = ({
       autoCorrect={false}
       onChangeText={text => onChange(text)}
       autoCapitalize="none"
-      underlineColorAndroid="rgba(0, 0, 0,0)"
+      underlineColorAndroid="transparent"
       value={value}
       editable={editable}
       selectTextOnFocus={selectTextOnFocus}
       returnKeyType={returnKeyType}
-      onFocus={onFocus}
+      multiline={multiline}
+      numberOfLines={numberOfLines}
+      onContentSizeChange={handleContentSizeChange}
     />
   );
 };
 
-export default InputLocal;
+export default MultilineInput;
 
 const styles = StyleSheet.create({
   input: {

@@ -32,3 +32,8 @@ export function calculateOrderTotals(subtotal: number) {
   const total = parseFloat((subtotal + tax).toFixed(2));
   return {tax, total};
 }
+
+export const getTruncatedThana = (value: string) => {
+  const firstWord = value.split(' ')[0]; // get the first word
+  return value.trim().includes(' ') ? `${firstWord}` : firstWord;
+};

@@ -148,6 +148,7 @@ import {
   Alert,
   BackHandler,
   Dimensions,
+  InteractionManager,
   Linking,
   Modal,
   PermissionsAndroid,
@@ -187,10 +188,6 @@ const SetLocationModal = ({
   // State management
   const [region, setRegion] = useState(null);
   const [marker, setMarker] = useState(null);
-  // const [address, setAddress] = useState({
-  //   displayName: '',
-  //   details: {},
-  // });
   const [address, setAddress] = useState<{
     displayName: string;
     details: any;
@@ -203,10 +200,6 @@ const SetLocationModal = ({
   const [addressLoading, setAddressLoading] = useState(false);
   const [fetchTimeoutId, setFetchTimeoutId] = useState(null);
   const mapRef = useRef(null);
-
-  console.log('Region =>>', region);
-  console.log('Address =>>', address);
-  console.log('Location =>>', currentLocation);
 
   useFocusEffect(
     useCallback(() => {
@@ -244,7 +237,6 @@ const SetLocationModal = ({
 
   useEffect(() => {
     if (showMap && mapRef.current && currentLocation) {
-      console.log('=>>>>', currentLocation.latitude);
       const newRegion = {
         latitude: currentLocation.latitude,
         longitude: currentLocation.longitude,
@@ -252,20 +244,16 @@ const SetLocationModal = ({
         longitudeDelta: 0.02,
       };
 
-      // Slight delay ensures the map has time to mount before animating
-      setTimeout(() => {
-        mapRef.current?.animateToRegion(newRegion, 2000);
-      }, 500);
-    }
-  }, [showMap]);
+      // Wait for all interactions and animations to finish
+      const interaction = InteractionManager.runAfterInteractions(() => {
+        setTimeout(() => {
+          mapRef.current?.animateToRegion(newRegion, 1500); // smooth 1s animation
+        }, 300); // Slight buffer to ensure map is ready
+      });
 
-  const initializeApp = async () => {
-    try {
-      await checkLocationPermission();
-    } catch (error) {
-      console.error('App initialization error:', error);
+      return () => interaction.cancel(); // Clean up if component unmounts early
     }
-  };
+  }, [showMap, currentLocation]);
 
   const checkLocationPermission = async () => {
     if (Platform.OS === 'android') {
@@ -356,13 +344,10 @@ const SetLocationModal = ({
         setRegion(newRegion);
 
         if (mapRef.current) {
-          mapRef.current.animateToRegion(newRegion, 2000); // 1000ms = 1 second
+          mapRef.current.animateToRegion(newRegion, 2000);
         }
 
-        fetchAddress(latitude, longitude);
-        if (!addressLoading) {
-          setLoading(false);
-        }
+        fetchAddress(latitude, longitude); // ✅ Don't handle loading here
       },
       error => {
         setLoading(false);
@@ -457,14 +442,12 @@ const SetLocationModal = ({
           displayName: data.display_name,
           details: data.address,
         });
-      } else {
-        // setAddress('Address not found for this location');
       }
     } catch (error) {
       console.error('Address fetch error:', error);
-      // setAddress('Error fetching address - please try again');
     } finally {
       setAddressLoading(false);
+      setLoading(false); // ✅ This ensures loading ends **after** address is fetched
     }
   };
 

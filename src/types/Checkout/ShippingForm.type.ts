@@ -3,7 +3,7 @@ export type ShippingFormData = {
   address: string;
   city: string;
   state: string;
-  postalCode: string;
+  thana: string;
   country: string;
   phone: string;
   email: string;

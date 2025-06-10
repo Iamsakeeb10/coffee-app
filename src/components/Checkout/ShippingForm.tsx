@@ -15,10 +15,12 @@ import {
   ShippingFormData,
   ShippingFormProps,
 } from '../../types/Checkout/ShippingForm.type';
+import {getTruncatedThana} from '../../utils/helpers';
 import {validateShippingForm} from '../../utils/validator';
 import AnimatedErrorText from '../Auth/AnimatedErrorText';
 import ButtonLocal from '../Common/ButtonLocal';
 import InputLocal from '../Common/InputLocal';
+import MultilineInput from '../Common/MultilineInput';
 import LocationPickerButton from './LocationPickerButton';
 import SetLocationModal from './SetLocationModal';
 
@@ -30,17 +32,18 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
   //   address: 'Dhaka',
   //   city: 'Dhaka',
   //   state: 'BD',
-  //   postalCode: '4343',
+  //   thana: 'Ghoraghat',
   //   country: 'BD',
   //   phone: '017',
   //   email: 'shakib@gmail.com',
   // });
+
   const [form, setForm] = useState<ShippingFormData>({
     fullName: '',
     address: '',
     city: '',
     state: '',
-    postalCode: '',
+    thana: '',
     country: '',
     phone: '',
     email: '',
@@ -92,6 +95,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
 
     setErrors({});
     onSubmit(form);
+    console.log('Form Data =>>', form);
   };
 
   const keyboardOffset = Object.keys(errors).length > 0 ? 0 : 64;
@@ -131,7 +135,7 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             />
           )}
 
-          <InputLocal
+          {/* <InputLocal
             placeholder="Full Address"
             value={form.address}
             onChange={text => handleChange('address', text)}
@@ -143,7 +147,23 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
                 borderColor: colors.gray500,
               },
             ]}
+          /> */}
+          <MultilineInput
+            placeholder="Full Address"
+            value={form.address}
+            onChange={text => handleChange('address', text)}
+            error={errors?.address}
+            multiline
+            numberOfLines={3}
+            customStyle={[
+              styles.input,
+              {
+                backgroundColor: colors.backgroundDefault,
+                borderColor: colors.gray500,
+              },
+            ]}
           />
+
           {errors?.address && (
             <AnimatedErrorText
               errorText={errors?.address}
@@ -200,10 +220,13 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
           <View style={styles.row}>
             <View style={styles.halfWidth}>
               <InputLocal
-                placeholder="Postal Code"
-                value={form.postalCode}
-                onChange={text => handleChange('postalCode', text)}
-                error={errors?.postalCode}
+                placeholder="Thana"
+                value={getTruncatedThana(form.thana)}
+                onChange={text => handleChange('thana', text)}
+                error={errors?.thana}
+                onFocus={() => {
+                  setForm(prev => ({...prev, thana: form.thana}));
+                }}
                 customStyle={[
                   styles.halfInput,
                   {
@@ -212,9 +235,9 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
                   },
                 ]}
               />
-              {errors?.postalCode && (
+              {errors?.thana && (
                 <AnimatedErrorText
-                  errorText={errors?.postalCode}
+                  errorText={errors?.thana}
                   color={colors.accentOrange}
                 />
               )}
@@ -291,8 +314,8 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             <ButtonLocal
               title="Next"
               loading={false}
-              buttonStyle={{width: '100%'}}
-              backgroundColor={colors.accentBadge}
+              buttonStyle={{width: '100%', backgroundColor: colors.accentBadge}}
+              backgroundColor={colors.backgroundDefault}
               onPressHandler={handleSubmit}
             />
           </View>
@@ -304,24 +327,16 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             presentationStyle="fullScreen"
             onRequestClose={closeModal}
             statusBarTranslucent={true}>
-            {/* <SetLocationModal
-              onClose={closeModal}
-              onLocationSelected={(location, address) => {
-                console.log('Address =>>', address);
-                // Handle the selected location
-              }}
-            /> */}
             <SetLocationModal
               onClose={closeModal}
               onLocationSelected={(location, address) => {
-                console.log('Address =>>', address);
-                // Extract fields from address.details and update form
                 setForm(prev => ({
                   ...prev,
                   address: address.displayName || '',
                   city: address.details?.city || '',
                   state: address.details?.state || '',
                   country: address.details?.country || '',
+                  thana: address.details?.county || '',
                 }));
                 setIsDirty(true);
               }}
