@@ -25,26 +25,26 @@ import SetLocationModal from './SetLocationModal';
 const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
   const {colors} = useTheme();
 
-  const [form, setForm] = useState<ShippingFormData>({
-    fullName: 'Shakib Ahmed',
-    address: 'Dhaka',
-    city: 'Dhaka',
-    state: 'BD',
-    postalCode: '4343',
-    country: 'BD',
-    phone: '017',
-    email: 'shakib@gmail.com',
-  });
   // const [form, setForm] = useState<ShippingFormData>({
-  //   fullName: '',
-  //   address: '',
-  //   city: '',
-  //   state: '',
-  //   postalCode: '',
-  //   country: '',
-  //   phone: '',
-  //   email: '',
+  //   fullName: 'Shakib Ahmed',
+  //   address: 'Dhaka',
+  //   city: 'Dhaka',
+  //   state: 'BD',
+  //   postalCode: '4343',
+  //   country: 'BD',
+  //   phone: '017',
+  //   email: 'shakib@gmail.com',
   // });
+  const [form, setForm] = useState<ShippingFormData>({
+    fullName: '',
+    address: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: '',
+    phone: '',
+    email: '',
+  });
 
   const navigation = useNavigation();
   const [errors, setErrors] = useState<
@@ -304,11 +304,26 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
             presentationStyle="fullScreen"
             onRequestClose={closeModal}
             statusBarTranslucent={true}>
-            <SetLocationModal
+            {/* <SetLocationModal
               onClose={closeModal}
               onLocationSelected={(location, address) => {
                 console.log('Address =>>', address);
                 // Handle the selected location
+              }}
+            /> */}
+            <SetLocationModal
+              onClose={closeModal}
+              onLocationSelected={(location, address) => {
+                console.log('Address =>>', address);
+                // Extract fields from address.details and update form
+                setForm(prev => ({
+                  ...prev,
+                  address: address.displayName || '',
+                  city: address.details?.city || '',
+                  state: address.details?.state || '',
+                  country: address.details?.country || '',
+                }));
+                setIsDirty(true);
               }}
             />
           </Modal>
