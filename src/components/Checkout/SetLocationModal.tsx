@@ -173,7 +173,7 @@ type SetLocationModalProps = {
   onClose: () => void;
   onLocationSelected?: (
     location: {latitude: number; longitude: number},
-    address: string,
+    address: {displayName: string; details: any},
   ) => void;
 };
 
@@ -186,7 +186,15 @@ const SetLocationModal = ({
   // State management
   const [region, setRegion] = useState(null);
   const [marker, setMarker] = useState(null);
-  const [address, setAddress] = useState('');
+  // const [address, setAddress] = useState({
+  //   displayName: '',
+  //   details: {},
+  // });
+  const [address, setAddress] = useState<{
+    displayName: string;
+    details: any;
+  } | null>(null);
+
   const [loading, setLoading] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [locationPermission, setLocationPermission] = useState(false);
@@ -307,7 +315,10 @@ const SetLocationModal = ({
     }
 
     setLoading(true);
-    setAddress('');
+    setAddress({
+      displayName: '',
+      details: {},
+    });
 
     Geolocation.getCurrentPosition(
       position => {
@@ -330,7 +341,9 @@ const SetLocationModal = ({
         }
 
         fetchAddress(latitude, longitude);
-        setLoading(false);
+        if (!addressLoading) {
+          setLoading(false);
+        }
       },
       error => {
         setLoading(false);
@@ -400,15 +413,19 @@ const SetLocationModal = ({
       }
 
       const data = await response.json();
+      console.log('Address Data =>>', data);
 
       if (data && data.display_name) {
-        setAddress(data.display_name);
+        setAddress({
+          displayName: data.display_name,
+          details: data.address,
+        });
       } else {
-        setAddress('Address not found for this location');
+        // setAddress('Address not found for this location');
       }
     } catch (error) {
       console.error('Address fetch error:', error);
-      setAddress('Error fetching address - please try again');
+      // setAddress('Error fetching address - please try again');
     } finally {
       setAddressLoading(false);
     }
@@ -494,7 +511,7 @@ const SetLocationModal = ({
               <Marker
                 coordinate={marker}
                 title="Selected Location"
-                description={address || 'Fetching address...'}
+                description={address?.displayName || 'Fetching address...'}
               />
             )}
           </MapView>
@@ -532,7 +549,7 @@ const SetLocationModal = ({
                     style={{marginRight: 6}}
                   />
                   <Text style={styles.mapAddressText} numberOfLines={3}>
-                    {address}
+                    {address?.displayName}
                   </Text>
                 </View>
               )}
@@ -583,9 +600,9 @@ const SetLocationModal = ({
         <View style={styles.input}>
           {loading ? (
             <ActivityIndicator size="small" color="#666" />
-          ) : address ? (
+          ) : address?.displayName ? (
             <Text style={styles.selectedAddress} numberOfLines={2}>
-              {address}
+              {address.displayName}
             </Text>
           ) : (
             <Text style={styles.placeholderText}>No location picked yet</Text>
