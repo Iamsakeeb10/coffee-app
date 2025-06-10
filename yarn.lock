@@ -6890,6 +6890,11 @@ react-native-bootsplash@^6.3.4:
     ts-dedent "^2.2.0"
     xml-formatter "^3.6.3"
 
+react-native-device-info@^14.0.4:
+  version "14.0.4"
+  resolved "https://registry.npmjs.org/react-native-device-info/-/react-native-device-info-14.0.4.tgz"
+  integrity sha512-NX0wMAknSDBeFnEnSFQ8kkAcQrFHrG4Cl0mVjoD+0++iaKrOupiGpBXqs8xR0SeJyPC5zpdPl4h/SaBGly6UxA==
+
 react-native-floating-label-input@^1.4.3:
   version "1.4.3"
   resolved "https://registry.npmjs.org/react-native-floating-label-input/-/react-native-floating-label-input-1.4.3.tgz"

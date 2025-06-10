@@ -159,6 +159,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 import MapView, {Marker, PROVIDER_GOOGLE, UrlTile} from 'react-native-maps';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -301,6 +302,24 @@ const SetLocationModal = ({
   };
 
   const getCurrentLocation = async () => {
+    const isLocationEnabled = await DeviceInfo.isLocationEnabled();
+
+    if (!isLocationEnabled) {
+      Alert.alert(
+        'Enable Location Services',
+        'Please turn on GPS/location services to continue.',
+        [
+          {text: 'Cancel', style: 'cancel'},
+          {
+            text: 'Open Settings',
+            onPress: () =>
+              Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS'),
+          },
+        ],
+      );
+      return;
+    }
+
     const hasPermission = await checkLocationPermission();
     if (!hasPermission) {
       Alert.alert(
@@ -374,6 +393,24 @@ const SetLocationModal = ({
   };
 
   const openMapPicker = async () => {
+    const isLocationEnabled = await DeviceInfo.isLocationEnabled();
+
+    if (!isLocationEnabled) {
+      Alert.alert(
+        'Enable Location Services',
+        'Please turn on GPS/location services to continue.',
+        [
+          {text: 'Cancel', style: 'cancel'},
+          {
+            text: 'Open Settings',
+            onPress: () =>
+              Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS'),
+          },
+        ],
+      );
+      return;
+    }
+
     const hasPermission = await checkLocationPermission();
     if (!hasPermission) {
       Alert.alert(
@@ -497,9 +534,9 @@ const SetLocationModal = ({
             onPress={handleMapPress}
             provider={PROVIDER_GOOGLE}
             showsUserLocation={true}
-            loadingEnabled
-            loadingBackgroundColor={colors.white}
-            loadingIndicatorColor={colors.badge}
+            // loadingEnabled
+            // loadingBackgroundColor={colors.white}
+            // loadingIndicatorColor={colors.badge}
             showsMyLocationButton={true}>
             <UrlTile
               urlTemplate="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
