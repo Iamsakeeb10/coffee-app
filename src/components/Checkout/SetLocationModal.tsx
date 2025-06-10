@@ -142,12 +142,14 @@
 
 import Geolocation from '@react-native-community/geolocation';
 import {useFocusEffect} from '@react-navigation/native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
+  BackHandler,
   Dimensions,
   Linking,
+  Modal,
   PermissionsAndroid,
   Platform,
   SafeAreaView,
@@ -191,6 +193,7 @@ const SetLocationModal = ({
   const [currentLocation, setCurrentLocation] = useState(null);
   const [addressLoading, setAddressLoading] = useState(false);
   const [fetchTimeoutId, setFetchTimeoutId] = useState(null);
+  const mapRef = useRef(null);
 
   console.log('Region =>>', region);
   console.log('Address =>>', address);
@@ -202,6 +205,50 @@ const SetLocationModal = ({
       StatusBar.setBackgroundColor('#fff');
     }, []),
   );
+
+  useEffect(() => {
+    const backAction = () => {
+      // Your custom function
+      Alert.alert('Hold on!', 'Are you sure you want to go back?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {
+          text: 'YES',
+          onPress: () => {
+            handleCancelMapPicker();
+          },
+        },
+      ]);
+      return true; // prevents default behavior (going back)
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove(); // Clean up the listener on unmount
+  }, []);
+
+  useEffect(() => {
+    if (showMap && mapRef.current && currentLocation) {
+      console.log('=>>>>', currentLocation.latitude);
+      const newRegion = {
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
+        latitudeDelta: 0.02,
+        longitudeDelta: 0.02,
+      };
+
+      // Slight delay ensures the map has time to mount before animating
+      setTimeout(() => {
+        mapRef.current?.animateToRegion(newRegion, 2000);
+      }, 500);
+    }
+  }, [showMap]);
 
   const initializeApp = async () => {
     try {
@@ -278,6 +325,10 @@ const SetLocationModal = ({
         };
         setRegion(newRegion);
 
+        if (mapRef.current) {
+          mapRef.current.animateToRegion(newRegion, 2000); // 1000ms = 1 second
+        }
+
         fetchAddress(latitude, longitude);
         setLoading(false);
       },
@@ -324,7 +375,8 @@ const SetLocationModal = ({
     }
 
     if (!currentLocation) {
-      setLoading(true);
+      // setLoading(true);
+      setAddressLoading(true);
       await getCurrentLocation(); // fetch location first if not set
     }
 
@@ -395,124 +447,118 @@ const SetLocationModal = ({
   // Map view
   if (showMap) {
     return (
-      <View style={styles.mapContainer}>
-        <StatusBar barStyle="dark-content" backgroundColor="#007AFF" />
+      <Modal
+        visible={showMap}
+        animationType="slide"
+        presentationStyle="fullScreen"
+        transparent={false}
+        onRequestClose={handleCancelMapPicker} // handles hardware back button on Android
+        statusBarTranslucent={true}>
+        <View style={styles.mapContainer}>
+          <StatusBar barStyle="dark-content" backgroundColor="#007AFF" />
 
-        {/* Map Header */}
-        {/* <View style={[styles.mapHeader, {paddingTop: insets.top + 10}]}>
+          {/* Floating Back Button */}
           <TouchableOpacity
-            style={styles.headerButton}
-            onPress={handleCancelMapPicker}>
-            <Ionicons name="close" size={20} color="#fff" />
-            <Text style={styles.headerButtonText}>Cancel</Text>
-          </TouchableOpacity>
-
-          <Text style={styles.mapTitle}>Pick Location</Text>
-
-          <TouchableOpacity
-            style={styles.headerButton}
-            onPress={handleConfirmLocation}
-            disabled={!marker}>
-            <Ionicons
-              name="checkmark"
-              size={20}
-              color={!marker ? '#ffffff80' : '#fff'}
-            />
-            <Text
-              style={[styles.headerButtonText, !marker && styles.disabledText]}>
-              Confirm
-            </Text>
-          </TouchableOpacity>
-        </View> */}
-
-        {/* Map */}
-        {/* {region && ( */}
-        <MapView
-          style={styles.map}
-          region={region || bangladeshRegion}
-          onPress={handleMapPress}
-          provider={PROVIDER_GOOGLE}
-          showsUserLocation={true}
-          loadingEnabled
-          loadingBackgroundColor={colors.white}
-          loadingIndicatorColor={colors.badge}
-          showsMyLocationButton={true}>
-          <UrlTile
-            urlTemplate="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            maximumZ={19}
-            flipY={false}
-          />
-
-          {marker && (
-            <Marker
-              coordinate={marker}
-              title="Selected Location"
-              description={address || 'Fetching address...'}
-            />
-          )}
-        </MapView>
-        {/* )} */}
-
-        {/* Address Footer */}
-        <View style={styles.mapFooter}>
-          <View style={styles.addressHeader}>
-            <Text style={styles.mapAddressTitle}>
-              Help to find you quickly!
-            </Text>
-            <Text style={styles.mapAddressSubTitle}>
-              Choose a spot where the rider can easily find you.
-            </Text>
-          </View>
-
-          <View
+            onPress={handleCancelMapPicker}
             style={{
-              alignItems: 'center',
-              justifyContent: 'center', // vertically center content
-              borderWidth: 1,
-              borderColor: colors.lightGray,
-              paddingHorizontal: 16, // horizontal padding
-              height: 60, // fixed height
-              borderRadius: 12,
+              position: 'absolute',
+              top: insets.top + 10,
+              left: 20,
               backgroundColor: colors.white,
+              padding: 10,
+              borderRadius: 24,
+              zIndex: 999,
             }}>
-            {addressLoading ? (
-              <ActivityIndicator size="small" color={colors.deepRed} />
-            ) : (
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Ionicons
-                  name="man-outline"
-                  size={16}
-                  color="#000"
-                  style={{marginRight: 6}}
-                />
-                <Text style={styles.mapAddressText} numberOfLines={3}>
-                  {address}
-                </Text>
-              </View>
-            )}
-          </View>
-
-          {/* Confirm Pickup Point Button */}
-          <TouchableOpacity
-            onPress={handleConfirmLocation}
-            style={{
-              marginVertical: 16,
-              backgroundColor: colors.deepRed,
-              paddingVertical: 14,
-              borderRadius: 30,
-              alignItems: 'center',
-            }}>
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 16,
-                fontFamily: fontFamily.medium,
-              }}>
-              Confirm Pickup Point
-            </Text>
+            <Ionicons name="chevron-back" size={24} color={colors.background} />
           </TouchableOpacity>
+
+          {/* Map */}
+          <MapView
+            ref={mapRef}
+            style={styles.map}
+            region={bangladeshRegion}
+            onPress={handleMapPress}
+            provider={PROVIDER_GOOGLE}
+            showsUserLocation={true}
+            loadingEnabled
+            loadingBackgroundColor={colors.white}
+            loadingIndicatorColor={colors.badge}
+            showsMyLocationButton={true}>
+            <UrlTile
+              urlTemplate="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              maximumZ={19}
+              flipY={false}
+            />
+
+            {marker && (
+              <Marker
+                coordinate={marker}
+                title="Selected Location"
+                description={address || 'Fetching address...'}
+              />
+            )}
+          </MapView>
+
+          {/* Footer Section */}
+          <View style={styles.mapFooter}>
+            <View style={styles.addressHeader}>
+              <Text style={styles.mapAddressTitle}>
+                Help to find you quickly!
+              </Text>
+              <Text style={styles.mapAddressSubTitle}>
+                Choose a spot where the rider can easily find you.
+              </Text>
+            </View>
+
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderWidth: 1,
+                borderColor: colors.lightGray,
+                paddingHorizontal: 16,
+                height: 60,
+                borderRadius: 12,
+                backgroundColor: colors.white,
+              }}>
+              {addressLoading ? (
+                <ActivityIndicator size="small" color={colors.deepRed} />
+              ) : (
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Ionicons
+                    name="man-outline"
+                    size={16}
+                    color="#000"
+                    style={{marginRight: 6}}
+                  />
+                  <Text style={styles.mapAddressText} numberOfLines={3}>
+                    {address}
+                  </Text>
+                </View>
+              )}
+            </View>
+
+            <TouchableOpacity
+              onPress={handleConfirmLocation}
+              style={{
+                marginVertical: 16,
+                backgroundColor: colors.deepRed,
+                paddingVertical: 14,
+                borderRadius: 30,
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  color: '#fff',
+                  fontSize: 16,
+                  fontFamily: fontFamily.medium,
+                }}>
+                Confirm Pickup Point
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </Modal>
     );
   }
 
