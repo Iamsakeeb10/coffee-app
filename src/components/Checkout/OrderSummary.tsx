@@ -4,6 +4,7 @@ import {useSelector} from 'react-redux';
 import {useTheme} from '../../hooks/useTheme';
 import {RootState} from '../../redux/store/store';
 import {calculateOrderTotals} from '../../utils/helpers';
+import {fontFamily} from '../../utils/typography';
 
 const OrderSummary = () => {
   const {colors} = useTheme();
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
   },
   orderSummaryTitle: {
     fontSize: 17,
-    fontWeight: '600',
+    fontFamily: fontFamily.medium,
     marginBottom: 12,
   },
   orderRow: {
@@ -86,10 +87,11 @@ const styles = StyleSheet.create({
   },
   orderItemText: {
     fontSize: 15,
+    fontFamily: fontFamily.regular,
   },
   orderItemValue: {
     fontSize: 15,
-    fontWeight: '500',
+    fontFamily: fontFamily.medium,
   },
   totalRow: {
     flexDirection: 'row',
@@ -100,10 +102,10 @@ const styles = StyleSheet.create({
   },
   totalText: {
     fontSize: 17,
-    fontWeight: '600',
+    fontFamily: fontFamily.medium,
   },
   totalValue: {
     fontSize: 17,
-    fontWeight: 'bold',
+    fontFamily: fontFamily.bold,
   },
 });

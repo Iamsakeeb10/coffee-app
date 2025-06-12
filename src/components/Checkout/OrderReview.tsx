@@ -1,10 +1,11 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useSelector} from 'react-redux';
-import {colors} from '../../constants/colors';
+import {useTheme} from '../../hooks/useTheme';
 import {RootState} from '../../redux/store/store';
 import {GroupedCartItem} from '../../types/Cart/useCart.type';
 import {calculateOrderTotals} from '../../utils/helpers';
+import {fontFamily} from '../../utils/typography';
 import CartList from '../Cart/CartList';
 import AddressCard from './AddressCard';
 import OrderReviewFooter from './OrderReviewFooter';
@@ -29,6 +30,8 @@ const OrderReview = ({data}: AddressCardProps) => {
   const {items, totalAmount} = useSelector((state: RootState) => state.cart);
   const {total} = calculateOrderTotals(totalAmount);
   // const {fullName, phone} = data;
+
+  const {colors} = useTheme();
 
   const groupedItems = items.reduce<Record<string, GroupedCartItem>>(
     (groups, item) => {
@@ -64,9 +67,9 @@ const OrderReview = ({data}: AddressCardProps) => {
           <View>
             <Text
               style={{
-                color: colors.white,
+                color: colors.textPrimary,
                 fontSize: 17,
-                fontWeight: '600',
+                fontFamily: fontFamily.medium,
                 marginBottom: 12,
               }}>
               Products

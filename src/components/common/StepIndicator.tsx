@@ -3,6 +3,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import {staticColors} from '../../constants/colors';
 import {useTheme} from '../../hooks/useTheme';
 import styles from '../../styles/StepIndicator.style';
+import {fontFamily} from '../../utils/typography';
 
 type StepIndicatorProps = {
   currentStep: number;
@@ -73,7 +74,9 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({
                         isActive || isCompleted
                           ? colors.textPrimary
                           : colors.stepLabel,
-                      fontWeight: isActive ? '600' : '400',
+                      fontFamily: isActive
+                        ? fontFamily.medium
+                        : fontFamily.regular,
                     },
                   ]}>
                   {step.label}

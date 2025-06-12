@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useTheme} from '../../hooks/useTheme';
+import {fontFamily} from '../../utils/typography';
 
 interface AddressCardProps {
   name: string;
@@ -16,24 +17,49 @@ const AddressCard: React.FC<AddressCardProps> = ({
   street,
   city,
 }) => {
-  const {colors} = useTheme();
+  const {colors, isDarkMode} = useTheme();
 
   return (
-    <View style={[styles.container, {backgroundColor: colors.backgroundCard}]}>
-      <Ionicons name="home-outline" size={20} color={colors.white} />
-      <View style={styles.textContainer}>
-        <Text style={[styles.name, {color: colors.white}]}>{name}</Text>
-        <Text style={[styles.text, {color: colors.white}]}>{phone}</Text>
-        <Text style={[styles.text, {color: colors.white}]}>{street}</Text>
-        <Text style={[styles.text, {color: colors.white}]}>{city}</Text>
+    <View style={styles.rootContainer}>
+      <Text style={[styles.title, {color: colors.textPrimary}]}>
+        Delivery Address
+      </Text>
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: colors.backgroundCard,
+            borderWidth: !isDarkMode ? 1 : 0,
+          },
+        ]}>
+        <Ionicons name="home-outline" size={20} color={colors.textPrimary} />
+        <View style={styles.textContainer}>
+          <Text style={[styles.name, {color: colors.textPrimary}]}>{name}</Text>
+          <Text style={[styles.text, {color: colors.textPrimary}]}>
+            {phone}
+          </Text>
+          <Text style={[styles.text, {color: colors.textPrimary}]}>
+            {street}
+          </Text>
+          <Text style={[styles.text, {color: colors.textPrimary}]}>{city}</Text>
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  rootContainer: {
     marginBottom: 16,
+  },
+
+  title: {
+    fontSize: 17,
+    fontFamily: fontFamily.medium,
+    marginBottom: 12,
+  },
+
+  container: {
     padding: 16,
     borderRadius: 12,
     flexDirection: 'row',
@@ -49,12 +75,13 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: fontFamily.medium,
     marginBottom: 6,
   },
   text: {
     fontSize: 15,
     marginBottom: 2,
+    fontFamily: fontFamily.regular,
   },
 });
 

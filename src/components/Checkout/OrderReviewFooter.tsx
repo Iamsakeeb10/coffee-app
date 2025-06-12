@@ -7,7 +7,9 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
+import {colors} from '../../constants/colors';
 import {useTheme} from '../../hooks/useTheme';
+import {fontFamily} from '../../utils/typography';
 
 const OrderReviewFooter = ({items = 1, total = 470, onPlaceOrder}: any) => {
   const {width} = useWindowDimensions();
@@ -21,8 +23,12 @@ const OrderReviewFooter = ({items = 1, total = 470, onPlaceOrder}: any) => {
           {width, backgroundColor: colors.backgroundCard},
         ]}>
         <View style={styles.infoRow}>
-          <Text style={styles.infoText}>Items: {items}</Text>
-          <Text style={styles.infoText}>Total: $ {total.toFixed(2)}</Text>
+          <Text style={[styles.infoText, {color: colors.textPrimary}]}>
+            Products: {items}
+          </Text>
+          <Text style={[styles.infoText, {color: colors.textPrimary}]}>
+            Total: $ {total.toFixed(2)}
+          </Text>
         </View>
 
         <TouchableOpacity
@@ -39,7 +45,6 @@ const styles = StyleSheet.create({
   safeArea: {
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    backgroundColor: '#fff',
   },
 
   container: {
@@ -50,6 +55,10 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
     position: 'absolute',
     bottom: 0,
+    // borderTopWidth: 1,
+    // borderLeftWidth: 1,
+    // borderRightWidth: 1,
+    // borderColor: 'rgba(255,255,255,0.4)',
   },
   infoRow: {
     flexDirection: 'row',
@@ -58,11 +67,11 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: fontFamily.bold,
     color: '#fff',
   },
   placeOrderButton: {
-    backgroundColor: '#000',
+    backgroundColor: colors.deepRed,
     borderRadius: 10,
     paddingVertical: 14,
     alignItems: 'center',
@@ -70,7 +79,7 @@ const styles = StyleSheet.create({
   placeOrderText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: fontFamily.bold,
   },
 });
 
