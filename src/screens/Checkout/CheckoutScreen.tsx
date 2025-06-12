@@ -83,7 +83,7 @@ const CheckoutScreen = () => {
           />
         </View>
         <View style={styles.stepContainer}>
-          <OrderReview />
+          <OrderReview data={shippingData} />
         </View>
       </Animated.View>
     </View>

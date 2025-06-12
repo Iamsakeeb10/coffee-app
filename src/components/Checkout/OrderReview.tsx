@@ -1,16 +1,34 @@
 import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useSelector} from 'react-redux';
+import {colors} from '../../constants/colors';
 import {RootState} from '../../redux/store/store';
 import {GroupedCartItem} from '../../types/Cart/useCart.type';
 import {calculateOrderTotals} from '../../utils/helpers';
 import CartList from '../Cart/CartList';
+import AddressCard from './AddressCard';
 import OrderReviewFooter from './OrderReviewFooter';
 import OrderSummary from './OrderSummary';
 
-const OrderReview = () => {
+type ShippingData = {
+  fullName: string;
+  address: string;
+  city: string;
+  state: string;
+  thana: string;
+  country: string;
+  phone: string;
+  email: string;
+};
+
+interface AddressCardProps {
+  data: ShippingData | null;
+}
+
+const OrderReview = ({data}: AddressCardProps) => {
   const {items, totalAmount} = useSelector((state: RootState) => state.cart);
   const {total} = calculateOrderTotals(totalAmount);
+  // const {fullName, phone} = data;
 
   const groupedItems = items.reduce<Record<string, GroupedCartItem>>(
     (groups, item) => {
@@ -37,12 +55,29 @@ const OrderReview = () => {
     <View style={{flex: 1}}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.container}>
-          <CartList
-            readOnly
-            items={processedItems}
-            onIncrement={() => {}}
-            onDecrement={() => {}}
+          <AddressCard
+            name={data?.fullName || ''}
+            phone={data?.phone || ''}
+            street={data?.city || ''}
+            city={data?.thana || ''}
           />
+          <View>
+            <Text
+              style={{
+                color: colors.white,
+                fontSize: 17,
+                fontWeight: '600',
+                marginBottom: 12,
+              }}>
+              Products
+            </Text>
+            <CartList
+              readOnly
+              items={processedItems}
+              onIncrement={() => {}}
+              onDecrement={() => {}}
+            />
+          </View>
 
           {/* 👇 Add more components below this */}
           <OrderSummary />

@@ -419,6 +419,7 @@ const SetLocationModal = ({
   };
 
   const fetchAddress = async (lat, lon) => {
+    console.log('This =>>');
     setAddressLoading(true);
     try {
       const response = await fetch(
