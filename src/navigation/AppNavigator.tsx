@@ -3,6 +3,7 @@ import React from 'react';
 import CoffeeDetailScreen from '../screens/Coffee/CoffeeDetailScreen';
 
 import CheckoutScreen from '../screens/Checkout/CheckoutScreen';
+import OrderSuccessScreen from '../screens/Checkout/OrderSuccessScreen';
 import ProfileScreen from '../screens/Coffee/ProfileScreen';
 import ThemeScreen from '../screens/Theme/ThemeScreen';
 import {RootStackParamList} from '../types/types';
@@ -18,6 +19,7 @@ const AppNavigator = () => {
       <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
       <Stack.Screen name="ThemeScreen" component={ThemeScreen} />
       <Stack.Screen name="CheckoutScreen" component={CheckoutScreen} />
+      <Stack.Screen name="OrderSuccessScreen" component={OrderSuccessScreen} />
     </Stack.Navigator>
   );
 };

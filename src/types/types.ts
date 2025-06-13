@@ -71,6 +71,7 @@ export type RootStackParamList = {
   ProfileScreen: undefined;
   ThemeScreen: undefined;
   CheckoutScreen: undefined;
+  OrderSuccessScreen: undefined;
 };
 
 export type AlertProps = {

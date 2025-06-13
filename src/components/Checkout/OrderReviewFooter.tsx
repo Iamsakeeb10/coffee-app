@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  ActivityIndicator,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -11,7 +12,13 @@ import {colors} from '../../constants/colors';
 import {useTheme} from '../../hooks/useTheme';
 import {fontFamily} from '../../utils/typography';
 
-const OrderReviewFooter = ({items = 1, total = 470, onPlaceOrder}: any) => {
+const OrderReviewFooter = ({
+  items = 1,
+  total = 470,
+  onPlaceOrder,
+  isBottom,
+  isLoading = false,
+}: any) => {
   const {width} = useWindowDimensions();
   const {colors} = useTheme();
 
@@ -20,7 +27,11 @@ const OrderReviewFooter = ({items = 1, total = 470, onPlaceOrder}: any) => {
       <View
         style={[
           styles.container,
-          {width, backgroundColor: colors.backgroundCard},
+          {
+            width,
+            backgroundColor: colors.backgroundCard,
+            ...(!isBottom ? {} : {}),
+          },
         ]}>
         <View style={styles.infoRow}>
           <Text style={[styles.infoText, {color: colors.textPrimary}]}>
@@ -33,8 +44,15 @@ const OrderReviewFooter = ({items = 1, total = 470, onPlaceOrder}: any) => {
 
         <TouchableOpacity
           style={styles.placeOrderButton}
-          onPress={onPlaceOrder}>
-          <Text style={styles.placeOrderText}>PLACE ORDER</Text>
+          onPress={onPlaceOrder}
+          disabled={isLoading}>
+          {isLoading ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="small" color={colors.textPrimary} />
+            </View>
+          ) : (
+            <Text style={styles.placeOrderText}>PLACE ORDER</Text>
+          )}
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -47,6 +65,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 16,
   },
 
+  loadingContainer: {
+    alignItems: 'center',
+  },
+
   container: {
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
@@ -55,10 +77,6 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
     position: 'absolute',
     bottom: 0,
-    // borderTopWidth: 1,
-    // borderLeftWidth: 1,
-    // borderRightWidth: 1,
-    // borderColor: 'rgba(255,255,255,0.4)',
   },
   infoRow: {
     flexDirection: 'row',
