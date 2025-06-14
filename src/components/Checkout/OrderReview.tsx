@@ -1,3 +1,4 @@
+import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
@@ -11,7 +12,9 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {clearCartFromFirestore} from '../../firebase/service/cartService';
 import {useTheme} from '../../hooks/useTheme';
+import {clearCart} from '../../redux/slices/cartSlice';
 import {addOrderToHistory} from '../../redux/slices/orderHistorySlice';
 import {RootState} from '../../redux/store/store';
 import {GroupedCartItem} from '../../types/Cart/useCart.type';
@@ -174,6 +177,15 @@ const OrderReview = ({data}: AddressCardProps) => {
         } catch (error) {
           console.error('Failed to save order to history:', error);
           // Don't block the navigation if history save fails
+        }
+
+        setTimeout(() => {
+          dispatch(clearCart());
+        }, 3000);
+
+        const userId = auth().currentUser?.uid;
+        if (userId) {
+          await clearCartFromFirestore(userId);
         }
 
         // Navigate to success screen with data

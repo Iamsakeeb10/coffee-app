@@ -400,18 +400,39 @@ const OrderDetailsScreen = ({route}: {route: any}) => {
           <View style={styles.actionsContainer}>
             <TouchableOpacity
               style={[
-                styles.reorderButton,
-                {backgroundColor: colors.accentBadge},
+                styles.secondaryButton,
+                // {backgroundColor: colors.accentBadge},
+                {borderColor: colors.textPrimary},
               ]}
               // onPress={handleReorder}
               onPress={() => navigation.replace('MainTabs')}>
-              <Text style={styles.reorderButtonText}>Go to Home</Text>
-              <Ionicons
+              <Text
+                style={[
+                  styles.secondaryButtonText,
+                  {color: colors.textPrimary},
+                ]}>
+                Go to Home
+              </Text>
+              {/* <Ionicons
                 name="arrow-forward-outline"
                 size={20}
                 color="#FFFFFF"
-              />
+              /> */}
             </TouchableOpacity>
+            {/* <TouchableOpacity
+              style={[
+                styles.secondaryButton,
+                {borderColor: colors.textPrimary},
+              ]}
+              onPress={navigation.replace('MainTabs')}>
+              <Text
+                style={[
+                  styles.secondaryButtonText,
+                  {color: colors.textPrimary},
+                ]}>
+                Go to Home
+              </Text>
+            </TouchableOpacity> */}
           </View>
         )}
 
@@ -469,6 +490,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: fontFamily.regular,
   },
+
+  secondaryButton: {
+    borderRadius: 12,
+    paddingVertical: 16,
+    alignItems: 'center',
+    borderWidth: 2,
+  },
+  secondaryButtonText: {
+    fontSize: 16,
+    fontFamily: fontFamily.medium,
+  },
+
   statusContainer: {
     alignItems: 'flex-end',
   },
