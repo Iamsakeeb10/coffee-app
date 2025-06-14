@@ -254,8 +254,7 @@ const OrderHistoryScreen = () => {
   }
 
   return (
-    <View
-      style={[styles.container, {backgroundColor: colors.backgroundDefault}]}>
+    <View style={[{backgroundColor: colors.backgroundDefault}]}>
       <FlatList
         data={orders}
         renderItem={renderOrderItem}
