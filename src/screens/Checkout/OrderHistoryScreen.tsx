@@ -254,12 +254,16 @@ const OrderHistoryScreen = () => {
   }
 
   return (
-    <View style={[{backgroundColor: colors.backgroundDefault}]}>
+    <View
+      style={[styles.container, {backgroundColor: colors.backgroundDefault}]}>
       <FlatList
         data={orders}
         renderItem={renderOrderItem}
         keyExtractor={item => item.id}
-        contentContainerStyle={styles.listContainer}
+        contentContainerStyle={[
+          styles.listContainer,
+          {flex: orders.length === 0 ? 1 : 0},
+        ]}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
@@ -282,8 +286,8 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     padding: 16,
-    paddingBottom: 100,
-    flex: 1,
+    // paddingBottom: 100,
+    // flex: 1,
   },
   orderCard: {
     borderRadius: 12,

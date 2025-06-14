@@ -80,7 +80,7 @@ const CoffeeCard: React.FC<Props> = ({item, loading, index = 0}) => {
     showSnack(`${sizeLabel} ${item.name} ${t('product.addedToCart')}`, {
       backgroundColor: colors.background,
       textColor: 'white',
-      // actionText: t('common.okay'),
+      actionText: t('common.okay'),
       actionColor: colors.circle,
     });
   };
