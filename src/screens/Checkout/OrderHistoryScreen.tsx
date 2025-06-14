@@ -1,3 +1,4 @@
+import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
@@ -17,6 +18,7 @@ import {staticColors} from '../../constants/colors';
 import {useTheme} from '../../hooks/useTheme';
 import {
   fetchOrderHistory,
+  fetchOrderHistoryFromCloud,
   OrderHistory,
 } from '../../redux/slices/orderHistorySlice';
 import {RootState} from '../../redux/store/store';
@@ -36,14 +38,30 @@ const OrderHistoryScreen = () => {
   );
 
   useEffect(() => {
-    // Fetch orders from AsyncStorage
-    dispatch(fetchOrderHistory() as any);
+    const loadOrders = async () => {
+      const userId = auth().currentUser?.uid;
+
+      if (userId) {
+        await dispatch(fetchOrderHistoryFromCloud() as any);
+      } else {
+        // fallback to local AsyncStorage
+        await dispatch(fetchOrderHistory() as any);
+      }
+    };
+
+    loadOrders();
   }, [dispatch]);
 
   const onRefresh = async () => {
     setRefreshing(true);
     try {
-      await dispatch(fetchOrderHistory() as any);
+      const userId = auth().currentUser?.uid;
+
+      if (userId) {
+        await dispatch(fetchOrderHistoryFromCloud() as any);
+      } else {
+        await dispatch(fetchOrderHistory() as any);
+      }
     } catch (error) {
       console.error('Error refreshing orders:', error);
     } finally {
@@ -192,17 +210,6 @@ const OrderHistoryScreen = () => {
     </TouchableOpacity>
   );
 
-  // const renderEmptyState = () => (
-  //   <View style={styles.emptyContainer}>
-  //     <Text style={[styles.emptyTitle, {color: colors.textPrimary}]}>
-  //       No Orders Yet
-  //     </Text>
-  //     <Text style={[styles.emptySubtitle, {color: colors.textSecondary}]}>
-  //       Your order history will appear here once you place your first order.
-  //     </Text>
-  //   </View>
-  // );
-
   const renderEmptyList = () => (
     <View style={styles.emptyContainer}>
       <Ionicons name="receipt-outline" size={80} color={staticColors.gray} />
@@ -237,9 +244,6 @@ const OrderHistoryScreen = () => {
           {backgroundColor: colors.backgroundDefault},
         ]}>
         <ActivityIndicator size="large" color={colors.textPrimary} />
-        <Text style={[styles.loadingText, {color: colors.textSecondary}]}>
-          Loading your orders...
-        </Text>
       </View>
     );
   }
@@ -414,6 +418,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.medium,
   },
   orderFooter: {
+    // backgroundColor: 'coral',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -434,7 +439,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.medium,
   },
   actionButton: {
-    paddingHorizontal: 12,
+    // paddingHorizontal: 12,j
     paddingVertical: 6,
   },
   actionButtonText: {

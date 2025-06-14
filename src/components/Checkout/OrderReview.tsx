@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {clearCartFromFirestore} from '../../firebase/service/cartService';
+import {saveOrderHistoryToFirestore} from '../../firebase/service/orderHistoryService';
 import {useTheme} from '../../hooks/useTheme';
 import {clearCart} from '../../redux/slices/cartSlice';
 import {addOrderToHistory} from '../../redux/slices/orderHistorySlice';
@@ -170,20 +171,36 @@ const OrderReview = ({data}: AddressCardProps) => {
           paymentMethod: 'cash_on_delivery' as const, // You can make this dynamic based on user selection
         };
 
-        // Save order to AsyncStorage via Redux
-        try {
+        const userId = auth().currentUser?.uid;
+        if (userId) {
+          try {
+            const firestoreOrderId = await saveOrderHistoryToFirestore(
+              userId,
+              orderHistoryData,
+            );
+            console.log('Order saved to Firestore with ID:', firestoreOrderId);
+
+            // Only save locally if cloud save succeeded
+            await dispatch(addOrderToHistory(orderHistoryData) as any);
+          } catch (error) {
+            console.error('Failed to save order to Firestore:', error);
+            Alert.alert(
+              'Warning',
+              'Order placed successfully but failed to sync with cloud. Your order history may not be available across devices.',
+            );
+
+            // Optional: still save locally so user has order in local history
+            await dispatch(addOrderToHistory(orderHistoryData) as any);
+          }
+        } else {
+          // No userId (guest maybe?), just save locally
           await dispatch(addOrderToHistory(orderHistoryData) as any);
-          console.log('Order saved to history successfully');
-        } catch (error) {
-          console.error('Failed to save order to history:', error);
-          // Don't block the navigation if history save fails
         }
 
         setTimeout(() => {
           dispatch(clearCart());
         }, 3000);
 
-        const userId = auth().currentUser?.uid;
         if (userId) {
           await clearCartFromFirestore(userId);
         }

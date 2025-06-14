@@ -36,9 +36,26 @@ export interface OrderHistoryState {
 
 // redux/slices/orderHistorySlice.ts
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import auth from '@react-native-firebase/auth';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {fetchOrderHistoryFromFirestore} from '../../firebase/service/orderHistoryService';
 
 const ORDER_HISTORY_KEY = 'order_history';
+
+export const fetchOrderHistoryFromCloud = createAsyncThunk(
+  'orderHistory/fetchOrderHistoryFromCloud',
+  async (_, thunkAPI) => {
+    try {
+      const userId = auth().currentUser?.uid;
+      if (!userId) throw new Error('User not authenticated');
+
+      const orders = await fetchOrderHistoryFromFirestore(userId);
+      return orders;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  },
+);
 
 // Async thunk for fetching order history from AsyncStorage
 export const fetchOrderHistory = createAsyncThunk(
@@ -120,6 +137,21 @@ const orderHistorySlice = createSlice({
   },
   extraReducers: builder => {
     builder
+      .addCase(fetchOrderHistoryFromCloud.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchOrderHistoryFromCloud.fulfilled, (state, action) => {
+        state.loading = false;
+        state.orders = action.payload;
+      })
+      .addCase(fetchOrderHistoryFromCloud.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          typeof action.payload === 'string'
+            ? action.payload
+            : action.error?.message || 'Something went wrong';
+      })
       // Fetch order history
       .addCase(fetchOrderHistory.pending, state => {
         state.loading = true;
