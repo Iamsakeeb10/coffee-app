@@ -8,6 +8,7 @@ import {useSelector} from 'react-redux';
 import {useTheme} from '../hooks/useTheme';
 import {useTranslation} from '../i18n/useTranslations';
 import {RootState} from '../redux/store/store';
+import OrderHistoryScreen from '../screens/Checkout/OrderHistoryScreen';
 import CartScreen from '../screens/Coffee/CartScreen';
 import CoffeeScreen from '../screens/Coffee/CoffeeScreen';
 import FavoritesScreen from '../screens/Coffee/FavoriteScreen';
@@ -87,6 +88,24 @@ const BottomTabNavigator = () => {
         options={{
           headerShown: true,
           headerTitle: t('product.cart'),
+          headerTitleAlign: 'center',
+          headerShadowVisible: false,
+          headerStyle: {
+            backgroundColor: colors.backgroundDefault,
+          },
+          headerTitleStyle: {
+            color: colors.textPrimary,
+            fontFamily: fontFamily.medium,
+          },
+        }}
+      />
+      <Tab.Screen
+        name="OrderHistory"
+        component={OrderHistoryScreen}
+        options={{
+          headerShown: true,
+          // headerTitle: t('product.cart'),
+          headerTitle: 'Order History',
           headerTitleAlign: 'center',
           headerShadowVisible: false,
           headerStyle: {

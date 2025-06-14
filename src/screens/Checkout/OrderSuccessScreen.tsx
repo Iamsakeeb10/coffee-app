@@ -318,8 +318,7 @@ const OrderSuccessScreen: React.FC = () => {
         {/* Footer Message */}
         <Text style={[styles.footerText, {color: colors.textSecondary}]}>
           You'll receive an email confirmation at{' '}
-          {params?.customerInfo?.email || 'your email'} shortly with tracking
-          details.
+          {params?.customerInfo?.email || 'your email'} shortly.
         </Text>
       </Animated.View>
     </ScrollView>

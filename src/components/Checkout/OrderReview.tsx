@@ -1,4 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
 import {
   Alert,
@@ -9,10 +10,12 @@ import {
   Text,
   View,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useTheme} from '../../hooks/useTheme';
+import {addOrderToHistory} from '../../redux/slices/orderHistorySlice';
 import {RootState} from '../../redux/store/store';
 import {GroupedCartItem} from '../../types/Cart/useCart.type';
+import {RootStackParamList} from '../../types/navigation/types';
 import {calculateOrderTotals} from '../../utils/helpers';
 import {fontFamily} from '../../utils/typography';
 import CartList from '../Cart/CartList';
@@ -34,6 +37,11 @@ type ShippingData = {
 interface AddressCardProps {
   data: ShippingData | null;
 }
+
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'OrderSuccessScreen'
+>;
 
 const placeOrderAPI = async (): Promise<{
   success: boolean;
@@ -59,9 +67,10 @@ const OrderReview = ({data}: AddressCardProps) => {
   const [isBottom, setIsBottom] = useState(false);
   const [hasScrolledEnough, setHasScrolledEnough] = useState(false);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
 
   const {colors} = useTheme();
+  const dispatch = useDispatch();
 
   const groupedItems = items.reduce<Record<string, GroupedCartItem>>(
     (groups, item) => {
@@ -121,6 +130,52 @@ const OrderReview = ({data}: AddressCardProps) => {
           day: 'numeric',
         });
 
+        const orderDate = new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+
+        // Create order data for history using ACTUAL data from your order
+        const orderHistoryData = {
+          orderNumber: result.orderNumber,
+          orderDate: orderDate,
+          estimatedDelivery: `${estimatedDelivery} (3-5 business days)`,
+          status: 'pending' as const,
+          customerInfo: {
+            name: data?.fullName || 'Customer',
+            phone: data?.phone || '',
+            address: `${data?.address || ''}, ${data?.city || ''}, ${
+              data?.thana || ''
+            }, ${data?.country || ''}`,
+            email: data?.email || '',
+          },
+          items: processedItems.map(item => ({
+            name: item.name,
+            quantity: item.sizes.length,
+            price: item.sizes.reduce((sum, size) => sum + (size.price || 0), 0),
+            size:
+              item.sizes.length === 1
+                ? item.sizes[0].size || ''
+                : 'Multiple sizes',
+            imageURL: item.imageURL || '',
+          })),
+          totalItems: items.length,
+          totalAmount: total,
+          paymentMethod: 'cash_on_delivery' as const, // You can make this dynamic based on user selection
+        };
+
+        // Save order to AsyncStorage via Redux
+        try {
+          await dispatch(addOrderToHistory(orderHistoryData) as any);
+          console.log('Order saved to history successfully');
+        } catch (error) {
+          console.error('Failed to save order to history:', error);
+          // Don't block the navigation if history save fails
+        }
+
         // Navigate to success screen with data
         navigation.navigate('OrderSuccessScreen', {
           orderNumber: result.orderNumber,
@@ -145,13 +200,7 @@ const OrderReview = ({data}: AddressCardProps) => {
               ),
             })),
           },
-          orderDate: new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-          }),
+          orderDate: orderDate,
         });
       } else {
         Alert.alert(
@@ -170,6 +219,7 @@ const OrderReview = ({data}: AddressCardProps) => {
       setIsPlacingOrder(false);
     }
   };
+
   return (
     <View style={{flex: 1}}>
       <View

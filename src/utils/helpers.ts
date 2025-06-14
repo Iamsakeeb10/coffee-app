@@ -20,6 +20,8 @@ export const getIconName = (name: string, focused: any) => {
     iconName = focused ? 'heart' : 'heart-outline';
   } else if (name === 'Cart') {
     iconName = focused ? 'cart' : 'cart-outline';
+  } else if (name === 'OrderHistory') {
+    iconName = focused ? 'receipt' : 'receipt-outline';
   }
 
   return iconName;

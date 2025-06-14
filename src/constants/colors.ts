@@ -221,4 +221,7 @@ export const staticColors = {
   buttonBackground: '#F1F1F1',
   accentPrimary: '#3B82F6',
   borderColor: 'rgba(211,211,211, 0.5)',
+  gray: 'rgba(128, 128, 128, 0.3)',
+  emptyFavTitle: 'rgba(255,255,255, 0.9)',
+  emptyFavSubTitle: 'rgba(255,255,255, 0.7)',
 };
