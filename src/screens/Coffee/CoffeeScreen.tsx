@@ -1,9 +1,11 @@
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
-import React, {useEffect, useRef, useState} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Animated,
   Dimensions,
   FlatList,
+  InteractionManager,
   ScrollView,
   StatusBar,
   Text,
@@ -23,7 +25,9 @@ import {useCoffeeItems} from '../../hooks/useCoffeeItems';
 import {useTheme} from '../../hooks/useTheme';
 import {useTranslation} from '../../i18n/useTranslations';
 import {RootState} from '../../redux/store/store';
+import {NotificationService} from '../../services/notificationService';
 import styles from '../../styles/coffeeScreenStyle';
+import {requestNotificationPermission} from '../../utils/notificationPermissions';
 
 const {width, height} = Dimensions.get('window');
 
@@ -43,6 +47,7 @@ const CoffeeScreen = () => {
 
   const {coffeeItems, loading} = useCoffeeItems(selectedCategory);
   const [searchQuery, setSearchQuery] = useState('');
+  const [hasSetupNotifications, setHasSetupNotifications] = useState(false);
   const listRef = useRef<FlatList | null | any>(null);
   const hasSearchedOnce = useRef(false);
 
@@ -63,6 +68,43 @@ const CoffeeScreen = () => {
     item =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
       item.isCoffeeBeans === true,
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!hasSetupNotifications && !loading && !firstLoad) {
+        // Wait for all interactions to complete before showing permission popup
+        const interactionHandle = InteractionManager.runAfterInteractions(
+          () => {
+            const timeoutId = setTimeout(async () => {
+              try {
+                console.log(
+                  'Setting up notifications after delay and interactions...',
+                );
+                const granted = await requestNotificationPermission();
+                if (granted) {
+                  await NotificationService.setupNotificationActions();
+                  await NotificationService.createOrderChannel();
+                  console.log('Notification setup complete ✅');
+                } else {
+                  console.log('Notification permission not granted ❌');
+                }
+                setHasSetupNotifications(true);
+              } catch (error) {
+                console.error('Notification setup error:', error);
+                setHasSetupNotifications(true);
+              }
+            }, 0); // 1 second delay
+
+            return () => clearTimeout(timeoutId); // cleanup timeout on unmount/focus change
+          },
+        );
+
+        return () => {
+          interactionHandle.cancel();
+        };
+      }
+    }, [hasSetupNotifications, loading, firstLoad]),
   );
 
   useEffect(() => {

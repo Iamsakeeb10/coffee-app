@@ -18,9 +18,11 @@ import {useTheme} from '../../hooks/useTheme';
 import {clearCart} from '../../redux/slices/cartSlice';
 import {addOrderToHistory} from '../../redux/slices/orderHistorySlice';
 import {RootState} from '../../redux/store/store';
+import {NotificationService} from '../../services/notificationService';
 import {GroupedCartItem} from '../../types/Cart/useCart.type';
 import {RootStackParamList} from '../../types/navigation/types';
 import {calculateOrderTotals} from '../../utils/helpers';
+import {requestNotificationPermission} from '../../utils/notificationPermissions';
 import {fontFamily} from '../../utils/typography';
 import CartList from '../Cart/CartList';
 import AddressCard from './AddressCard';
@@ -206,9 +208,8 @@ const OrderReview = ({data}: AddressCardProps) => {
         }
 
         // Navigate to success screen with data
-        navigation.navigate('OrderSuccessScreen', {
+        const notificationData = {
           orderNumber: result.orderNumber,
-          estimatedDelivery: `${estimatedDelivery} (3-5 business days)`,
           customerInfo: {
             name: data?.fullName || 'Customer',
             phone: data?.phone || '',
@@ -229,8 +230,27 @@ const OrderReview = ({data}: AddressCardProps) => {
               ),
             })),
           },
+          estimatedDelivery: `${estimatedDelivery} (3-5 business days)`,
           orderDate: orderDate,
-        });
+        };
+
+        // Navigate to success screen with data
+        navigation.navigate('OrderSuccessScreen', notificationData);
+
+        // Show notification after a brief delay (after navigation)
+        setTimeout(async () => {
+          const hasPermission = await requestNotificationPermission();
+          if (hasPermission) {
+            await NotificationService.showOrderConfirmationNotification(
+              notificationData,
+            );
+            // Also schedule delivery reminder
+            await NotificationService.scheduleDeliveryReminder(
+              notificationData,
+              deliveryDate,
+            );
+          }
+        }, 1500); // 1.5 second delay to ensure smooth navigation
       } else {
         Alert.alert(
           'Order Failed',
