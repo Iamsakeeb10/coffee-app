@@ -119,7 +119,7 @@ const OrderHistoryScreen = () => {
           <Text style={[styles.orderNumber, {color: colors.textPrimary}]}>
             {item.orderNumber}
           </Text>
-          <Text style={[styles.orderDate, {color: colors.textSecondary}]}>
+          <Text style={[styles.orderDate, {color: colors.orderDate}]}>
             {item.orderDate}
           </Text>
         </View>
@@ -178,7 +178,7 @@ const OrderHistoryScreen = () => {
             )}
           </View>
           <View style={styles.itemsInfo}>
-            <Text style={[styles.itemsCount, {color: colors.textSecondary}]}>
+            <Text style={[styles.itemsCount, {color: colors.orderDate}]}>
               {item.totalItems} {item.totalItems === 1 ? 'item' : 'items'}
             </Text>
             <Text style={[styles.totalAmount, {color: colors.textPrimary}]}>
@@ -190,7 +190,7 @@ const OrderHistoryScreen = () => {
 
       <View style={styles.orderFooter}>
         <View style={styles.deliveryInfo}>
-          <Text style={[styles.deliveryLabel, {color: colors.textSecondary}]}>
+          <Text style={[styles.deliveryLabel, {color: colors.orderDate}]}>
             {item.status === 'delivered' ? 'Delivered on' : 'Expected delivery'}
           </Text>
           <Text style={[styles.deliveryDate, {color: colors.textPrimary}]}>
@@ -213,8 +213,22 @@ const OrderHistoryScreen = () => {
   const renderEmptyList = () => (
     <View style={styles.emptyContainer}>
       <Ionicons name="receipt-outline" size={80} color={staticColors.gray} />
-      <Text style={styles.emptyTitle}>No order history yet</Text>
-      <Text style={styles.emptySubtitle}>
+      <Text
+        style={[
+          styles.emptyTitle,
+          {
+            color: colors.emptyStateTitle,
+          },
+        ]}>
+        No order history yet
+      </Text>
+      <Text
+        style={[
+          styles.emptySubtitle,
+          {
+            color: colors.emptyFavSubTitle,
+          },
+        ]}>
         Your order history will appear here
       </Text>
     </View>

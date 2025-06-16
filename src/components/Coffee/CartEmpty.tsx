@@ -2,16 +2,39 @@ import React from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {colors} from '../../constants/colors';
+import {useTheme} from '../../hooks/useTheme';
 import {fontFamily} from '../../utils/typography';
 
 const {width} = Dimensions.get('window');
 
 const CartEmpty = () => {
+  const {colors} = useTheme();
+
   return (
-    <View style={styles.emptyContainer}>
+    <View
+      style={[
+        styles.emptyContainer,
+        {
+          backgroundColor: colors.backgroundDefault,
+        },
+      ]}>
       <Ionicons name="cart-outline" size={80} color={styles.emptyIcon.color} />
-      <Text style={styles.emptyTitle}>Your cart is empty</Text>
-      <Text style={styles.emptySubtitle}>
+      <Text
+        style={[
+          styles.emptyTitle,
+          {
+            color: colors.emptyStateTitle,
+          },
+        ]}>
+        Your cart is empty
+      </Text>
+      <Text
+        style={[
+          styles.emptySubtitle,
+          {
+            color: colors.emptyFavSubTitle,
+          },
+        ]}>
         Start exploring and add your favorite items!
       </Text>
     </View>
@@ -25,7 +48,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.background,
   },
   emptyIcon: {
     color: colors.gray,

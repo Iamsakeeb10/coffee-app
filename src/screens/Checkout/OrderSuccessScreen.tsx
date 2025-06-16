@@ -172,7 +172,7 @@ const OrderSuccessScreen: React.FC = () => {
           Order Placed Successfully!
         </Text>
 
-        <Text style={[styles.subtitle, {color: colors.textSecondary}]}>
+        <Text style={[styles.subtitle, {color: colors.orderDate}]}>
           Thank you {params?.customerInfo?.name || 'valued customer'} for your
           purchase. We're preparing your order with care.
         </Text>
@@ -181,7 +181,7 @@ const OrderSuccessScreen: React.FC = () => {
         <View
           style={[styles.orderCard, {backgroundColor: colors.backgroundCard}]}>
           <View style={styles.orderRow}>
-            <Text style={[styles.orderLabel, {color: colors.textSecondary}]}>
+            <Text style={[styles.orderLabel, {color: colors.orderDate}]}>
               Order Number
             </Text>
             <Text style={[styles.orderValue, {color: colors.textPrimary}]}>
@@ -190,7 +190,7 @@ const OrderSuccessScreen: React.FC = () => {
           </View>
 
           <View style={styles.orderRow}>
-            <Text style={[styles.orderLabel, {color: colors.textSecondary}]}>
+            <Text style={[styles.orderLabel, {color: colors.orderDate}]}>
               Order Date
             </Text>
             <Text style={[styles.orderValue, {color: colors.textPrimary}]}>
@@ -199,7 +199,7 @@ const OrderSuccessScreen: React.FC = () => {
           </View>
 
           <View style={styles.orderRow}>
-            <Text style={[styles.orderLabel, {color: colors.textSecondary}]}>
+            <Text style={[styles.orderLabel, {color: colors.orderDate}]}>
               Estimated Delivery
             </Text>
             <Text style={[styles.orderValue, {color: colors.textPrimary}]}>
@@ -208,7 +208,7 @@ const OrderSuccessScreen: React.FC = () => {
           </View>
 
           <View style={styles.orderRow}>
-            <Text style={[styles.orderLabel, {color: colors.textSecondary}]}>
+            <Text style={[styles.orderLabel, {color: colors.orderDate}]}>
               Total Amount
             </Text>
             <Text style={[styles.orderValue, {color: colors.textPrimary}]}>
@@ -217,7 +217,7 @@ const OrderSuccessScreen: React.FC = () => {
           </View>
 
           <View style={styles.orderRow}>
-            <Text style={[styles.orderLabel, {color: colors.textSecondary}]}>
+            <Text style={[styles.orderLabel, {color: colors.orderDate}]}>
               Status
             </Text>
             <View style={styles.statusContainer}>
@@ -237,7 +237,7 @@ const OrderSuccessScreen: React.FC = () => {
           </Text>
 
           <View style={styles.orderRow}>
-            <Text style={[styles.orderLabel, {color: colors.textSecondary}]}>
+            <Text style={[styles.orderLabel, {color: colors.orderDate}]}>
               Name
             </Text>
             <Text style={[styles.orderValue, {color: colors.textPrimary}]}>
@@ -246,7 +246,7 @@ const OrderSuccessScreen: React.FC = () => {
           </View>
 
           <View style={styles.orderRow}>
-            <Text style={[styles.orderLabel, {color: colors.textSecondary}]}>
+            <Text style={[styles.orderLabel, {color: colors.orderDate}]}>
               Phone
             </Text>
             <Text style={[styles.orderValue, {color: colors.textPrimary}]}>
@@ -255,7 +255,7 @@ const OrderSuccessScreen: React.FC = () => {
           </View>
 
           <View style={styles.orderRow}>
-            <Text style={[styles.orderLabel, {color: colors.textSecondary}]}>
+            <Text style={[styles.orderLabel, {color: colors.orderDate}]}>
               Address
             </Text>
             <Text style={[styles.orderValue, {color: colors.textPrimary}]}>
@@ -270,7 +270,7 @@ const OrderSuccessScreen: React.FC = () => {
             <View style={[styles.featureIcon, {backgroundColor: '#E3F2FD'}]}>
               <Text style={styles.featureIconText}>📦</Text>
             </View>
-            <Text style={[styles.featureText, {color: colors.textSecondary}]}>
+            <Text style={[styles.featureText, {color: colors.orderDate}]}>
               Secure Packaging
             </Text>
           </View>
@@ -279,7 +279,7 @@ const OrderSuccessScreen: React.FC = () => {
             <View style={[styles.featureIcon, {backgroundColor: '#E8F5E8'}]}>
               <Text style={styles.featureIconText}>🚚</Text>
             </View>
-            <Text style={[styles.featureText, {color: colors.textSecondary}]}>
+            <Text style={[styles.featureText, {color: colors.orderDate}]}>
               Fast Delivery
             </Text>
           </View>
@@ -288,7 +288,7 @@ const OrderSuccessScreen: React.FC = () => {
             <View style={[styles.featureIcon, {backgroundColor: '#FFF3E0'}]}>
               <Text style={styles.featureIconText}>🔒</Text>
             </View>
-            <Text style={[styles.featureText, {color: colors.textSecondary}]}>
+            <Text style={[styles.featureText, {color: colors.orderDate}]}>
               Secure Payment
             </Text>
           </View>
@@ -316,7 +316,7 @@ const OrderSuccessScreen: React.FC = () => {
         </View>
 
         {/* Footer Message */}
-        <Text style={[styles.footerText, {color: colors.textSecondary}]}>
+        <Text style={[styles.footerText, {color: colors.orderDate}]}>
           You'll receive an email confirmation at{' '}
           {params?.customerInfo?.email || 'your email'} shortly.
         </Text>

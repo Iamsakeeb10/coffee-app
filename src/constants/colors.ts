@@ -89,6 +89,7 @@ export const lightColors = {
   textInput: '#33372C',
   inputPlaceholder: 'rgba(41, 40, 40, 0.7)',
   inputColor: '#252A32',
+  orderDate: 'rgba(0,0,0, 0.7)',
 
   // Primary / Accent Colors
   primaryGreen: 'rgba(0, 121, 107, 1.0)',
@@ -113,6 +114,7 @@ export const lightColors = {
   alertButton: '#077A7D',
   backgroundSearchInput: 'rgba(211,211,211,0.7)',
   activeThemeBg: '#ddd',
+  emptyFavSubTitle: 'rgba(0,0,0,0.7)',
 
   // UI Elements
   iconDefault: 'rgba(0, 0, 0, 0.8)',
@@ -178,6 +180,8 @@ export const darkColors = {
   textInput: '#FFFFFF',
   inputPlaceholder: 'rgba(255,255,255,0.2)',
   inputColor: '#fff',
+  orderDate: '#DDDDDD',
+  emptyFavSubTitle: 'rgba(255,255,255, 0.7)',
 
   // Primary / Accent Colors
   primaryGreen: 'rgba(0, 121, 107, 1.0)',

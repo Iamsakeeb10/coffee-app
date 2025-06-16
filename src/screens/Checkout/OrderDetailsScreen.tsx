@@ -178,7 +178,7 @@ const OrderDetailsScreen = ({route}: {route: any}) => {
                   <Ionicons
                     name={step.icon as any}
                     size={16}
-                    color={step.completed ? '#FFFFFF' : colors.textSecondary}
+                    color={step.completed ? '#FFFFFF' : colors.orderDate}
                   />
                 </View>
                 {index < steps.length - 1 && (
@@ -200,7 +200,7 @@ const OrderDetailsScreen = ({route}: {route: any}) => {
                   {
                     color: step.completed
                       ? colors.textPrimary
-                      : colors.textSecondary,
+                      : colors.orderDate,
                     fontFamily: step.active
                       ? fontFamily.medium
                       : fontFamily.regular,
@@ -236,7 +236,7 @@ const OrderDetailsScreen = ({route}: {route: any}) => {
             <Text style={[styles.orderNumber, {color: colors.textPrimary}]}>
               {order.orderNumber}
             </Text>
-            <Text style={[styles.orderDate, {color: colors.textSecondary}]}>
+            <Text style={[styles.orderDate, {color: colors.orderDate}]}>
               Placed on {order.orderDate}
             </Text>
           </View>
@@ -270,7 +270,7 @@ const OrderDetailsScreen = ({route}: {route: any}) => {
             Order Summary
           </Text>
           <View style={styles.summaryRow}>
-            <Text style={[styles.summaryLabel, {color: colors.textSecondary}]}>
+            <Text style={[styles.summaryLabel, {color: colors.orderDate}]}>
               Items ({order.totalItems})
             </Text>
             <Text style={[styles.summaryValue, {color: colors.textPrimary}]}>
@@ -278,7 +278,7 @@ const OrderDetailsScreen = ({route}: {route: any}) => {
             </Text>
           </View>
           <View style={styles.summaryRow}>
-            <Text style={[styles.summaryLabel, {color: colors.textSecondary}]}>
+            <Text style={[styles.summaryLabel, {color: colors.orderDate}]}>
               Delivery Fee
             </Text>
             <Text style={[styles.summaryValue, {color: colors.textPrimary}]}>
@@ -331,13 +331,11 @@ const OrderDetailsScreen = ({route}: {route: any}) => {
                   {item.name}
                 </Text>
                 {item.size && (
-                  <Text
-                    style={[styles.itemSize, {color: colors.textSecondary}]}>
+                  <Text style={[styles.itemSize, {color: colors.orderDate}]}>
                     Size: {item.size}
                   </Text>
                 )}
-                <Text
-                  style={[styles.itemQuantity, {color: colors.textSecondary}]}>
+                <Text style={[styles.itemQuantity, {color: colors.orderDate}]}>
                   Qty: {item.quantity}
                 </Text>
               </View>
@@ -361,11 +359,10 @@ const OrderDetailsScreen = ({route}: {route: any}) => {
             <Ionicons
               name="location-outline"
               size={20}
-              color={colors.textSecondary}
+              color={colors.orderDate}
             />
             <View style={styles.deliveryInfo}>
-              <Text
-                style={[styles.deliveryLabel, {color: colors.textSecondary}]}>
+              <Text style={[styles.deliveryLabel, {color: colors.orderDate}]}>
                 Delivery Address
               </Text>
               <Text style={[styles.deliveryValue, {color: colors.textPrimary}]}>
@@ -374,14 +371,9 @@ const OrderDetailsScreen = ({route}: {route: any}) => {
             </View>
           </View>
           <View style={styles.deliveryRow}>
-            <Ionicons
-              name="time-outline"
-              size={20}
-              color={colors.textSecondary}
-            />
+            <Ionicons name="time-outline" size={20} color={colors.orderDate} />
             <View style={styles.deliveryInfo}>
-              <Text
-                style={[styles.deliveryLabel, {color: colors.textSecondary}]}>
+              <Text style={[styles.deliveryLabel, {color: colors.orderDate}]}>
                 {order.status === 'delivered'
                   ? 'Delivered on'
                   : 'Expected delivery'}

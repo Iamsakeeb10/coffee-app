@@ -129,10 +129,22 @@ const FavoritesScreen: React.FC = () => {
         size={80}
         color={favoritesScreenStyles.emptyIcon.color}
       />
-      <Text style={favoritesScreenStyles.emptyTitle}>
+      <Text
+        style={[
+          favoritesScreenStyles.emptyTitle,
+          {
+            color: colors.emptyStateTitle,
+          },
+        ]}>
         {t('product.noFavorites')}
       </Text>
-      <Text style={favoritesScreenStyles.emptySubtitle}>
+      <Text
+        style={[
+          favoritesScreenStyles.emptySubtitle,
+          {
+            color: colors.emptyFavSubTitle,
+          },
+        ]}>
         {t('product.favoriteMessage')}
       </Text>
     </View>

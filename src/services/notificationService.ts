@@ -14,7 +14,7 @@ export class NotificationService {
         name: 'Order Updates',
         description: 'Notifications for order confirmations and updates',
         importance: AndroidImportance.HIGH,
-        sound: 'default',
+        sound: 'notify',
         vibration: true,
         vibrationPattern: [300, 500, 300, 500], // Must be even number of values (off, on, off, on)
       });
@@ -44,7 +44,7 @@ export class NotificationService {
             id: 'default',
             launchActivity: 'default',
           },
-          sound: 'default',
+          sound: 'notify',
           vibrationPattern: [300, 500, 300, 500], // Must be even number of values
           color: '#4F46E5', // Beautiful indigo color
           largeIcon: 'https://cdn-icons-png.flaticon.com/512/3514/3514447.png', // Shopping bag icon
