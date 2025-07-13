@@ -1,5 +1,7 @@
 import {useEffect, useState} from 'react';
-import {Keyboard} from 'react-native';
+import {Alert, Keyboard} from 'react-native';
+import Shake from 'react-native-shake';
+
 import {PaymentFormData} from '../types/Checkout/PaymentForm.type';
 import {PAYMENT_METHODS} from '../utils/staticPortion';
 import {validatePaymentForm} from '../utils/validator';
@@ -7,6 +9,7 @@ import {validatePaymentForm} from '../utils/validator';
 export const usePaymentForm = (
   onSubmit: (form: PaymentFormData) => void,
   setIsDirty: React.Dispatch<React.SetStateAction<boolean>>,
+  currentStep: number,
 ) => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
     PAYMENT_METHODS.CREDIT_CARD,
@@ -43,6 +46,51 @@ export const usePaymentForm = (
       hideSubscription.remove();
     };
   }, []);
+
+  // ✅ Dummy form data
+  const dummyPaymentForm: PaymentFormData = {
+    cardNumber: '4111 1111 1111 1111',
+    expirationDate: '12/28',
+    cvv: '123',
+    cardholderName: 'John Doe',
+    paymentMethod: PAYMENT_METHODS.CREDIT_CARD,
+  };
+
+  // ✅ Shake listener
+  useEffect(() => {
+    if (currentStep !== 2) return;
+
+    const subscription = Shake.addListener(() => {
+      const isEmpty =
+        !form.cardNumber &&
+        !form.expirationDate &&
+        !form.cvv &&
+        !form.cardholderName;
+
+      if (isEmpty) {
+        Alert.alert(
+          'Auto-fill payment form',
+          'Do you want to fill the form with dummy data?',
+          [
+            {text: 'Cancel', style: 'cancel'},
+            {
+              text: 'OK',
+              onPress: () => {
+                setTimeout(() => {
+                  setForm(dummyPaymentForm);
+                  setSelectedPaymentMethod(dummyPaymentForm.paymentMethod);
+                  setIsDirty(true);
+                  setFormErrors({});
+                }, 0);
+              },
+            },
+          ],
+        );
+      }
+    });
+
+    return () => subscription.remove();
+  }, [currentStep]);
 
   const formatCardNumber = (text: string) => {
     const cleaned = text.replace(/\D/g, '');

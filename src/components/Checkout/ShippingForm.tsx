@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Modal,
@@ -9,6 +10,8 @@ import {
   View,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import Shake from 'react-native-shake';
+
 import {useTheme} from '../../hooks/useTheme';
 import styles from '../../styles/Checkout/ShippingForm.styles';
 import {
@@ -24,7 +27,11 @@ import MultilineInput from '../Common/MultilineInput';
 import LocationPickerButton from './LocationPickerButton';
 import SetLocationModal from './SetLocationModal';
 
-const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
+const ShippingForm = ({
+  onSubmit,
+  setIsDirty,
+  currentStep,
+}: ShippingFormProps) => {
   const {colors} = useTheme();
 
   // const [form, setForm] = useState<ShippingFormData>({
@@ -71,6 +78,45 @@ const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
       hideSubscription.remove();
     };
   }, []);
+
+  // ✅ Dummy values
+  const dummyShippingData: ShippingFormData = {
+    fullName: 'John Doe',
+    address: '123 Dummy Street',
+    city: 'Dhaka',
+    state: 'Dhaka Division',
+    thana: 'Dhanmondi',
+    country: 'Bangladesh',
+    phone: '01700000000',
+    email: 'john.doe@example.com',
+  };
+
+  // ✅ Shake listener effect
+  useEffect(() => {
+    if (currentStep !== 1) return;
+
+    const subscription = Shake.addListener(() => {
+      Alert.alert(
+        'Auto-fill shipping form',
+        'Do you want to fill the form with dummy data?',
+        [
+          {text: 'Cancel', style: 'cancel'},
+          {
+            text: 'OK',
+            onPress: () => {
+              setTimeout(() => {
+                setForm(dummyShippingData);
+                setIsDirty(true);
+                setErrors({});
+              }, 0);
+            },
+          },
+        ],
+      );
+    });
+
+    return () => subscription.remove();
+  }, [currentStep]);
 
   const handleChange = (key: keyof ShippingFormData, value: string) => {
     setForm(prev => ({...prev, [key]: value}));

@@ -31,6 +31,8 @@ const CheckoutScreen = () => {
     slideToStep,
   } = useCheckoutNavigation(shippingData, paymentData, isDirty);
 
+  console.log('Current Step =>>', currentStep);
+
   const guardedSlideToStep = (targetStep: number) => {
     if (targetStep < currentStep) {
       // Allow going back without validation
@@ -70,6 +72,7 @@ const CheckoutScreen = () => {
               goNext();
             }}
             setIsDirty={setIsDirty}
+            currentStep={currentStep}
           />
         </View>
         <View style={styles.stepContainer}>
@@ -80,6 +83,7 @@ const CheckoutScreen = () => {
             }}
             goBack={goBack}
             setIsDirty={setIsDirty}
+            currentStep={currentStep}
           />
         </View>
         <View style={styles.stepContainer}>

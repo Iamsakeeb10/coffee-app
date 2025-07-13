@@ -6985,6 +6985,11 @@ react-native-screens@^4.9.2, "react-native-screens@>= 4.0.0":
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-shake@^6.7.8:
+  version "6.7.8"
+  resolved "https://registry.npmjs.org/react-native-shake/-/react-native-shake-6.7.8.tgz"
+  integrity sha512-XE4Y+3AJ5gqoqHo0lT5kGwryU1/xeq2wkE6A7hruoS+M97kAZKVdyhkl0LO6deQGdpvBT7HNoJTbmYd8arpm2A==
+
 react-native-snackbar@^2.9.0:
   version "2.9.0"
   resolved "https://registry.npmjs.org/react-native-snackbar/-/react-native-snackbar-2.9.0.tgz"

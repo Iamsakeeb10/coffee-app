@@ -10,4 +10,5 @@ export type PaymentFormProps = {
   onSubmit: (data: PaymentFormData) => void;
   goBack: () => void;
   setIsDirty: any;
+  currentStep: number;
 };
