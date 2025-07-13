@@ -73,34 +73,40 @@ const CoffeeScreen = () => {
   useFocusEffect(
     useCallback(() => {
       if (!hasSetupNotifications && !loading && !firstLoad) {
-        // Wait for all interactions to complete before showing permission popup
+        let isMounted = true;
+
         const interactionHandle = InteractionManager.runAfterInteractions(
           () => {
-            const timeoutId = setTimeout(async () => {
-              try {
-                console.log(
-                  'Setting up notifications after delay and interactions...',
-                );
-                const granted = await requestNotificationPermission();
-                if (granted) {
-                  await NotificationService.setupNotificationActions();
-                  await NotificationService.createOrderChannel();
-                  console.log('Notification setup complete ✅');
-                } else {
-                  console.log('Notification permission not granted ❌');
+            requestAnimationFrame(() => {
+              const timeoutId = setTimeout(async () => {
+                try {
+                  const granted = await requestNotificationPermission();
+                  if (granted) {
+                    await NotificationService.setupNotificationActions();
+                    await NotificationService.createOrderChannel();
+                    console.log('Notification setup complete ✅');
+                  } else {
+                    console.log('Notification permission not granted ❌');
+                  }
+                  if (isMounted) {
+                    setHasSetupNotifications(true);
+                  }
+                } catch (error) {
+                  console.error('Notification setup error:', error);
+                  if (isMounted) {
+                    setHasSetupNotifications(true);
+                  }
                 }
-                setHasSetupNotifications(true);
-              } catch (error) {
-                console.error('Notification setup error:', error);
-                setHasSetupNotifications(true);
-              }
-            }, 0); // 1 second delay
+              }, 300); // short delay for smoother interaction
 
-            return () => clearTimeout(timeoutId); // cleanup timeout on unmount/focus change
+              // cleanup
+              return () => clearTimeout(timeoutId);
+            });
           },
         );
 
         return () => {
+          isMounted = false;
           interactionHandle.cancel();
         };
       }

@@ -23,66 +23,83 @@ import {colors} from '../../constants/colors';
 import useNetInfo from '../../hooks/useNetInfo';
 import {useTranslation} from '../../i18n/useTranslations';
 import {AppDispatch, RootState} from '../../redux/store/store';
-import {googleLogin, loginUser} from '../../redux/thunks/authThunks';
 import styles from '../../styles/authStyles';
 import {
+  ForgetPassInput,
+  ForgetPasswordInput,
+  ForgetPasswordValidationResult,
   IntroSkipButtonProps,
-  LoginUserInput,
-  LoginValidationResult,
-  UserInputErrors,
 } from '../../types/types';
 import {showSnack} from '../../utils/Snack';
-import {loginValidation} from '../../utils/validator';
 
-const initialUserInput: LoginUserInput = {
-  // enteredEmail: 'shakib@gmail.com',
-  // enteredPassword: '12345678',
+const initialUserInput: ForgetPasswordInput = {
   enteredEmail: '',
-  enteredPassword: '',
 };
 
-const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
-  const [showPass, setShowPass] = useState<boolean>(false);
-  const [userInput, setUserInput] = useState<LoginUserInput>(initialUserInput);
-  const [userInputErrors, setUserInputErrors] = useState<UserInputErrors>({});
+const ForgetPasswordScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
+  const [userInput, setUserInput] =
+    useState<ForgetPasswordInput>(initialUserInput);
+  const [userInputErrors, setUserInputErrors] = useState<ForgetPassInput>({
+    enteredEmailError: '',
+  });
 
   const dispatch = useDispatch<AppDispatch>();
-  const {loading, googleLoading} = useSelector(
-    (state: RootState) => state.auth,
-  );
+  const {loading} = useSelector((state: RootState) => state.auth);
 
   const {isConnected} = useNetInfo();
   const {t} = useTranslation();
 
   const handleUserInputChange = (
-    field: keyof LoginUserInput,
+    field: keyof ForgetPasswordInput,
     value: string,
   ) => {
     const updatedInput = {...userInput, [field]: value};
     setUserInput(updatedInput);
     if (userInputErrors[`${field}Error`]) {
-      setUserInputErrors((prevInputError: UserInputErrors) => ({
+      setUserInputErrors((prevInputError: ForgetPassInput) => ({
         ...prevInputError,
         [`${field}Error`]: '',
       }));
     }
   };
 
-  const hasValidationError = (validationResult: LoginValidationResult) => {
-    return validationResult.emailError || validationResult.passwordError;
+  const isValidEmail = (email: string): boolean =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const validateForgetPasswordInput = (
+    email: string,
+    t: (key: string) => string,
+  ): ForgetPasswordValidationResult => {
+    let emailError = '';
+
+    if (!email) {
+      emailError = t('auth.emailRequired');
+    } else if (!isValidEmail(email)) {
+      emailError = t('auth.invalidEmail');
+    }
+
+    return {
+      emailError,
+    };
   };
 
-  const setValidationErrors = (validationResult: LoginValidationResult) => {
+  const hasValidationError = (
+    validationResult: ForgetPasswordValidationResult,
+  ) => {
+    return validationResult.emailError;
+  };
+
+  const setValidationErrors = (
+    validationResult: ForgetPasswordValidationResult,
+  ) => {
     setUserInputErrors({
-      enteredEmailError: validationResult.emailError,
-      enteredPasswordError: validationResult.passwordError,
+      enteredEmailError: validationResult.emailError || '',
     });
   };
 
   const resetValidationErrors = () => {
     setUserInputErrors({
       enteredEmailError: '',
-      enteredPasswordError: '',
     });
   };
 
@@ -97,13 +114,12 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
         actionText: t('common.okay'),
         actionColor: colors.white,
       });
-
       return;
     }
 
-    const {enteredEmail, enteredPassword} = userInput;
+    const {enteredEmail} = userInput;
 
-    const validationResult = loginValidation(enteredEmail, enteredPassword, t);
+    const validationResult = validateForgetPasswordInput(enteredEmail, t);
     const validationError = hasValidationError(validationResult);
 
     if (validationError) {
@@ -114,46 +130,27 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
     }
 
     try {
-      await dispatch(
-        loginUser({email: enteredEmail, password: enteredPassword}),
-      ).unwrap();
+      //   await dispatch(forgetPassword({email: enteredEmail})).unwrap();
+
+      showSnack(`${t('auth.resetPasswordEmailSent')}`, {
+        duration: 4000,
+        backgroundColor: colors.background,
+        textColor: colors.white,
+        actionText: t('common.okay'),
+        actionColor: colors.white,
+      });
+
+      // Navigate back to login after successful email send
+      setTimeout(() => {
+        navigation.navigate('LoginScreen');
+      }, 1500);
     } catch (error: any) {
-      Alert.alert(t('auth.loginFailed'), error);
+      Alert.alert(t('auth.resetPasswordFailed'), error);
     }
   };
 
-  const navigateToRegister = () => {
-    navigation.navigate('RegisterScreen');
-  };
-
-  const eyeToggleHandler = () => {
-    setShowPass(prev => !prev);
-  };
-
-  const googleLoginHandler = async () => {
-    if (!isConnected) {
-      showSnack(`${t('auth.noInternetConnection')}`, {
-        duration: 3000,
-        backgroundColor: colors.deepRed,
-        textColor: colors.white,
-        actionText: t('common.okay'),
-        actionColor: colors.white,
-      });
-
-      return;
-    }
-
-    try {
-      dispatch(googleLogin());
-    } catch (err: any) {
-      showSnack(err, {
-        duration: 3000,
-        backgroundColor: colors.deepRed,
-        textColor: colors.white,
-        actionText: t('common.okay'),
-        actionColor: colors.white,
-      });
-    }
+  const navigateToLogin = () => {
+    navigation.navigate('LoginScreen');
   };
 
   return (
@@ -185,10 +182,10 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                 />
               </View>
               <Text style={[styles.headerText, {textAlign: 'left'}]}>
-                {t('auth.welcomeBack')}
+                {t('auth.forgetPassword')}
               </Text>
               <Text style={styles.headerText}>
-                {t('auth.gladToSeeYouAgain')}
+                {t('auth.enterEmailToResetPassword')}
               </Text>
             </View>
 
@@ -222,71 +219,22 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                   />
                 )}
               </View>
-              <View>
-                <InputLocal
-                  placeholder={t('auth.enterPassword')}
-                  textColor={colors.inputTextColor}
-                  secureTextEntry={!showPass}
-                  value={userInput.enteredPassword}
-                  onChange={val =>
-                    handleUserInputChange('enteredPassword', val)
-                  }
-                  error={userInputErrors.enteredPasswordError}
-                />
-                <IconButton
-                  iconName={!showPass ? 'eye-off-outline' : 'eye-outline'}
-                  iconSize={18}
-                  iconColor={colors.iconColor}
-                  onPress={eyeToggleHandler}
-                  style={{
-                    backgroundColor: 'rgba(255,255,255,0.06)',
-                  }}
-                />
-              </View>
-              <View style={{flex: 1}}>
-                {userInputErrors.enteredPasswordError && (
-                  <AnimatedErrorText
-                    errorText={userInputErrors.enteredPasswordError}
-                    color={colors.deepRed}
-                    overrideMargin={true}
-                  />
-                )}
-              </View>
-
-              <TouchableOpacity
-                onPress={() => navigation.navigate('ForgotPasswordScreen')}
-                style={styles.forgotContainer}>
-                <Text style={styles.forgotText}>{t('auth.forgotPass')}</Text>
-              </TouchableOpacity>
 
               <ButtonLocal
-                title={t('auth.login')}
+                title={t('auth.sendResetLink')}
                 loading={loading}
                 buttonStyle={{backgroundColor: colors.btnRed}}
                 onPressHandler={handleSubmit}
               />
+
               <View style={styles.bottomContainer}>
                 <Text style={styles.alreadySigninText}>
-                  {t('auth.dontHaveAccount')}
+                  {t('auth.rememberPassword')}
                 </Text>
-                <TouchableOpacity onPress={navigateToRegister}>
-                  <Text style={styles.signinText}>{t('auth.signupNow')}</Text>
+                <TouchableOpacity onPress={navigateToLogin}>
+                  <Text style={styles.signinText}>{t('auth.backToLogin')}</Text>
                 </TouchableOpacity>
               </View>
-              <View style={styles.orTextContainer}>
-                <Text style={styles.orText}>
-                  ---------------- <Text>{t('auth.or')}</Text> ----------------
-                </Text>
-              </View>
-              <ButtonLocal
-                url={require('../../assets/images/google.png')}
-                title={t('auth.signInWithGoogle')}
-                loading={googleLoading}
-                buttonStyle={{backgroundColor: colors.white}}
-                textStyle={{color: colors.background}}
-                onPressHandler={googleLoginHandler}
-                loaderColor={colors.background}
-              />
             </KeyboardAvoidingView>
           </ScrollView>
         </View>
@@ -295,4 +243,4 @@ const LoginScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   );
 };
 
-export default LoginScreen;
+export default ForgetPasswordScreen;

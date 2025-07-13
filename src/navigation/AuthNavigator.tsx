@@ -2,6 +2,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '../redux/reducers/rootReducer';
+import ForgotPasswordScreen from '../screens/Auth/ForgotPasswordScreen';
 import LoginScreen from '../screens/Auth/LoginScreen';
 import RegisterScreen from '../screens/Auth/RegisterScreen';
 import IntroScreen from '../screens/Intro/IntroScreen';
@@ -20,6 +21,10 @@ const AuthNavigator = () => {
       ) : null}
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+      <Stack.Screen
+        name="ForgotPasswordScreen"
+        component={ForgotPasswordScreen}
+      />
     </Stack.Navigator>
   );
 };

@@ -38,6 +38,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 
+  forgotContainer: {
+    flex: 1,
+    alignSelf: 'flex-end',
+    marginBottom: 16,
+  },
+
+  forgotText: {
+    color: colors.white,
+    fontSize: 14,
+  },
+
   bottomContainer: {
     marginTop: 20,
     justifyContent: 'flex-end',

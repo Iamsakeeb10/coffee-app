@@ -4,7 +4,11 @@ import {fontFamily} from '../../utils/typography';
 
 const {width} = Dimensions.get('window');
 
-const AnimatedErrorText = ({errorText, color = '#fc6063'}: any) => {
+const AnimatedErrorText = ({
+  errorText,
+  color = '#fc6063',
+  overrideMargin = false,
+}: any) => {
   const opacity = useRef(new Animated.Value(0)).current;
   const translateX = useRef(new Animated.Value(-20)).current;
   const shake = useRef(new Animated.Value(0)).current;
@@ -68,7 +72,7 @@ const AnimatedErrorText = ({errorText, color = '#fc6063'}: any) => {
   const translateXWithShake = Animated.add(translateX, shake);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {marginBottom: overrideMargin ? 0 : 7}]}>
       <Animated.Text
         style={[
           styles.errorText,
@@ -90,7 +94,6 @@ const AnimatedErrorText = ({errorText, color = '#fc6063'}: any) => {
 const styles = StyleSheet.create({
   container: {
     width: width / 1.2,
-    marginBottom: 7,
   },
   errorText: {
     fontSize: 13,

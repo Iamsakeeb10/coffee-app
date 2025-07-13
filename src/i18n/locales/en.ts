@@ -61,6 +61,24 @@ const en = {
   'auth.nameErrorMax': 'Please enter less than 50 characters',
   'auth.nameErrorInvalid':
     'Full name can only contain letters, spaces, dots, first bracket & dashes',
+  'auth.forgotPass': 'Forgot Password?',
+  // Add these to your translation files
+  'auth.forgetPassword': 'Forget Password',
+  'auth.enterEmailToResetPassword': 'Enter your email to reset password',
+  'auth.sendResetLink': 'Send Reset Link',
+  'auth.resetPasswordEmailSent': 'Reset password email sent successfully',
+  'auth.resetPasswordFailed': 'Reset Password Failed',
+  'auth.rememberPassword': 'Remember your password?',
+  'auth.backToLogin': 'Back to Login',
+  'auth.changePassword': 'Change Password',
+  'auth.enterOldAndNewPassword': 'Enter your old and new password',
+  'auth.enterOldPassword': 'Enter Old Password',
+  'auth.enterNewPassword': 'Enter New Password',
+  'auth.updatePassword': 'Update Password',
+  'auth.passwordChangedSuccessfully': 'Password changed successfully',
+  'auth.changePasswordFailed': 'Change Password Failed',
+  'auth.dontWantToChange': "Don't want to change?",
+  'auth.cancel': 'Cancel',
 
   'auth.emailErrorRequired': 'Email is required',
   'auth.emailErrorInvalid': 'Please enter a valid email address',
@@ -74,6 +92,8 @@ const en = {
   'auth.confirmPasswordErrorMin': 'Password must be at least 8 characters',
   'auth.confirmPasswordErrorMax': 'Password must be less than 32 characters',
   'auth.confirmPasswordErrorNotMatched': 'Password not matched',
+  'auth.emailRequired': 'Email is required',
+  'auth.invalidEmail': 'Please enter a valid email address',
 
   'home.findProduct': 'Find Your Product...',
   'product.trending.now': 'Trending Now',

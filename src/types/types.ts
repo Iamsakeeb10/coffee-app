@@ -85,3 +85,16 @@ export type AlertProps = {
   cancelText?: string;
   confirmBgColor?: string;
 };
+
+export interface ForgetPasswordInput {
+  enteredEmail: string;
+}
+
+export interface ForgetPasswordValidationResult {
+  emailError?: string;
+}
+
+export type ForgetPassInput = {
+  enteredEmailError: string;
+  enteredPasswordError?: string;
+};

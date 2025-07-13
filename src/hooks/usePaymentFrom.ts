@@ -11,20 +11,20 @@ export const usePaymentForm = (
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(
     PAYMENT_METHODS.CREDIT_CARD,
   );
-  const [form, setForm] = useState<PaymentFormData>({
-    cardNumber: '5668568868558855',
-    expirationDate: '12/28',
-    cvv: '393494',
-    cardholderName: 'Shakib',
-    paymentMethod: PAYMENT_METHODS.CREDIT_CARD,
-  });
   // const [form, setForm] = useState<PaymentFormData>({
-  //   cardNumber: '',
-  //   expirationDate: '',
-  //   cvv: '',
-  //   cardholderName: '',
+  //   cardNumber: '5668568868558855',
+  //   expirationDate: '12/28',
+  //   cvv: '393494',
+  //   cardholderName: 'Shakib',
   //   paymentMethod: PAYMENT_METHODS.CREDIT_CARD,
   // });
+  const [form, setForm] = useState<PaymentFormData>({
+    cardNumber: '',
+    expirationDate: '',
+    cvv: '',
+    cardholderName: '',
+    paymentMethod: PAYMENT_METHODS.CREDIT_CARD,
+  });
   const [isProcessing, setIsProcessing] = useState(false);
   const [saveCard, setSaveCard] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);

@@ -100,19 +100,64 @@ export const loginValidation = (
   return errors;
 };
 
+// export const validateShippingForm = (
+//   form: ShippingFormData,
+// ): Partial<Record<keyof ShippingFormData, string>> => {
+//   const errors: Partial<Record<keyof ShippingFormData, string>> = {};
+
+//   if (!form.fullName) errors.fullName = 'Full name is required';
+//   if (!form.address) errors.address = 'Address is required';
+//   if (!form.city) errors.city = 'City is required';
+//   if (!form.state) errors.state = 'State is required';
+//   if (!form.thana) errors.thana = 'Thana is required';
+//   if (!form.country) errors.country = 'Country is required';
+//   if (!form.phone) errors.phone = 'Phone number is required';
+//   if (!form.email) errors.email = 'Email is required';
+
+//   return errors;
+// };
+
 export const validateShippingForm = (
   form: ShippingFormData,
 ): Partial<Record<keyof ShippingFormData, string>> => {
   const errors: Partial<Record<keyof ShippingFormData, string>> = {};
 
-  if (!form.fullName) errors.fullName = 'Full name is required';
-  if (!form.address) errors.address = 'Address is required';
-  if (!form.city) errors.city = 'City is required';
-  if (!form.state) errors.state = 'State is required';
-  if (!form.thana) errors.thana = 'Thana is required';
-  if (!form.country) errors.country = 'Country is required';
-  if (!form.phone) errors.phone = 'Phone number is required';
-  if (!form.email) errors.email = 'Email is required';
+  const isEmpty = (value: string | undefined | null): boolean =>
+    !value || value.trim() === '';
+
+  const isValidEmail = (email: string): boolean =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const isValidPhone = (phone: string): boolean => /^\+?\d{10,15}$/.test(phone); // supports +880..., 017..., etc.
+
+  if (isEmpty(form.fullName)) {
+    errors.fullName = 'Full name is required';
+  } else if (form.fullName.trim().length < 2) {
+    errors.fullName = 'Full name must be at least 2 characters';
+  }
+
+  if (isEmpty(form.address)) {
+    errors.address = 'Address is required';
+  } else if (form.address.trim().length < 5) {
+    errors.address = 'Address must be at least 5 characters';
+  }
+
+  if (isEmpty(form.city)) errors.city = 'City is required';
+  if (isEmpty(form.state)) errors.state = 'State is required';
+  if (isEmpty(form.thana)) errors.thana = 'Thana is required';
+  if (isEmpty(form.country)) errors.country = 'Country is required';
+
+  if (isEmpty(form.phone)) {
+    errors.phone = 'Phone number is required';
+  } else if (!isValidPhone(form.phone.trim())) {
+    errors.phone = 'Enter a valid phone number';
+  }
+
+  if (isEmpty(form.email)) {
+    errors.email = 'Email is required';
+  } else if (!isValidEmail(form.email.trim())) {
+    errors.email = 'Enter a valid email address';
+  }
 
   return errors;
 };

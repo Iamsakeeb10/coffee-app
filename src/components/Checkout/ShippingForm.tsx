@@ -27,27 +27,27 @@ import SetLocationModal from './SetLocationModal';
 const ShippingForm = ({onSubmit, setIsDirty}: ShippingFormProps) => {
   const {colors} = useTheme();
 
-  const [form, setForm] = useState<ShippingFormData>({
-    fullName: 'Shakib Ahmed',
-    address: 'Dhaka',
-    city: 'Dhaka',
-    state: 'BD',
-    thana: 'Ghoraghat',
-    country: 'BD',
-    phone: '017',
-    email: 'shakib@gmail.com',
-  });
-
   // const [form, setForm] = useState<ShippingFormData>({
-  //   fullName: '',
-  //   address: '',
-  //   city: '',
-  //   state: '',
-  //   thana: '',
-  //   country: '',
-  //   phone: '',
-  //   email: '',
+  //   fullName: 'Shakib Ahmed',
+  //   address: 'Dhaka',
+  //   city: 'Dhaka',
+  //   state: 'BD',
+  //   thana: 'Ghoraghat',
+  //   country: 'BD',
+  //   phone: '017',
+  //   email: 'shakib@gmail.com',
   // });
+
+  const [form, setForm] = useState<ShippingFormData>({
+    fullName: '',
+    address: '',
+    city: '',
+    state: '',
+    thana: '',
+    country: '',
+    phone: '',
+    email: '',
+  });
 
   const navigation = useNavigation();
   const [errors, setErrors] = useState<

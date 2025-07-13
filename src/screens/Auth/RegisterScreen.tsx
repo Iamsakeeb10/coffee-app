@@ -204,6 +204,9 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                   iconSize={18}
                   iconColor={colors.iconColor}
                   activeOpacity={1}
+                  style={{
+                    backgroundColor: 'rgba(255,255,255,0.06)',
+                  }}
                 />
               </View>
               <View>
@@ -229,6 +232,9 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                   iconSize={18}
                   iconColor={colors.iconColor}
                   activeOpacity={1}
+                  style={{
+                    backgroundColor: 'rgba(255,255,255,0.06)',
+                  }}
                 />
               </View>
               <View>
@@ -259,6 +265,9 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                   iconColor={colors.iconColor}
                   onPress={() => {
                     eyeToggleHandler('password');
+                  }}
+                  style={{
+                    backgroundColor: 'rgba(255,255,255,0.06)',
                   }}
                 />
               </View>
@@ -292,6 +301,9 @@ const RegisterScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                   iconColor={colors.iconColor}
                   onPress={() => {
                     eyeToggleHandler('confirmPassword');
+                  }}
+                  style={{
+                    backgroundColor: 'rgba(255,255,255,0.06)',
                   }}
                 />
               </View>

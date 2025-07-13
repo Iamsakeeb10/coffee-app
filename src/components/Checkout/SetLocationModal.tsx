@@ -161,7 +161,7 @@ import {
   View,
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import MapView, {Marker, PROVIDER_GOOGLE, UrlTile} from 'react-native-maps';
+import MapView, {Marker, UrlTile} from 'react-native-maps';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {colors} from '../../constants/colors';
@@ -516,7 +516,7 @@ const SetLocationModal = ({
             style={styles.map}
             region={bangladeshRegion}
             onPress={handleMapPress}
-            provider={PROVIDER_GOOGLE}
+            // provider={PROVIDER_GOOGLE}
             showsUserLocation={true}
             // loadingEnabled
             // loadingBackgroundColor={colors.white}

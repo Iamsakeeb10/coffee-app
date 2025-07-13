@@ -287,7 +287,7 @@ const OrderHistoryScreen = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={[colors.textPrimary]}
+            colors={[colors.backgroundDefault]}
             tintColor={colors.textPrimary}
           />
         }
