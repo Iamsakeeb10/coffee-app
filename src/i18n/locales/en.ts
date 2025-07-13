@@ -66,7 +66,6 @@ const en = {
   'auth.forgetPassword': 'Forget Password',
   'auth.enterEmailToResetPassword': 'Enter your email to reset password',
   'auth.sendResetLink': 'Send Reset Link',
-  'auth.resetPasswordEmailSent': 'Reset password email sent successfully',
   'auth.resetPasswordFailed': 'Reset Password Failed',
   'auth.rememberPassword': 'Remember your password?',
   'auth.backToLogin': 'Back to Login',
@@ -94,6 +93,9 @@ const en = {
   'auth.confirmPasswordErrorNotMatched': 'Password not matched',
   'auth.emailRequired': 'Email is required',
   'auth.invalidEmail': 'Please enter a valid email address',
+  'auth.emailNotRegistered': 'This email is not registered',
+  'auth.resetPasswordEmailSent':
+    'If your email is registered, you will receive a reset link shortly.',
 
   'home.findProduct': 'Find Your Product...',
   'product.trending.now': 'Trending Now',

@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   forgotContainer: {
     flex: 1,
     alignSelf: 'flex-end',
-    marginBottom: 16,
+    marginBottom: 22,
   },
 
   forgotText: {

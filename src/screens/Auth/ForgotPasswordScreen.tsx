@@ -1,3 +1,4 @@
+import {getAuth, sendPasswordResetEmail} from '@react-native-firebase/auth';
 import React, {useState} from 'react';
 import {
   Alert,
@@ -13,8 +14,8 @@ import {
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {useDispatch, useSelector} from 'react-redux';
 
+import {getApp} from '@react-native-firebase/app';
 import AnimatedErrorText from '../../components/Auth/AnimatedErrorText';
 import ButtonLocal from '../../components/Common/ButtonLocal';
 import IconButton from '../../components/Common/IconButton';
@@ -22,7 +23,6 @@ import InputLocal from '../../components/Common/InputLocal';
 import {colors} from '../../constants/colors';
 import useNetInfo from '../../hooks/useNetInfo';
 import {useTranslation} from '../../i18n/useTranslations';
-import {AppDispatch, RootState} from '../../redux/store/store';
 import styles from '../../styles/authStyles';
 import {
   ForgetPassInput,
@@ -42,9 +42,7 @@ const ForgetPasswordScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
   const [userInputErrors, setUserInputErrors] = useState<ForgetPassInput>({
     enteredEmailError: '',
   });
-
-  const dispatch = useDispatch<AppDispatch>();
-  const {loading} = useSelector((state: RootState) => state.auth);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {isConnected} = useNetInfo();
   const {t} = useTranslation();
@@ -129,8 +127,11 @@ const ForgetPasswordScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
       resetValidationErrors();
     }
 
+    setIsLoading(true);
+
     try {
-      //   await dispatch(forgetPassword({email: enteredEmail})).unwrap();
+      const auth = getAuth(getApp()); // 🔄 new way
+      await sendPasswordResetEmail(auth, enteredEmail); // 🔄 modular API
 
       showSnack(`${t('auth.resetPasswordEmailSent')}`, {
         duration: 4000,
@@ -140,12 +141,27 @@ const ForgetPasswordScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
         actionColor: colors.white,
       });
 
-      // Navigate back to login after successful email send
       setTimeout(() => {
         navigation.navigate('LoginScreen');
       }, 1500);
     } catch (error: any) {
-      Alert.alert(t('auth.resetPasswordFailed'), error);
+      console.log('Forget error =>> ', error);
+      if (error.code === 'auth/user-not-found') {
+        showSnack(t('auth.emailNotRegistered'), {
+          duration: 3000,
+          backgroundColor: colors.deepRed,
+          textColor: colors.white,
+          actionText: t('common.okay'),
+          actionColor: colors.white,
+        });
+      } else {
+        Alert.alert(
+          t('auth.resetPasswordFailed'),
+          error.message || error.toString(),
+        );
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -155,7 +171,7 @@ const ForgetPasswordScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
 
   return (
     <ImageBackground
-      source={require('../../assets/images/auth-background-1.jpg')}
+      source={require('../../assets/images/forget-3.jpg')}
       style={styles.fullWidth}
       resizeMode="cover"
       blurRadius={10}>
@@ -222,7 +238,7 @@ const ForgetPasswordScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
 
               <ButtonLocal
                 title={t('auth.sendResetLink')}
-                loading={loading}
+                loading={isLoading}
                 buttonStyle={{backgroundColor: colors.btnRed}}
                 onPressHandler={handleSubmit}
               />

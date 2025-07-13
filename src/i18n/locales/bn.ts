@@ -75,8 +75,6 @@ const bn = {
   'auth.forgetPassword': 'পাসওয়ার্ড ভুলে গেছেন',
   'auth.enterEmailToResetPassword': 'পাসওয়ার্ড রিসেট করতে আপনার ইমেইল লিখুন',
   'auth.sendResetLink': 'রিসেট লিঙ্ক পাঠান',
-  'auth.resetPasswordEmailSent':
-    'পাসওয়ার্ড রিসেট লিঙ্ক আপনার ইমেইলে পাঠানো হয়েছে',
   'auth.resetPasswordFailed': 'পাসওয়ার্ড রিসেট ব্যর্থ হয়েছে',
   'auth.rememberPassword': 'পাসওয়ার্ড মনে আছে?',
   'auth.backToLogin': 'লগইনে ফিরে যান',
@@ -91,6 +89,7 @@ const bn = {
   'auth.cancel': 'বাতিল করুন',
   'auth.emailRequired': 'ইমেইল দিতে হবে',
   'auth.invalidEmail': 'সঠিক ইমেইল ঠিকানা দিন',
+  'auth.emailNotRegistered': 'এই ইমেইলটি নিবন্ধিত নয়',
 
   'home.findProduct': 'আপনার পণ্য খুঁজুন...',
   'product.trending.now': 'এখন ট্রেন্ডিং',
