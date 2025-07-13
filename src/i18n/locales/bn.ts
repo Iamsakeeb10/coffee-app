@@ -90,6 +90,8 @@ const bn = {
   'auth.emailRequired': 'ইমেইল দিতে হবে',
   'auth.invalidEmail': 'সঠিক ইমেইল ঠিকানা দিন',
   'auth.emailNotRegistered': 'এই ইমেইলটি নিবন্ধিত নয়',
+  'auth.resetPasswordEmailSent':
+    'আপনার ইমেইল রেজিস্টার্ড থাকলে, রিসেট লিংক পাঠানো হয়েছে। ইনবক্স ও স্প্যাম ফোল্ডার চেক করুন।',
 
   'home.findProduct': 'আপনার পণ্য খুঁজুন...',
   'product.trending.now': 'এখন ট্রেন্ডিং',

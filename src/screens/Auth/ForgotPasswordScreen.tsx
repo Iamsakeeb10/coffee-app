@@ -18,6 +18,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {getApp} from '@react-native-firebase/app';
 import AnimatedErrorText from '../../components/Auth/AnimatedErrorText';
 import ButtonLocal from '../../components/Common/ButtonLocal';
+import CustomAlert from '../../components/Common/CustomAlert';
 import IconButton from '../../components/Common/IconButton';
 import InputLocal from '../../components/Common/InputLocal';
 import {colors} from '../../constants/colors';
@@ -33,7 +34,7 @@ import {
 import {showSnack} from '../../utils/Snack';
 
 const initialUserInput: ForgetPasswordInput = {
-  enteredEmail: '',
+  enteredEmail: 'test@mail.com',
 };
 
 const ForgetPasswordScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
@@ -43,6 +44,7 @@ const ForgetPasswordScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
     enteredEmailError: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [showResetAlert, setShowResetAlert] = useState(false);
 
   const {isConnected} = useNetInfo();
   const {t} = useTranslation();
@@ -133,17 +135,7 @@ const ForgetPasswordScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
       const auth = getAuth(getApp()); // 🔄 new way
       await sendPasswordResetEmail(auth, enteredEmail); // 🔄 modular API
 
-      showSnack(`${t('auth.resetPasswordEmailSent')}`, {
-        duration: 4000,
-        backgroundColor: colors.background,
-        textColor: colors.white,
-        actionText: t('common.okay'),
-        actionColor: colors.white,
-      });
-
-      setTimeout(() => {
-        navigation.navigate('LoginScreen');
-      }, 1500);
+      setShowResetAlert(true);
     } catch (error: any) {
       console.log('Forget error =>> ', error);
       if (error.code === 'auth/user-not-found') {
@@ -263,6 +255,18 @@ const ForgetPasswordScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
           </ScrollView>
         </View>
       </LinearGradient>
+      <CustomAlert
+        visible={showResetAlert}
+        title={t('auth.emailSent')}
+        message={t('auth.resetPasswordEmailSent')}
+        cancelText={t('auth.cancel')}
+        confirmText={t('auth.goToLogin')}
+        onCancel={() => setShowResetAlert(false)}
+        onConfirm={() => {
+          setShowResetAlert(false);
+          navigation.navigate('LoginScreen');
+        }}
+      />
     </ImageBackground>
   );
 };

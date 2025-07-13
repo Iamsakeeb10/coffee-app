@@ -96,7 +96,8 @@ const en = {
   'auth.invalidEmail': 'Please enter a valid email address',
   'auth.emailNotRegistered': 'This email is not registered',
   'auth.resetPasswordEmailSent':
-    'If your email is registered, you will receive a reset link shortly.',
+    'If your email is registered, we’ve sent a reset link to your inbox. Please also check your spam folder.',
+  'auth.emailSent': 'Email Sent',
 
   'home.findProduct': 'Find Your Product...',
   'product.trending.now': 'Trending Now',
