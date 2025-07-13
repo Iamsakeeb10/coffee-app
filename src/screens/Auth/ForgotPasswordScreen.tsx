@@ -197,10 +197,18 @@ const ForgetPasswordScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
                   resizeMode="contain"
                 />
               </View>
-              <Text style={[styles.headerText, {textAlign: 'left'}]}>
+              <Text style={[styles.headerText, {textAlign: 'center'}]}>
                 {t('auth.forgetPassword')}
               </Text>
-              <Text style={styles.headerText}>
+              <Text
+                style={[
+                  styles.headerText,
+                  {
+                    fontSize: 16,
+                    lineHeight: 16.0,
+                    marginTop: 8,
+                  },
+                ]}>
                 {t('auth.enterEmailToResetPassword')}
               </Text>
             </View>
@@ -239,7 +247,7 @@ const ForgetPasswordScreen: React.FC<IntroSkipButtonProps> = ({navigation}) => {
               <ButtonLocal
                 title={t('auth.sendResetLink')}
                 loading={isLoading}
-                buttonStyle={{backgroundColor: colors.btnRed}}
+                buttonStyle={{backgroundColor: colors.forgetBtn}}
                 onPressHandler={handleSubmit}
               />
 

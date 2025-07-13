@@ -25,6 +25,7 @@ export const colors = {
   dragHandle: '#D1D5DB',
   langLabel: '#1A1A1A',
   accentPrimary: '#3B82F6',
+  forgetBtn: '#FF9B17',
 
   background: '#0C0F14',
   cardBackground: '#252A32',

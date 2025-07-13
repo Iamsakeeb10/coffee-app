@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     textShadowColor: colors.lightBlackShadow,
     textShadowOffset: {width: 0.5, height: 0.5},
     textShadowRadius: 4,
+    textAlign: 'center',
   },
 
   orTextContainer: {

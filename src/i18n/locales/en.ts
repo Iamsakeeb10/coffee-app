@@ -63,8 +63,9 @@ const en = {
     'Full name can only contain letters, spaces, dots, first bracket & dashes',
   'auth.forgotPass': 'Forgot Password?',
   // Add these to your translation files
-  'auth.forgetPassword': 'Forget Password',
-  'auth.enterEmailToResetPassword': 'Enter your email to reset password',
+  'auth.forgetPassword': 'Forgot Password?',
+  'auth.enterEmailToResetPassword':
+    'Enter the email associated with your account',
   'auth.sendResetLink': 'Send Reset Link',
   'auth.resetPasswordFailed': 'Reset Password Failed',
   'auth.rememberPassword': 'Remember your password?',
